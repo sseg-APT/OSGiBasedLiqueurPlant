@@ -12,26 +12,18 @@
     <artifactId>valve-api</artifactId>
 
     <packaging>bundle</packaging>
+
     <dependencies>
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
             <version>6.0.0</version>
         </dependency>
-
-
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.osgi.compendium</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>osgi.annotation</artifactId>
             <version>6.0.0</version>
         </dependency>
-
     </dependencies>
 
     <build>
