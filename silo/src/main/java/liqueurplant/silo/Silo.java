@@ -10,9 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-/**
- * Created by bocha on 28/11/2016.
- */
+
 @Component(name = "liqueurplant.silo")
 public class Silo extends BaseInstanceEnabler implements SiloIf{
 
