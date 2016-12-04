@@ -10,13 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>valve</artifactId>
-    <packaging>bundle</packaging>
-    <dependencies>
 
-        <dependency>
-            <groupId>liqueurplant-osgi</groupId>
-            <artifactId>valve-api</artifactId>
-        </dependency>
+    <packaging>bundle</packaging>
+
+    <dependencies>
 
         <dependency>
             <groupId>org.osgi</groupId>
@@ -27,10 +24,14 @@
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.compendium</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>osgi.annotation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>liqueurplant-osgi</groupId>
+            <artifactId>valve-api</artifactId>
         </dependency>
 
     </dependencies>
@@ -43,8 +44,9 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>liqueurplant.valve,liqueurplant.valve.api</Export-Package>
+                        <Export-Package>liqueurplant.valve</Export-Package>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Activator>liqueurplant.valve.ValveActivator</Bundle-Activator>
                         <Import-Package>*</Import-Package>
                     </instructions>
                 </configuration>

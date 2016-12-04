@@ -12,6 +12,7 @@
     <artifactId>valve-api</artifactId>
 
     <packaging>bundle</packaging>
+
     <dependencies>
         <dependency>
             <groupId>org.osgi</groupId>
@@ -27,7 +28,6 @@
             <groupId>org.osgi</groupId>
             <artifactId>osgi.annotation</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -39,6 +39,8 @@
                 <configuration>
                     <instructions>
                         <Export-Package>liqueurplant.valve.api</Export-Package>
+                        <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+                        <Import-Package>*</Import-Package>
                     </instructions>
                 </configuration>
 

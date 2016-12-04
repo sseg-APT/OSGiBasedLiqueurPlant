@@ -1,5 +1,6 @@
 package liqueurplant.silo;
 
+import liqueurplant.valve.Valve;
 import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
 import org.eclipse.leshan.client.resource.ObjectsInitializer;
 import org.eclipse.leshan.core.model.LwM2mModel;
@@ -22,6 +23,8 @@ public class SiloDevice extends AbstractDevice {
     @Override
     public void init() {
         super.init();
+        //silo.setInValve(new Valve("IN"));
+        //silo.setOutValve(new Valve("OUT"));
         //new Thread(silo).start();
     }
     @Override
