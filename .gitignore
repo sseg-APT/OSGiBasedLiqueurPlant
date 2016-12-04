@@ -40,3 +40,10 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+liqueurplant.osgi.iml
+silo-api/src/main/resources/
+silo-api/src/test/
+silo-api/target/generated-sources/
+silo/src/test/
+silo/target/generated-sources/
+src/

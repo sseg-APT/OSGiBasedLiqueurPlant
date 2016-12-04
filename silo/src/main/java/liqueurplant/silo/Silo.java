@@ -12,10 +12,11 @@ import java.util.concurrent.Executors;
 /**
  * Created by bocha on 28/11/2016.
  */
-public class Silo extends BaseInstanceEnabler implements SiloIf {
+public class Silo extends BaseInstanceEnabler implements SiloIf{
 
     public static int modelId = 16663;
     private ExecutorService pool = Executors.newFixedThreadPool(2);
+
 
     @Override
     public ExecuteResponse execute(int resourceid, String params) {
@@ -30,6 +31,7 @@ public class Silo extends BaseInstanceEnabler implements SiloIf {
                 return super.execute(resourceid, params);
         }
     }
+
 
     @Override
     public void fill() {

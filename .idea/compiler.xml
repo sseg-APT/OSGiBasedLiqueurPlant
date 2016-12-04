@@ -7,6 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="silo" />
+        <module name="silo.api" />
+      </profile>
+      <profile name="Annotation profile for silo-osgi" enabled="true">
+        <sourceOutputDir name="../silo.api/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../silo.api/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
         <module name="silo-api" />
       </profile>
     </annotationProcessing>
@@ -14,6 +20,7 @@
       <module name="silo" target="1.8" />
       <module name="silo-api" target="1.8" />
       <module name="silo-osgi" target="1.5" />
+      <module name="silo.api" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -90,6 +90,16 @@
             <artifactId>silo-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>silo-osgi</groupId>
+            <artifactId>silo-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>silo-osgi</groupId>
+            <artifactId>silo-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 
