@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>silo-osgi</artifactId>
+        <groupId>silo-osgi</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>silo</artifactId>
+    <packaging>bundle</packaging>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
+            <version>1.4.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.leshan</groupId>
+            <artifactId>leshan-client-cf</artifactId>
+            <version>0.1.11-M14</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.leshan</groupId>
+            <artifactId>leshan-client-core</artifactId>
+            <version>0.1.11-M14</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Export-Package>liqueurplant.silo</Export-Package>
+                        <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Activator>liqueurplant.silo.SiloActivator</Bundle-Activator>
+                        <_exportcontents>!*.impl.*, !*.internal.*, *</_exportcontents>
+                        <Import-Package>!org.eclipse.leshan.client.californium,!io.netty.*, !org.eclipse.leshan.*,org.eclipse.leshan.client.resource, !org.slf4j, !org.slf4j.impl, !org.apache.logging.log4j, org.osgi.framework.*</Import-Package>
+                        <Embed-Dependency>groupId=org.eclipse.leshan; groupId=org.eclipse.californium</Embed-Dependency>
+
+                        <Embed-Transitive>true</Embed-Transitive>
+                        <Bundle-ClassPath>
+                            .,
+                            leshan-core-0.1.11-M14.jar,
+                            leshan-client-core-0.1.11-M14.jar,
+                            leshan-client-cf-0.1.11-M14.jar,
+                            slf4j-api-1.7.21.jar,
+                            log4j-slf4j-impl-2.6.2.jar,
+                            log4j-core-2.6.2.jar,
+                            slf4j-simple-1.7.12.jar,
+                            log4j-api-2.6.2.jar,
+                            {maven-dependencies}
+                        </Bundle-ClassPath>
+                        <Include-Resource>
+                            lib/leshan-core-0.1.11-M14.jar,
+                            lib/leshan-client-core-0.1.11-M14.jar,
+                            lib/leshan-client-cf-0.1.11-M14.jar,
+                            lib/slf4j-api-1.7.21.jar,
+                            lib/log4j-slf4j-impl-2.6.2.jar,
+                            lib/log4j-core-2.6.2.jar,
+                            lib/log4j-1.2.17.jar,
+                            lib/slf4j-simple-1.7.12.jar,
+                            lib/log4j-api-2.6.2.jar,
+
+                            {maven-resources},
+                            {maven-dependencies}
+                        </Include-Resource>
+
+                    </instructions>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
