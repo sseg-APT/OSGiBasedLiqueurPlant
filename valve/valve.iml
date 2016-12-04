@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
-    <facet type="Osmorc" name="OSGi">
-      <configuration manifestGenerationMode="OsmorcControlled" manifestLocation="" jarfileLocation="silo-api-1.0-SNAPSHOT.jar" outputPathType="CompilerOutputPath" bndFileLocation="" bundlorFileLocation="" bundleActivator="" bundleSymbolicName="silo-osgi.silo-api" bundleVersion="1.0.0.SNAPSHOT" ignoreFilePattern="" useProjectDefaultManifestFileLocation="true" alwaysRebuildBundleJAR="true" doNotSynchronizeWithMaven="false">
-        <additionalProperties>
-          <property key="Export-Package" value="liqueurplant.silo.api" />
-          <property key="Bundle-Name" value="silo-api" />
-        </additionalProperties>
-        <additionalJARContents />
-      </configuration>
-    </facet>
     <facet type="osgiBundleFacetType" name="OSGi Bundle">
       <configuration>
         <properties />
+      </configuration>
+    </facet>
+    <facet type="Osmorc" name="OSGi">
+      <configuration manifestGenerationMode="OsmorcControlled" manifestLocation="" jarfileLocation="valve-1.0-SNAPSHOT.jar" outputPathType="CompilerOutputPath" bndFileLocation="" bundlorFileLocation="" bundleActivator="liqueurplant.valve.ValveActivator" bundleSymbolicName="valve" bundleVersion="1.0.0.SNAPSHOT" ignoreFilePattern="" useProjectDefaultManifestFileLocation="true" alwaysRebuildBundleJAR="true" doNotSynchronizeWithMaven="false">
+        <additionalProperties>
+          <property key="Export-Package" value="liqueurplant.valve" />
+          <property key="Import-Package" value="*" />
+          <property key="Bundle-Name" value="valve" />
+        </additionalProperties>
+        <additionalJARContents />
       </configuration>
     </facet>
   </component>
@@ -27,6 +28,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="valve-api" />
     <orderEntry type="library" name="Maven: org.osgi:org.osgi.core:6.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.felix:org.osgi.compendium:1.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.felix:org.osgi.core:1.4.0" level="project" />

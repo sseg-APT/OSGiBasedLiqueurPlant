@@ -52,5 +52,10 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-all:unknown" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:unknown" level="project" />
     <orderEntry type="module" module-name="silo-api" />
+    <orderEntry type="library" name="Maven: org.apache.felix:org.osgi.compendium:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.felix:org.osgi.core:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.felix:javax.servlet:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.felix:org.osgi.foundation:1.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.osgi:osgi.annotation:6.0.0" level="project" />
   </component>
 </module>

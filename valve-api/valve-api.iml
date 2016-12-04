@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
-    <facet type="Osmorc" name="OSGi">
-      <configuration manifestGenerationMode="OsmorcControlled" manifestLocation="" jarfileLocation="silo-api-1.0-SNAPSHOT.jar" outputPathType="CompilerOutputPath" bndFileLocation="" bundlorFileLocation="" bundleActivator="" bundleSymbolicName="silo-osgi.silo-api" bundleVersion="1.0.0.SNAPSHOT" ignoreFilePattern="" useProjectDefaultManifestFileLocation="true" alwaysRebuildBundleJAR="true" doNotSynchronizeWithMaven="false">
-        <additionalProperties>
-          <property key="Export-Package" value="liqueurplant.silo.api" />
-          <property key="Bundle-Name" value="silo-api" />
-        </additionalProperties>
-        <additionalJARContents />
-      </configuration>
-    </facet>
     <facet type="osgiBundleFacetType" name="OSGi Bundle">
       <configuration>
         <properties />
+      </configuration>
+    </facet>
+    <facet type="Osmorc" name="OSGi">
+      <configuration manifestGenerationMode="OsmorcControlled" manifestLocation="" jarfileLocation="valve-api-1.0-SNAPSHOT.jar" outputPathType="CompilerOutputPath" bndFileLocation="" bundlorFileLocation="" bundleActivator="" bundleSymbolicName="silo-osgi.valve-api" bundleVersion="1.0.0.SNAPSHOT" ignoreFilePattern="" useProjectDefaultManifestFileLocation="true" alwaysRebuildBundleJAR="true" doNotSynchronizeWithMaven="false">
+        <additionalProperties>
+          <property key="Export-Package" value="liqueurplant.valve.api" />
+          <property key="Bundle-Name" value="valve-api" />
+        </additionalProperties>
+        <additionalJARContents />
       </configuration>
     </facet>
   </component>

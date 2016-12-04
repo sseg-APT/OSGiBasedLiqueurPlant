@@ -10,6 +10,10 @@
     <modules>
         <module>silo</module>
         <module>silo-api</module>
+        <module>valve.api</module>
+        <module>valve.api</module>
+        <module>valve-api</module>
+        <module>valve</module>
     </modules>
     <packaging>pom</packaging>
 
