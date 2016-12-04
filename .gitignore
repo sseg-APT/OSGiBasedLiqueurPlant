@@ -1,26 +1,6 @@
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
-# User-specific stuff:
-.idea/workspace.xml
-.idea/tasks.xml
-
-# Sensitive or high-churn files:
-.idea/dataSources/
-.idea/dataSources.ids
-.idea/dataSources.xml
-.idea/dataSources.local.xml
-.idea/sqlDataSources.xml
-.idea/dynamic.xml
-.idea/uiDesigner.xml
-
-# Gradle:
-.idea/gradle.xml
-.idea/libraries
-
-# Mongo Explorer plugin:
-.idea/mongoSettings.xml
-
 ## File-based project format:
 *.iws
 
@@ -40,10 +20,27 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-liqueurplant.osgi.iml
-silo-api/src/main/resources/
-silo-api/src/test/
-silo-api/target/generated-sources/
-silo/src/test/
-silo/target/generated-sources/
-src/
+
+# Leshan config files #
+leshan-core/ddffiles
+**/Californium.properties
+**/data/*.data
+**/data/*.json
+Binary files #
+*.class
+
+#Maven build files #
+target
+#Eclipse files #
+bin/
+.classpath
+.project
+.settings
+# IntelliJ Config Files #
+.idea/
+*.iml
+
+# Package Files #
+*.jar
+*.war
+*.ear
