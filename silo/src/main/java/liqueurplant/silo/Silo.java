@@ -4,6 +4,7 @@ package liqueurplant.silo;
 import liqueurplant.silo.api.SiloIf;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;
+import org.osgi.service.component.annotations.Component;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,6 +13,7 @@ import java.util.concurrent.Executors;
 /**
  * Created by bocha on 28/11/2016.
  */
+@Component(name = "liqueurplant.silo")
 public class Silo extends BaseInstanceEnabler implements SiloIf{
 
     public static int modelId = 16663;

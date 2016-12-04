@@ -10,12 +10,32 @@
     <modules>
         <module>silo</module>
         <module>silo-api</module>
-        <module>valve.api</module>
-        <module>valve.api</module>
         <module>valve-api</module>
         <module>valve</module>
     </modules>
     <packaging>pom</packaging>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.service.metatype -->
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.metatype</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.scr -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr</artifactId>
+            <version>2.0.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.configadmin -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.configadmin</artifactId>
+            <version>1.8.12</version>
+        </dependency>
+
+    </dependencies>
 
 
 </project>
