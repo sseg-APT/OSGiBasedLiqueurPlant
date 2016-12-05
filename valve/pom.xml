@@ -46,7 +46,6 @@
                     <instructions>
                         <Export-Package>liqueurplant.valve</Export-Package>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-                        <Bundle-Activator>liqueurplant.valve.ValveActivator</Bundle-Activator>
                         <Import-Package>*</Import-Package>
                     </instructions>
                 </configuration>

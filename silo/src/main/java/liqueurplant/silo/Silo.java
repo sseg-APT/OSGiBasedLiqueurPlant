@@ -3,6 +3,7 @@ package liqueurplant.silo;
 
 import liqueurplant.silo.api.SiloIf;
 import liqueurplant.valve.Valve;
+import liqueurplant.valve.api.ValveIf;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.osgi.service.component.annotations.Component;
@@ -16,8 +17,8 @@ public class Silo extends BaseInstanceEnabler implements SiloIf {
 
     public static int modelId = 16663;
     private ExecutorService pool = Executors.newFixedThreadPool(2);
-    private Valve inValve = new Valve("IN");
-    private Valve outValve = new Valve("OUT");
+    private ValveIf inValve;
+    private ValveIf outValve;
 
     @Override
     public ExecuteResponse execute(int resourceid, String params) {
@@ -50,17 +51,17 @@ public class Silo extends BaseInstanceEnabler implements SiloIf {
     @Override
     public void empty() {
         try {
-            //outValve.open();
+            outValve.open();
             System.out.println("Silo emptying.");
             Thread.sleep(5000);
             System.out.println("Silo empty.");
-            //outValve.close();
+            outValve.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    /*
+    ///*
     protected void setInValve(Valve inValve) {
         this.inValve = inValve;
     }

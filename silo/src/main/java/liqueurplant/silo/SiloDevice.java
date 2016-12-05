@@ -23,8 +23,8 @@ public class SiloDevice extends AbstractDevice {
     @Override
     public void init() {
         super.init();
-        //silo.setInValve(new Valve("IN"));
-        //silo.setOutValve(new Valve("OUT"));
+        silo.setInValve(new Valve("IN"));
+        silo.setOutValve(new Valve("OUT"));
         //new Thread(silo).start();
     }
     @Override
