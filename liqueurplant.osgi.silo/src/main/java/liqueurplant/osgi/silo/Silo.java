@@ -91,7 +91,6 @@ public class Silo extends BaseInstanceEnabler implements SiloIf {
     }
 
 
-
     ///*
     private void setState(String newState) {
         this.state = newState;
