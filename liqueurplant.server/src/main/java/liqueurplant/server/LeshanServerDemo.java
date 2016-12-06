@@ -27,6 +27,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectLoader;
+import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.node.codec.DefaultLwM2mNodeDecoder;
 import org.eclipse.leshan.core.node.codec.DefaultLwM2mNodeEncoder;
 import org.eclipse.leshan.core.node.codec.LwM2mNodeDecoder;
@@ -49,12 +50,15 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.util.Pool;
 
 import java.io.File;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.BindException;
 import java.net.URI;
 import java.net.URL;
 import java.security.*;
 import java.security.spec.*;
+import java.util.List;
+
 
 public class LeshanServerDemo {
 
@@ -169,8 +173,11 @@ public class LeshanServerDemo {
         LwM2mModelProvider modelProvider = new LwM2mModelProvider() {
             @Override
             public LwM2mModel getObjectModel(Client client) {
-                URL a = this.getClass().getResource("/objects");
-                return new LwM2mModel(ObjectLoader.load(new File(a.getFile())));
+                InputStream defaultSpec = this.getClass().getResourceAsStream("/objects/oma-objects-spec.json");
+                InputStream liqueurSpec = this.getClass().getResourceAsStream("/objects/liqueur-plant.json");
+                List<ObjectModel> models = ObjectLoader.loadJsonStream(defaultSpec);
+                models.addAll(ObjectLoader.loadJsonStream(liqueurSpec));
+                return new LwM2mModel(models);
             }
         };
 

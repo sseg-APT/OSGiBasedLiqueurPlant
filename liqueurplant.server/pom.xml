@@ -83,12 +83,6 @@
 
         </dependency>
 
-        <!-- test dependencies -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -99,7 +93,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>liqueur.server1.LeshanServerDemo</mainClass>
+                            <mainClass>liqueurplant.server.LeshanServerDemo</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
