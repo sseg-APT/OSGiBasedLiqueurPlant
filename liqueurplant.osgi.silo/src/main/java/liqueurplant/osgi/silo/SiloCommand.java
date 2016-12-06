@@ -1,8 +1,9 @@
 package liqueurplant.osgi.silo;
 
 import liqueurplant.osgi.valve.Valve;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-
+import org.osgi.framework.BundleException;
 
 
 /**
@@ -34,6 +35,18 @@ public class SiloCommand {
         try {
             testSilo.empty();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateValve(){
+        Bundle bundle = bundleContext.getBundle(5);
+        try {
+            SiloActivator.LOG.debug("Trying bundle " + bundle.getSymbolicName() + " update...");
+            bundle.update();
+            SiloActivator.LOG.debug("Bundle updated.");
+        } catch (BundleException e) {
+            SiloActivator.LOG.debug("Cannot update bundle.");
             e.printStackTrace();
         }
     }
