@@ -31,7 +31,9 @@ public class SiloDevice extends AbstractDevice {
     protected List<LwM2mObjectEnabler> getEnablers(ObjectsInitializer initializer) {
         List<LwM2mObjectEnabler> superEnablers = super.getEnablers(initializer);
         LwM2mObjectEnabler storageEnabler = initializer.create(Silo.modelId);
+        LwM2mObjectEnabler firmwareEnabler = initializer.create(FirmwareObject.modelId);
         superEnablers.add(storageEnabler);
+        superEnablers.add(firmwareEnabler);
         return superEnablers;
     }
 
@@ -39,6 +41,7 @@ public class SiloDevice extends AbstractDevice {
     protected ObjectsInitializer getObjectInitializer() {
         ObjectsInitializer initializer = super.getObjectInitializer();
         initializer.setInstancesForObject(Silo.modelId, silo);
+        initializer.setClassForObject(FirmwareObject.modelId, FirmwareObject.class);
         return initializer;
     }
 
