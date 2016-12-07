@@ -7,13 +7,13 @@ import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -21,14 +21,20 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class FirmwareObject extends BaseInstanceEnabler{
+public class FirmwareObject extends BaseInstanceEnabler {
 
     public static Logger LOG = LoggerFactory.getLogger(FirmwareObject.class);
 
     public static int modelId = 5;
 
+
     private ExecutorService pool = Executors.newFixedThreadPool(1);
-    private String url;
+
+    private File newFirmware;
+
+    private int state = 1;
+
+    private int updateResult = 0;
 
     @Override
     public ReadResponse read(int resourceid) {
@@ -133,13 +139,7 @@ public class FirmwareObject extends BaseInstanceEnabler{
 
         try {
             /*
-            File temp = File.createTempFile("update", ".jar");
-            LOG.debug("Downloading update to {}", temp.getAbsolutePath());
-            URL website = new URL(url);
-            ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-            FileOutputStream fos = new FileOutputStream(temp);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            LOG.info("Update downloaded to {}", temp.getAbsolutePath());
+
             */
             File bnd = new File("C:/Users/bocha/Desktop/valve-new.jar");
             LOG.info(bnd.getAbsolutePath().toString());
