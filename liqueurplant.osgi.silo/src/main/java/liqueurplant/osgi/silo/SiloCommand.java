@@ -1,9 +1,8 @@
 package liqueurplant.osgi.silo;
 
-import liqueurplant.osgi.valve.Valve;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
+
+import liqueurplant.osgi.valve.Valve;
 
 
 /**

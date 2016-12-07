@@ -14,7 +14,7 @@ import java.util.Hashtable;
  */
 public class SiloActivator implements BundleActivator {
 
-    private SiloDevice silo;
+
     public static Logger LOG = LoggerFactory.getLogger(SiloActivator.class);
     private static BundleContext bundleContext;
 
@@ -26,10 +26,8 @@ public class SiloActivator implements BundleActivator {
     public void start(BundleContext context) throws Exception {
 
         this.bundleContext = context;
-        silo = new SiloDevice("silo", null);
-        silo.init();
 
-        ///* Register command.
+        //* Register command.
         Hashtable props = new Hashtable();
         props.put("osgi.command.scope", "silo");
         props.put("osgi.command.function", new String[]{"fill", "empty", "updateValve"});
@@ -43,6 +41,5 @@ public class SiloActivator implements BundleActivator {
 
     @Override
     public void stop(BundleContext context) throws Exception {
-        silo = null;
     }
 }

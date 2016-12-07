@@ -1,5 +1,4 @@
-package liqueurplant.osgi.silo;
-
+package liqueurplant.osgi.client;
 
 import org.eclipse.leshan.client.californium.LeshanClient;
 import org.eclipse.leshan.client.californium.LeshanClientBuilder;

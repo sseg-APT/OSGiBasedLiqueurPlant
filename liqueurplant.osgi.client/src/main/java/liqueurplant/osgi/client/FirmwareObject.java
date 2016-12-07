@@ -1,4 +1,4 @@
-package liqueurplant.osgi.silo;
+package liqueurplant.osgi.client;
 
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.node.LwM2mResource;
@@ -7,10 +7,7 @@ import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.startlevel.BundleStartLevel;
-import org.osgi.framework.wiring.BundleWiring;
-import org.osgi.framework.wiring.FrameworkWiring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +18,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -154,7 +150,7 @@ public class FirmwareObject extends BaseInstanceEnabler{
             File bnd = new File("C:/Users/bojit/Desktop/valve-new.jar");
             LOG.info(bnd.getAbsolutePath().toString());
             //LOG.info((String) bnd.getAbsolutePath().toString().replace("\\","/"));
-            BundleContext bundleContext = SiloActivator.getBundleContext();
+            BundleContext bundleContext = ClientActivator.getBundleContext();
             Bundle newBundle = bundleContext.installBundle("file:" + bnd.getAbsolutePath().toString().replace("\\", "/"));
             BundleStartLevel startLevel = newBundle.adapt(BundleStartLevel.class);
             startLevel.setStartLevel(1);

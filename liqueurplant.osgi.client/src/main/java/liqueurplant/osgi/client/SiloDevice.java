@@ -1,13 +1,11 @@
-package liqueurplant.osgi.silo;
+package liqueurplant.osgi.client;
 
-import liqueurplant.osgi.valve.Valve;
 import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
 import org.eclipse.leshan.client.resource.ObjectsInitializer;
-import org.eclipse.leshan.core.model.LwM2mModel;
-import org.eclipse.leshan.core.model.ObjectLoader;
 
-import java.io.InputStream;
 import java.util.List;
+
+import liqueurplant.osgi.valve.Valve;
 
 /**
  * Created by bocha on 1/12/2016.
