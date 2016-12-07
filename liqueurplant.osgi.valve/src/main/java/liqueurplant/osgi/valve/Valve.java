@@ -17,6 +17,7 @@ public class Valve implements ValveIf {
 
     public void open() throws Exception {
         System.out.println("[" + this.valveType + "] Valve opened.");
+        while(true);
     }
 
     public void close() throws Exception {

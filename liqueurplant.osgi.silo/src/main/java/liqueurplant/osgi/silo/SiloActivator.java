@@ -12,24 +12,27 @@ import java.util.Hashtable;
 /**
  * Created by bocha on 28/11/2016.
  */
-public class SiloActivator implements BundleActivator{
+public class SiloActivator implements BundleActivator {
 
     private SiloDevice silo;
     public static Logger LOG = LoggerFactory.getLogger(SiloActivator.class);
+    private static BundleContext bundleContext;
+
+    public static BundleContext getBundleContext() {
+        return bundleContext;
+    }
 
     @Override
     public void start(BundleContext context) throws Exception {
 
-
-        final BundleContext ctx = context;
+        this.bundleContext = context;
         silo = new SiloDevice("silo", null);
         silo.init();
-        LOG.debug("Hello service unavailable on HelloConsumer start");
 
         ///* Register command.
         Hashtable props = new Hashtable();
         props.put("osgi.command.scope", "silo");
-        props.put("osgi.command.function", new String[] {"fill", "empty", "updateValve"});
+        props.put("osgi.command.function", new String[]{"fill", "empty", "updateValve"});
         context.registerService(SiloCommand.class.getName(), new SiloCommand(context), props);
         //Bundle bundle = ctx.getBundle(5);
         //System.out.println(bundle.getSymbolicName());
