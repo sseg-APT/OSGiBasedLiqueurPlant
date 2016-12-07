@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 @Component(name = "liqueurplant.silo")
 public class Silo extends BaseInstanceEnabler implements SiloIf {
 
-    public static int modelId = 16663;
+    public static int modelId = 20000;
     private ExecutorService pool;
     private String state = "";
     private Boolean emptyingCompleted = new Boolean(true);

@@ -9,6 +9,7 @@ import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
 import org.eclipse.leshan.client.resource.ObjectsInitializer;
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectLoader;
+import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.request.BindingMode;
 
 import java.io.InputStream;
@@ -119,8 +120,11 @@ public abstract class AbstractDevice {
     }
 
     protected LwM2mModel getLwM2mModel() {
-        InputStream a = this.getClass().getResourceAsStream("/objects/oma-objects-spec.json");
-        return new LwM2mModel(ObjectLoader.loadJsonStream(a));
+        InputStream defaultSpec = this.getClass().getResourceAsStream("/objects/oma-objects-spec.json");
+        InputStream liqueurSpec = this.getClass().getResourceAsStream("/objects/liqueur-plant.json");
+        List<ObjectModel> models = ObjectLoader.loadJsonStream(defaultSpec);
+        models.addAll(ObjectLoader.loadJsonStream(liqueurSpec));
+        return new LwM2mModel(models);
     }
 
 

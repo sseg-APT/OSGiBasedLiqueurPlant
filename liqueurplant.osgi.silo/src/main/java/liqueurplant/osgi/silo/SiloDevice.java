@@ -45,9 +45,4 @@ public class SiloDevice extends AbstractDevice {
         return initializer;
     }
 
-    @Override
-    protected LwM2mModel getLwM2mModel() {
-        InputStream a = this.getClass().getResourceAsStream("/objects/oma-objects-spec.json");
-        return new LwM2mModel(ObjectLoader.loadJsonStream(a));
-    }
 }
