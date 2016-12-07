@@ -5,9 +5,15 @@ import org.eclipse.leshan.core.node.LwM2mResource;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
+import org.osgi.application.Framework;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.namespace.HostNamespace;
+import org.osgi.framework.wiring.BundleWire;
+import org.osgi.framework.wiring.BundleWiring;
+import org.osgi.framework.wiring.FrameworkWiring;
+import org.osgi.service.packageadmin.PackageAdmin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -80,7 +87,8 @@ public class FirmwareObject extends BaseInstanceEnabler{
             //LOG.info((String) bnd.getAbsolutePath().toString().replace("\\","/"));
             BundleContext bundleContext = SiloActivator.getBundleContext();
             Bundle newBundle = bundleContext.installBundle("file:" + bnd.getAbsolutePath().toString().replace("\\","/"));
-            newBundle.start(1);
+            newBundle.start();
+            
             //bundleContext.getBundle().update(); //updateValves only not whole silo!!!
         }
         catch (Exception e) {
