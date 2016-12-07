@@ -8,15 +8,20 @@ import org.eclipse.leshan.core.response.WriteResponse;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.startlevel.BundleStartLevel;
+import org.osgi.framework.wiring.BundleWiring;
+import org.osgi.framework.wiring.FrameworkWiring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,6 +34,11 @@ public class FirmwareObject extends BaseInstanceEnabler{
 
     private ExecutorService pool = Executors.newFixedThreadPool(1);
     private String url;
+    private File newFirmware;
+
+    private int state = 1;
+
+    private int updateResult = 0;
 
     @Override
     public ReadResponse read(int resourceid) {
@@ -141,13 +151,16 @@ public class FirmwareObject extends BaseInstanceEnabler{
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             LOG.info("Update downloaded to {}", temp.getAbsolutePath());
             */
-            File bnd = new File("C:/Users/bocha/Desktop/valve-new.jar");
+            File bnd = new File("C:/Users/bojit/Desktop/valve-new.jar");
             LOG.info(bnd.getAbsolutePath().toString());
             //LOG.info((String) bnd.getAbsolutePath().toString().replace("\\","/"));
             BundleContext bundleContext = SiloActivator.getBundleContext();
             Bundle newBundle = bundleContext.installBundle("file:" + bnd.getAbsolutePath().toString().replace("\\", "/"));
+            BundleStartLevel startLevel = newBundle.adapt(BundleStartLevel.class);
+            startLevel.setStartLevel(1);
             newBundle.start(1);
-            //bundleContext.getBundle().update(); //updateValves only not whole silo!!!
+
+            //Bundle systemBundle = bundleContext.getBundle(0);
         } catch (Exception e) {
 
         }

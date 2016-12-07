@@ -40,14 +40,7 @@ public class SiloCommand {
     }
 
     public void updateValve(){
-        Bundle bundle = bundleContext.getBundle(5);
-        try {
-            SiloActivator.LOG.debug("Trying bundle " + bundle.getSymbolicName() + " update...");
-            bundle.update();
-            SiloActivator.LOG.debug("Bundle updated.");
-        } catch (BundleException e) {
-            SiloActivator.LOG.debug("Cannot update bundle.");
-            e.printStackTrace();
-        }
+        testSilo.updateInValve(new Valve("IN_TEST"));
+        testSilo.updateOutValve(new Valve("OUT-TEST"));
     }
 }
