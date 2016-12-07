@@ -138,7 +138,7 @@ public class LeshanServerDemo {
         if (cl.hasOption("wp")) {
             webPortOption = cl.getOptionValue("wp");
         }
-        int webPort = 8080;
+        int webPort = 8081;
         if (webPortOption != null) {
             webPort = Integer.parseInt(webPortOption);
         }

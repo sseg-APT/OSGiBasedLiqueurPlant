@@ -1,7 +1,7 @@
 [
   {
     "name": "Silo",
-    "id": 16663,
+    "id": 20000,
     "instancetype": "multiple",
     "mandatory": true,
     "description": "",
@@ -142,7 +142,7 @@
   },
   {
     "name": "Valve",
-    "id": 16664,
+    "id": 20001,
     "instancetype": "multiple",
     "mandatory": false,
     "description": "",
@@ -162,7 +162,7 @@
   },
   {
     "name": "Level Sensor",
-    "id": 16665,
+    "id": 20002,
     "instancetype": "multiple",
     "mandatory": false,
     "description": "",
@@ -193,7 +193,7 @@
   },
   {
     "name": "Common Resource",
-    "id": 16666,
+    "id": 20003,
     "instancetype": "multiple",
     "mandatory": true,
     "description": "",
@@ -235,7 +235,7 @@
   },
   {
     "name": "Mixer",
-    "id": 16667,
+    "id": 20004,
     "instancetype": "multiple",
     "mandatory": false,
     "description": "",
@@ -266,7 +266,7 @@
   },
   {
     "name": "Heater",
-    "id": 16668,
+    "id": 20005,
     "instancetype": "multiple",
     "mandatory": false,
     "description": "",
