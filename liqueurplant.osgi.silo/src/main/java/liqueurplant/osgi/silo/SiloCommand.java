@@ -16,8 +16,8 @@ public class SiloCommand {
     public SiloCommand(BundleContext bundleContext){
         this.bundleContext =bundleContext;
         testSilo = new Silo();
-        testSilo.setInValve(new Valve("IN-TEST"));
-        testSilo.setOutValve(new Valve("OUT-TEST"));
+        testSilo.setInValve(new Valve("IN"));
+        testSilo.setOutValve(new Valve("OUT"));
 
     }
 
@@ -39,7 +39,7 @@ public class SiloCommand {
     }
 
     public void updateValve(){
-        testSilo.updateInValve(new Valve("IN_TEST"));
-        testSilo.updateOutValve(new Valve("OUT-TEST"));
+        testSilo.updateInValve(new Valve("IN"));
+        testSilo.updateOutValve(new Valve("OUT"));
     }
 }
