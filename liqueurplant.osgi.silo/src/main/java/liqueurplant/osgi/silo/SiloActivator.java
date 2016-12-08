@@ -30,7 +30,7 @@ public class SiloActivator implements BundleActivator {
         //* Register command.
         Hashtable props = new Hashtable();
         props.put("osgi.command.scope", "silo");
-        props.put("osgi.command.function", new String[]{"fill", "empty", "updateValve"});
+        props.put("osgi.command.function", new String[]{"fill", "empty", "updateValve", "installValve", "refresh"});
         context.registerService(SiloCommand.class.getName(), new SiloCommand(context), props);
         //Bundle bundle = ctx.getBundle(5);
         //System.out.println(bundle.getSymbolicName());

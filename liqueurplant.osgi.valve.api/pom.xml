@@ -11,6 +11,7 @@
 
     <artifactId>liqueurplant.osgi.valve.api</artifactId>
 
+
     <packaging>bundle</packaging>
 
     <dependencies>
