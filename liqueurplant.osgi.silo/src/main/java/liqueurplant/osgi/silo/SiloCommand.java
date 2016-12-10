@@ -60,7 +60,7 @@ public class SiloCommand {
 
 
     public void installValve() {
-        File bnd = new File("/home/pi/Downloads/valve-new.jar");
+        File bnd = new File("C:\\Users\\bojit\\Desktop\\valve-new.jar");
         //LOG.info((String) bnd.getAbsolutePath().toString().replace("\\","/"));
         Bundle newBundle = null;
         try {
@@ -97,7 +97,7 @@ public class SiloCommand {
     public void refresh() {
         System.out.println("Refreshing Bundles ... ");
 
-        FrameworkWiring wiring = this.bundleContext.getBundle(0).adapt(FrameworkWiring.class);
+        FrameworkWiring wiring = this.bundleContext.getBundle().adapt(FrameworkWiring.class);
         if (wiring != null) {
             synchronized (refreshLock) {
                 wiring.refreshBundles(null);

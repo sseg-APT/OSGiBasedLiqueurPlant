@@ -79,6 +79,10 @@
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.valve</artifactId>
         </dependency>
+        <dependency>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.silo</artifactId>
+        </dependency>
 
     </dependencies>
 

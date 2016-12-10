@@ -12,7 +12,7 @@ import liqueurplant.osgi.valve.Valve;
  */
 public class SiloDevice extends AbstractDevice {
 
-    Silo silo = new Silo();
+    SiloObject silo = new SiloObject();
 
     public SiloDevice(String endpoint, String[] args) {
         super(endpoint, args);
@@ -21,14 +21,13 @@ public class SiloDevice extends AbstractDevice {
     @Override
     public void init() {
         super.init();
-        silo.setInValve(new Valve("IN"));
-        silo.setOutValve(new Valve("OUT"));
+
         //new Thread(silo).start();
     }
     @Override
     protected List<LwM2mObjectEnabler> getEnablers(ObjectsInitializer initializer) {
         List<LwM2mObjectEnabler> superEnablers = super.getEnablers(initializer);
-        LwM2mObjectEnabler storageEnabler = initializer.create(Silo.modelId);
+        LwM2mObjectEnabler storageEnabler = initializer.create(SiloObject.modelId);
         LwM2mObjectEnabler firmwareEnabler = initializer.create(FirmwareObject.modelId);
         superEnablers.add(storageEnabler);
         superEnablers.add(firmwareEnabler);
@@ -38,7 +37,7 @@ public class SiloDevice extends AbstractDevice {
     @Override
     protected ObjectsInitializer getObjectInitializer() {
         ObjectsInitializer initializer = super.getObjectInitializer();
-        initializer.setInstancesForObject(Silo.modelId, silo);
+        initializer.setInstancesForObject(SiloObject.modelId, silo);
         initializer.setClassForObject(FirmwareObject.modelId, FirmwareObject.class);
         return initializer;
     }

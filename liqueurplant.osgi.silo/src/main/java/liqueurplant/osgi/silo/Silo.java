@@ -14,50 +14,14 @@ import java.util.concurrent.Executors;
 
 
 @Component(name = "liqueurplant.silo")
-public class Silo extends BaseInstanceEnabler implements SiloIf {
+public class Silo implements SiloIf {
 
-    public static int modelId = 20000;
-    private ExecutorService pool;
-    private String state = "";
-    private Boolean emptyingCompleted = new Boolean(true);
-    private Boolean fillingCompleted = new Boolean(false);
-    private Double targetTemperature = new Double(0.0);
+    public String state = "";
+    public Boolean emptyingCompleted = new Boolean(true);
+    public Boolean fillingCompleted = new Boolean(false);
+    public Double targetTemperature = new Double(0.0);
     private ValveIf inValve;
     private ValveIf outValve;
-
-    Silo() {
-        pool = Executors.newFixedThreadPool(2);
-    }
-
-    @Override
-    public ReadResponse read(int resourceid) {
-        switch (resourceid) {
-            case 0:
-                return ReadResponse.success(resourceid, state);
-            case 7:
-                return ReadResponse.success(resourceid, fillingCompleted);
-            case 8:
-                return ReadResponse.success(resourceid, emptyingCompleted);
-            default:
-                return super.read(resourceid);
-        }
-    }
-
-    @Override
-    public ExecuteResponse execute(int resourceid, String params) {
-        switch (resourceid) {
-            case 1:
-                pool.submit(this::fill);
-                return ExecuteResponse.success();
-            case 2:
-                pool.submit(this::empty);
-                return ExecuteResponse.success();
-            case 5:
-                return ExecuteResponse.success();
-            default:
-                return super.execute(resourceid, params);
-        }
-    }
 
 
     @Override
@@ -94,33 +58,27 @@ public class Silo extends BaseInstanceEnabler implements SiloIf {
 
 
     ///*
-    private void setState(String newState) {
+    public void setState(String newState) {
         this.state = newState;
-        fireResourcesChange(0);
     }
 
-    private void setFillingCompleted(Boolean newValue) {
+    public void setFillingCompleted(Boolean newValue) {
         fillingCompleted = newValue;
-        fireResourcesChange(7);
-        if (newValue) setState("FULL");
     }
 
-    private void setEmptyingCompleted(Boolean newValue) {
+    public void setEmptyingCompleted(Boolean newValue) {
         emptyingCompleted = newValue;
-        fireResourcesChange(8);
-        if (newValue) setState("EMPTY");
     }
 
-    private void setTemperature(Double newTemp) {
+    public void setTemperature(Double newTemp) {
         targetTemperature = newTemp;
-        fireResourcesChange(11);
     }
 
-    protected void setInValve(Valve inValve) {
+    public void setInValve(Valve inValve) {
         this.inValve = inValve;
     }
 
-    protected void setOutValve(Valve outValve) {
+    public void setOutValve(Valve outValve) {
         this.outValve = outValve;
     }
 
