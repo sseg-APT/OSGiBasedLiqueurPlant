@@ -28,13 +28,12 @@ public class Silo implements SiloIf {
     public void fill() {
         try {
             SiloActivator.LOG.debug("Executing fill...");
-            setEmptyingCompleted(false);
             inValve.open();
             setState("FILLING");
             Thread.sleep(5000);
             inValve.close();
             SiloActivator.LOG.debug("Fill completed.");
-            setFillingCompleted(true);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,13 +43,11 @@ public class Silo implements SiloIf {
     public void empty() {
         try {
             SiloActivator.LOG.debug("Executing empty...");
-            setFillingCompleted(false);
             outValve.open();
             setState("EMPTYING");
             Thread.sleep(5000);
             outValve.close();
             SiloActivator.LOG.debug("Empty completed.");
-            setEmptyingCompleted(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,14 +57,6 @@ public class Silo implements SiloIf {
     ///*
     public void setState(String newState) {
         this.state = newState;
-    }
-
-    public void setFillingCompleted(Boolean newValue) {
-        fillingCompleted = newValue;
-    }
-
-    public void setEmptyingCompleted(Boolean newValue) {
-        emptyingCompleted = newValue;
     }
 
     public void setTemperature(Double newTemp) {

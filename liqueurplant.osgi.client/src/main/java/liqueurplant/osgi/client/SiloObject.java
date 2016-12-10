@@ -57,9 +57,17 @@ public class SiloObject extends BaseInstanceEnabler {
     }
 
 
-    public void fill() { siloComponent.fill(); }
+    public void fill() {
+        setEmptyingCompleted(false);
+        siloComponent.fill();
+        setFillingCompleted(true);
+    }
 
-    public void empty() { siloComponent.empty(); }
+    public void empty() {
+        setFillingCompleted(false);
+        siloComponent.empty();
+        setEmptyingCompleted(true);
+    }
 
     private void setState(String newState) {
         siloComponent.state = newState;
