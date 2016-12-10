@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class FirmwareObject extends BaseInstanceEnabler{
+public class FirmwareObject extends BaseInstanceEnabler {
 
     public static Logger LOG = LoggerFactory.getLogger(FirmwareObject.class);
 
@@ -52,7 +52,7 @@ public class FirmwareObject extends BaseInstanceEnabler{
     public WriteResponse write(int resourceid, LwM2mResource value) {
         switch (resourceid) {
             case 1:
-                pool.execute( () -> downloadFirmware((String) value.getValue()));
+                pool.execute(() -> downloadFirmware((String) value.getValue()));
                 return WriteResponse.success();
             default:
                 return super.write(resourceid, value);
@@ -124,7 +124,7 @@ public class FirmwareObject extends BaseInstanceEnabler{
         try {
             FileOutputStream fos = new FileOutputStream(newFirmware);
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-        }catch (IOException e) {
+        } catch (IOException e) {
             LOG.error("Cannot save firmware file {}", e.toString());
             //Update result = Connection lost
             setUpdateResult(2);
@@ -138,7 +138,7 @@ public class FirmwareObject extends BaseInstanceEnabler{
     private void update() {
 
         try {
-            /*
+            ///*
             File temp = File.createTempFile("update", ".jar");
             LOG.debug("Downloading update to {}", temp.getAbsolutePath());
             URL website = new URL(url);
@@ -146,27 +146,15 @@ public class FirmwareObject extends BaseInstanceEnabler{
             FileOutputStream fos = new FileOutputStream(temp);
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             LOG.info("Update downloaded to {}", temp.getAbsolutePath());
-            */
-            File bnd = new File("C:/Users/bojit/Desktop/valve-new.jar");
-            LOG.info(bnd.getAbsolutePath().toString());
+            //*/
             //LOG.info((String) bnd.getAbsolutePath().toString().replace("\\","/"));
-            BundleContext bundleContext = ClientActivator.getBundleContext();
-            Bundle newBundle = bundleContext.installBundle("file:" + bnd.getAbsolutePath().toString().replace("\\", "/"));
-            BundleStartLevel startLevel = newBundle.adapt(BundleStartLevel.class);
-            startLevel.setStartLevel(1);
-            newBundle.start(1);
-
-            //Bundle systemBundle = bundleContext.getBundle(0);
+            //BundleContext bundleContext = ClientActivator.getBundleContext();
+            ///Bundle newBundle = bundleContext.installBundle("file:" + bnd.getAbsolutePath().toString().replace("\\", "/"));
+            //BundleStartLevel startLevel = newBundle.adapt(BundleStartLevel.class);
+            //startLevel.setStartLevel(1);
+            //newBundle.start(1);
         } catch (Exception e) {
-
+            LOG.debug(e.toString());
         }
-        //catch (IOException e) {
-        //    LOG.error(e.toString());
-        //}
-        //catch (BundleException e) {
-        //    e.printStackTrace();
-        //}
-
     }
-
 }

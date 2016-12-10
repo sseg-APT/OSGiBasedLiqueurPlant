@@ -123,10 +123,13 @@ public class Silo extends BaseInstanceEnabler implements SiloIf {
     }
 
     public void updateInValve(Valve inValve) {
+        this.inValve = null;
         this.inValve = inValve;
     }
 
     public void updateOutValve(Valve outValve) {
+
+        this.outValve = null;
         this.outValve = outValve;
     }
     //*/
