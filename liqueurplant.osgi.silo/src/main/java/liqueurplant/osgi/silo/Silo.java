@@ -52,6 +52,8 @@ public class Silo extends BaseInstanceEnabler implements SiloIf {
             case 2:
                 pool.submit(this::empty);
                 return ExecuteResponse.success();
+            case 5:
+                return ExecuteResponse.success();
             default:
                 return super.execute(resourceid, params);
         }
