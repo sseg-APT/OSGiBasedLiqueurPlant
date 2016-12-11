@@ -27,7 +27,7 @@ public class SiloActivator implements BundleActivator {
 
         this.bundleContext = context;
 
-        //* Register command.
+        /* Register command.
         Hashtable props = new Hashtable();
         props.put("osgi.command.scope", "silo");
         props.put("osgi.command.function", new String[]{"fill", "empty", "updateValve", "installValve", "refresh"});
