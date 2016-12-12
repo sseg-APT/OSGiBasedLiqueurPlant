@@ -4,13 +4,10 @@ package liqueurplant.osgi.silo;
 import liqueurplant.osgi.silo.api.SiloIf;
 import liqueurplant.osgi.valve.Valve;
 import liqueurplant.osgi.valve.api.ValveIf;
-import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
-import org.eclipse.leshan.core.response.ExecuteResponse;
-import org.eclipse.leshan.core.response.ReadResponse;
 import org.osgi.service.component.annotations.Component;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Component(name = "liqueurplant.silo")
@@ -22,7 +19,12 @@ public class Silo implements SiloIf {
     public Double targetTemperature = new Double(0.0);
     private ValveIf inValve;
     private ValveIf outValve;
+    private List<StateChangedListener> stateChangedListeners = new ArrayList<>();
 
+    public interface StateChangedListener {
+        void stateChanged(String newState);
+
+    }
 
     @Override
     public void fill() {
@@ -32,6 +34,7 @@ public class Silo implements SiloIf {
             setState("FILLING");
             Thread.sleep(5000);
             inValve.close();
+            setState("FULL");
             SiloActivator.LOG.debug("Fill completed.");
 
         } catch (Exception e) {
@@ -47,6 +50,7 @@ public class Silo implements SiloIf {
             setState("EMPTYING");
             Thread.sleep(5000);
             outValve.close();
+            setState("EMPTY");
             SiloActivator.LOG.debug("Empty completed.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,6 +61,9 @@ public class Silo implements SiloIf {
     ///*
     public void setState(String newState) {
         this.state = newState;
+        for (StateChangedListener listener : stateChangedListeners) {
+            listener.stateChanged(newState);
+        }
     }
 
     public void setTemperature(Double newTemp) {
@@ -69,6 +76,10 @@ public class Silo implements SiloIf {
 
     public void setOutValve(Valve outValve) {
         this.outValve = outValve;
+    }
+
+    public void addStateListener(StateChangedListener listener) {
+        stateChangedListeners.add(listener);
     }
 
     public void updateInValve(Valve inValve) {

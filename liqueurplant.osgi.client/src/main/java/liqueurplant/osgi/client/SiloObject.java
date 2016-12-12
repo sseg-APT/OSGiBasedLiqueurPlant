@@ -25,6 +25,7 @@ public class SiloObject extends BaseInstanceEnabler {
         siloComponent = new Silo();
         siloComponent.setInValve(new Valve("IN"));
         siloComponent.setOutValve(new Valve("OUT"));
+        siloComponent.addStateListener((String newState) -> this.pool.execute(()->setState(newState)));
 
     }
 

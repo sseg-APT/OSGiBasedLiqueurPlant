@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
 
 
 class ProcessA extends GenerationProcess {
@@ -35,6 +36,14 @@ class ProcessA extends GenerationProcess {
         generationProcessLoop();
     }
 
+    public static void gc() {
+        Object obj = new Object();
+        WeakReference ref = new WeakReference<Object>(obj);
+        obj = null;
+        while(ref.get() != null) {
+            System.gc();
+        }
+    }
 
     private void generationProcessLoop() {
         Client silo = server.getClientRegistry().get("silo");
@@ -46,9 +55,15 @@ class ProcessA extends GenerationProcess {
         long table[] = new long[limit];
 
         LOG.info("Starting benchmark");
+        ExecuteRequest request = new ExecuteRequest("/20000/0/5");
+        System.gc();
         for (j = 0; j < limit; j++) {
             start = System.nanoTime();
-            sendRequest(new ExecuteRequest("/20000/0/5"), silo);
+            try {
+                server.send(silo, request, Config.TIMEOUT);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             finish = System.nanoTime();
             //System.out.println(j+"\t"+(finish-start));
             table[j] = finish - start;
