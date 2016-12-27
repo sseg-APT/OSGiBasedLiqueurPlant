@@ -1,6 +1,7 @@
 package liqueurplant.osgi.client;
 
-import liqueurplant.osgi.silo.Silo;
+import liqueurplant.osgi.silo.SiloCtrl;
+import liqueurplant.osgi.valve.Valve;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
@@ -10,19 +11,17 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import liqueurplant.osgi.valve.Valve;
-
 
 public class SiloObject extends BaseInstanceEnabler {
 
     public static Logger LOG = LoggerFactory.getLogger(SiloObject.class);
     public static int modelId = 20000;
     private ExecutorService pool;
-    private Silo siloComponent;
+    private SiloCtrl siloComponent;
 
     SiloObject() {
         pool = Executors.newFixedThreadPool(2);
-        siloComponent = new Silo();
+        siloComponent = new SiloCtrl();
         siloComponent.setInValve(new Valve("IN"));
         siloComponent.setOutValve(new Valve("OUT"));
         siloComponent.addStateListener((String newState) -> this.pool.execute(()->setState(newState)));

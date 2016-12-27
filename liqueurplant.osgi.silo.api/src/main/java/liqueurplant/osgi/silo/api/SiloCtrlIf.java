@@ -6,7 +6,8 @@ import org.osgi.annotation.versioning.ProviderType;
  * Created by bocha on 28/11/2016.
  */
 @ProviderType
-public interface SiloIf {
+//SiloCtrlIf + heat2temp, getState, mix
+public interface SiloCtrlIf {
 
     void fill() throws Exception;
 

@@ -1,7 +1,7 @@
 package liqueurplant.osgi.silo;
 
 
-import liqueurplant.osgi.silo.api.SiloIf;
+import liqueurplant.osgi.silo.api.SiloCtrlIf;
 import liqueurplant.osgi.valve.Valve;
 import liqueurplant.osgi.valve.api.ValveIf;
 import org.osgi.service.component.annotations.Component;
@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Component(name = "liqueurplant.silo")
-public class Silo implements SiloIf {
+@Component(name = "liqueurplant.siloCtrl")
+// New bundle Silo driver ,Valve driver, mixer driver, heater driver(includes thermometer) implements If used by silocontroller
+public class SiloCtrl implements SiloCtrlIf {
 
     public String state = "";
     public Boolean emptyingCompleted = new Boolean(true);
@@ -91,6 +92,10 @@ public class Silo implements SiloIf {
 
         this.outValve = null;
         this.outValve = outValve;
+    }
+
+    public String getState(){
+        return this.state;
     }
     //*/
 }

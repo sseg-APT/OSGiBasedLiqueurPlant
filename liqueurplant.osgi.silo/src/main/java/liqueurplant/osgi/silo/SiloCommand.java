@@ -22,6 +22,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static java.lang.Thread.sleep;
+
 
 /**
  * Created by bocha on 28/11/2016.
@@ -29,13 +31,13 @@ import java.util.concurrent.TimeoutException;
 public class SiloCommand {
 
     BundleContext bundleContext;
-    private Silo testSilo;
+    private SiloCtrl testSilo;
     private final Object refreshLock = new Object();
     private long refreshTimeout = 5000;
 
     public SiloCommand(BundleContext bundleContext) {
         this.bundleContext = bundleContext;
-        testSilo = new Silo();
+        testSilo = new SiloCtrl();
         testSilo.setInValve(new Valve("IN"));
         testSilo.setOutValve(new Valve("OUT"));
 
@@ -43,8 +45,10 @@ public class SiloCommand {
 
     public void fill() {
         try {
-            testSilo.fill();
-
+            while(true) {
+                testSilo.fill();
+                sleep(10000);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,6 +112,10 @@ public class SiloCommand {
                 }
             }
         }
+    }
+
+    public void state(){
+        System.out.println(testSilo.getState());
     }
 
 }

@@ -34,7 +34,7 @@ public class Valve implements ValveIf {
     }
 
     public void open() throws Exception {
-        System.out.println("[" + this.valveType + "] Valve opened.");
+        System.out.println("[" + this.valveType + "] Valve opened V1.0.1.");
         /*
         if(valveType =="IN") {
             inValveLed.high();
@@ -46,7 +46,7 @@ public class Valve implements ValveIf {
     }
 
     public void close() throws Exception {
-        System.out.println("[" + this.valveType + "] Valve closed.");
+        System.out.println("[" + this.valveType + "] Valve closed V1.0.1.");
         /*
         if(valveType =="IN") {
             inValveLed.low();
