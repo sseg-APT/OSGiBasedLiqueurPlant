@@ -14,6 +14,7 @@
         <module>liqueurplant.osgi.valve.api</module>
         <module>liqueurplant.server</module>
         <module>liqueurplant.osgi.client</module>
+        <module>liqueurplant.osgi.plant</module>
     </modules>
     <packaging>pom</packaging>
 
