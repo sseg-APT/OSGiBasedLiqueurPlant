@@ -9,15 +9,13 @@ public enum SiloCtrlState implements SiloCtrlStateMachineIf {
         public SiloCtrlState processEvent(SiloCtrlState scState, SiloCtrlEvent e) {
             SiloCtrlState targetState;
 
-            if(e== SiloCtrlEvent.FILL){
+            if (e == SiloCtrlEvent.FILL) {
                 targetState = SiloCtrlState.FILLING;
                 performActions();
-            }
-            else if(e== SiloCtrlEvent.STOP){
-                targetState =  SiloCtrlState.TERMINATE;
+            } else if (e == SiloCtrlEvent.STOP) {
+                targetState = SiloCtrlState.TERMINATE;
                 System.out.println("Message to Generate Liqueur Proecess: siloCotrollerStopped");
-            }
-            else
+            } else
                 targetState = SiloCtrlState.EMPTY;
 
             //System.out.println("\tState: " + scState + " + Event: " + e + "-> " + targetState);
@@ -35,12 +33,11 @@ public enum SiloCtrlState implements SiloCtrlStateMachineIf {
         public SiloCtrlState processEvent(SiloCtrlState scState, SiloCtrlEvent e) {
             SiloCtrlState targetState;
 
-            if(e== SiloCtrlEvent.FILLINGCOMPLETED){
-                targetState =  SiloCtrlState.FULL;
+            if (e == SiloCtrlEvent.FILLINGCOMPLETED) {
+                targetState = SiloCtrlState.FULL;
                 performActions();
-            }
-            else
-                targetState =  SiloCtrlState.FILLING;
+            } else
+                targetState = SiloCtrlState.FILLING;
 
             //System.out.println("\tState: " + scState + " + Event: " + e + "-> " + targetState);
             return targetState;
@@ -58,12 +55,11 @@ public enum SiloCtrlState implements SiloCtrlStateMachineIf {
         public SiloCtrlState processEvent(SiloCtrlState scState, SiloCtrlEvent e) {
             SiloCtrlState targetState;
 
-            if(e== SiloCtrlEvent.EMPTY){
-                targetState =  SiloCtrlState.EMPTYING;
+            if (e == SiloCtrlEvent.EMPTY) {
+                targetState = SiloCtrlState.EMPTYING;
                 performActions();
-            }
-            else
-                targetState =  SiloCtrlState.FULL;
+            } else
+                targetState = SiloCtrlState.FULL;
 
             //System.out.println("\tState: " + scState + " + Event: " + e + "-> " + targetState);
             return targetState;
@@ -82,12 +78,11 @@ public enum SiloCtrlState implements SiloCtrlStateMachineIf {
         public SiloCtrlState processEvent(SiloCtrlState scState, SiloCtrlEvent e) {
             SiloCtrlState targetState;
 
-            if(e== SiloCtrlEvent.EMPTYINGCOMPLETED){
-                targetState =  SiloCtrlState.EMPTY;
+            if (e == SiloCtrlEvent.EMPTYINGCOMPLETED) {
+                targetState = SiloCtrlState.EMPTY;
                 performActions();
-            }
-            else
-                targetState =  SiloCtrlState.EMPTYING;
+            } else
+                targetState = SiloCtrlState.EMPTYING;
 
             //System.out.println("\tState: " + scState + " + Event: " + e + "-> " + targetState);
             return targetState;
@@ -101,7 +96,6 @@ public enum SiloCtrlState implements SiloCtrlStateMachineIf {
         }
     },
     TERMINATE {
-
         @Override
         public SiloCtrlState processEvent(SiloCtrlState scState, SiloCtrlEvent e) {
             // TODO Auto-generated method stub

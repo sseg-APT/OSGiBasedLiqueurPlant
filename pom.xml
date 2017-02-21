@@ -15,6 +15,7 @@
         <module>liqueurplant.server</module>
         <module>liqueurplant.osgi.client</module>
         <module>liqueurplant.osgi.plant</module>
+        <module>liqueurplant.osgi.gpio.test</module>
     </modules>
     <packaging>pom</packaging>
 
