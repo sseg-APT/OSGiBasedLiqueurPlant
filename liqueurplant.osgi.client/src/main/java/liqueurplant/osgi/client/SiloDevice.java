@@ -5,8 +5,6 @@ import org.eclipse.leshan.client.resource.ObjectsInitializer;
 
 import java.util.List;
 
-import liqueurplant.osgi.valve.Valve;
-
 /**
  * Created by bocha on 1/12/2016.
  */

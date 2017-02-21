@@ -9,7 +9,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class LiqueurTypeAGen implements Runnable{
 
-    ArrayBlockingQueue<SiloCtrlEvent> eventQueue;
+    private ArrayBlockingQueue<SiloCtrlEvent> eventQueue;
 
     public LiqueurTypeAGen(ArrayBlockingQueue<SiloCtrlEvent> eq){
         eventQueue = eq;

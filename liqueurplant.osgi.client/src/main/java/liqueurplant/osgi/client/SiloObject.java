@@ -1,7 +1,7 @@
 package liqueurplant.osgi.client;
 
 import liqueurplant.osgi.silo.SiloCtrl;
-import liqueurplant.osgi.valve.Valve;
+import liqueurplant.osgi.valve.ValveDriver;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
@@ -22,8 +22,8 @@ public class SiloObject extends BaseInstanceEnabler {
     SiloObject() {
         pool = Executors.newFixedThreadPool(2);
         siloComponent = new SiloCtrl();
-        siloComponent.setInValve(new Valve("IN"));
-        siloComponent.setOutValve(new Valve("OUT"));
+        siloComponent.setInValve(new ValveDriver("IN"));
+        siloComponent.setOutValve(new ValveDriver("OUT"));
         siloComponent.addStateListener((String newState) -> this.pool.execute(()->setState(newState)));
 
     }
