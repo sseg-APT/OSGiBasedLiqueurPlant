@@ -1,6 +1,6 @@
 package liqueurplant.osgi.client;
 
-import liqueurplant.osgi.silo.SiloCtrl;
+import liqueurplant.osgi.silo.controller.SiloCtrl;
 import liqueurplant.osgi.valve.ValveDriver;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;

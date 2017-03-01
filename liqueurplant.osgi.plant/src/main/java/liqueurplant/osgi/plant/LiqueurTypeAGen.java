@@ -1,6 +1,6 @@
 package liqueurplant.osgi.plant;
 
-import liqueurplant.osgi.silo.SiloCtrlEvent;
+import liqueurplant.osgi.silo.controller.SiloCtrlEvent;
 
 import java.util.concurrent.ArrayBlockingQueue;
 

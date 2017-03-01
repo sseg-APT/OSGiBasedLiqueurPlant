@@ -8,8 +8,8 @@
     <artifactId>liqueurplant.osgi</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>liqueurplant.osgi.silo</module>
-        <module>liqueurplant.osgi.silo.api</module>
+        <module>liqueurplant.osgi.silo.controller</module>
+        <module>liqueurplant.osgi.silo.controller.api</module>
         <module>liqueurplant.osgi.valve</module>
         <module>liqueurplant.osgi.valve.api</module>
         <module>liqueurplant.server</module>
