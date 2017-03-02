@@ -7,11 +7,12 @@ import java.util.concurrent.ArrayBlockingQueue;
 /**
  * Created by bocha on 20/2/2017.
  */
-public class LiqueurTypeAGen implements Runnable{
+public class LiqueurTypeAGenP implements Runnable{
 
+    public LiqueurPlant itsPlant;
     private ArrayBlockingQueue<SiloCtrlEvent> eventQueue;
 
-    public LiqueurTypeAGen(ArrayBlockingQueue<SiloCtrlEvent> eq){
+    public LiqueurTypeAGenP(ArrayBlockingQueue<SiloCtrlEvent> eq){
         eventQueue = eq;
     }
     @Override
