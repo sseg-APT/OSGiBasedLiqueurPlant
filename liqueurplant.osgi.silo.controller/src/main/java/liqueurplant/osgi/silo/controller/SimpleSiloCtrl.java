@@ -1,15 +1,10 @@
 package liqueurplant.osgi.silo.controller;
 
 import liqueurplant.osgi.plant.LiqueurPlant;
-import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import liqueurplant.osgi.silo.driver.SiloDriverEvent;
 import liqueurplant.osgi.silo.driver.SimpleSiloDriver;
-import liqueurplant.osgi.valve.ValveDriver;
-import liqueurplant.osgi.valve.api.ValveIf;
 import org.osgi.service.component.annotations.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
 @Component(name = "liqueurplant.siloCtrl")
