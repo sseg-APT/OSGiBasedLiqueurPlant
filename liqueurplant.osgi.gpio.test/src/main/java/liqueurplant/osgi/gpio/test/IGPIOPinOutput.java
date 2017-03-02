@@ -7,7 +7,7 @@ import com.pi4j.io.gpio.PinState;
  */
 public interface IGPIOPinOutput {
 
-    public void setState(PinState state);
+    public void setState();
 
     public void shutdown();
 }
