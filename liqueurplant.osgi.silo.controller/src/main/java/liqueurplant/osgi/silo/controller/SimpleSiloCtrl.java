@@ -1,6 +1,6 @@
 package liqueurplant.osgi.silo.controller;
 
-import liqueurplant.osgi.plant.LiqueurPlant;
+//import liqueurplant.osgi.plant.LiqueurPlant;
 import liqueurplant.osgi.silo.driver.SiloDriverEvent;
 import liqueurplant.osgi.silo.driver.SimpleSiloDriver;
 import org.osgi.service.component.annotations.Component;
@@ -10,17 +10,17 @@ import java.util.concurrent.ArrayBlockingQueue;
 @Component(name = "liqueurplant.siloCtrl")
 public class SimpleSiloCtrl extends SiloCtrl implements Runnable {
 
-    LiqueurPlant itsPlant;
+    //LiqueurPlant itsPlant;
     public SimpleSiloDriver itsDriver;
     SimpleSiloCtrlState state;
     public ArrayBlockingQueue<SiloCtrlEvent> itsEq;
     private ArrayBlockingQueue<SiloDriverEvent> itsDriverEq;
 
-    public SimpleSiloCtrl(LiqueurPlant plant, SimpleSiloCtrlState s) {
-        this.itsPlant = plant;
+    public SimpleSiloCtrl(SimpleSiloCtrlState s) {
+        //this.itsPlant = plant;
         state = s;
         itsEq = new ArrayBlockingQueue<SiloCtrlEvent>(20);
-        itsDriver = new SimpleSiloDriver(plant, itsEq);
+        itsDriver = new SimpleSiloDriver(itsEq);
         itsDriverEq = itsDriver.itsEq;
     }
 
@@ -30,21 +30,21 @@ public class SimpleSiloCtrl extends SiloCtrl implements Runnable {
         boolean stop = false;
 
         new Thread(itsDriver).start();
-        LiqueurPlant.LOGGER.info("S1: Controller State = " + state + "\n");
+        System.out.println("S1: Controller State = " + state + "\n"); // Logger info
         while (state != null) {
             if (stop) {
                 stopProcess();
                 break;
             }
             scEvent = getNextEvent();
-            LiqueurPlant.LOGGER.fine("S1: Event arrived = " + scEvent + "\n");
+            System.out.println("S1: Event arrived = " + scEvent + "\n"); // Logger fine
             if (scEvent == SiloCtrlEvent.STOP)
                 stop = true;
             else {
                 newState = this.state.processEvent(this, scEvent);
                 if (newState != state) {
                     state = newState;
-                    LiqueurPlant.LOGGER.fine("S1: Controller State= " + state + "\n");
+                    System.out.println("S1: Controller State= " + state + "\n"); // Loger fine
                 }
             }
         }
@@ -53,7 +53,7 @@ public class SimpleSiloCtrl extends SiloCtrl implements Runnable {
         try {
             itsDriver.itsEq.put(SiloDriverEvent.STOP);
 
-            LiqueurPlant.LOGGER.severe("S1 Ctrl: stopped");
+            System.out.println("S1 Ctrl: stopped"); // loger severe
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

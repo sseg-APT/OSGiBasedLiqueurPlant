@@ -1,7 +1,6 @@
 package liqueurplant.osgi.silo.controller;
 
-import liqueurplant.osgi.plant.LGPTypeAEvent;
-import liqueurplant.osgi.plant.LiqueurPlant;
+import liqueurplant.osgi.silo.SiloEvent;
 import liqueurplant.osgi.silo.driver.SiloDriverEvent;
 
 /**
@@ -19,7 +18,7 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
             }
             else if(e== SiloCtrlEvent.STOP){
                 targetState =  SimpleSiloCtrlState.IDLE;
-                LiqueurPlant.LOGGER.severe("S1 Ctrl: stopped");
+                System.out.println("S1 Ctrl: stopped"); // Logger Severe
             }
             else
                 targetState = SimpleSiloCtrlState.EMPTY;
@@ -31,7 +30,7 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
         public void performActions(SimpleSiloCtrl ctrl, SiloCtrlEvent e) {
             // TODO Auto-generated method stub
             if(e== SiloCtrlEvent.STOP){
-                LiqueurPlant.LOGGER.severe("S1 Ctrl: STOP accepted");
+                System.out.println("S1 Ctrl: STOP accepted"); // Logger Severe
                 try {
                     ctrl.itsEq.put(SiloCtrlEvent.STOP);
                 } catch (InterruptedException e1) {
@@ -39,7 +38,7 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
                     e1.printStackTrace();
                 }
             }
-            LiqueurPlant.LOGGER.finer("S1 Ctrl Action: Message to Silo driver=" + SiloDriverEvent.INVALVE_OPEN);
+            System.out.println("S1 Ctrl Action: Message to Silo driver=" + SiloDriverEvent.INVALVE_OPEN); // Logger Finer
             try {
                 ctrl.itsDriver.itsEq.put(SiloDriverEvent.INVALVE_OPEN);
             } catch (InterruptedException ie) {
@@ -66,10 +65,10 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
         @Override
         public void performActions(SimpleSiloCtrl ctrl, SiloCtrlEvent e) {
             // TODO Auto-generated method stub
-            LiqueurPlant.LOGGER.finer("S1 Ctrl Action: Message to Silo driver =" + SiloDriverEvent.INVALVE_CLOSE);
+            System.out.println("S1 Ctrl Action: Message to Silo driver =" + SiloDriverEvent.INVALVE_CLOSE); // Logger Finer
             try {
                 ctrl.itsDriver.itsEq.put(SiloDriverEvent.INVALVE_CLOSE );
-                LiqueurPlant.LOGGER.fine("S1 Ctrl Action: Message to lgpA =" + LGPTypeAEvent.S1_FILLINGCOMPLETED);
+                System.out.println("S1 Ctrl Action: Message to lgpA =" + SiloEvent.S1_FILLINGCOMPLETED); // Logger Fine
                 //if(e==SiloCtrlEvent.HIGH_LEVEL_REACHED)
                     //ctrl.itsPlant.lgpA.itsEq.put(LGPTypeAEvent.S1_FILLINGCOMPLETED);
 
@@ -99,7 +98,7 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
         public void performActions(SimpleSiloCtrl ctrl, SiloCtrlEvent e) {
             // TODO Auto-generated method stub
 
-            LiqueurPlant.LOGGER.finer("S1 Ctrl Action: Message to Silo driver =" + SiloDriverEvent.OUTVALVE_OPEN);
+            System.out.println("S1 Ctrl Action: Message to Silo driver =" + SiloDriverEvent.OUTVALVE_OPEN); // Logger finer
             try {
                 ctrl.itsDriver.itsEq.put(SiloDriverEvent.OUTVALVE_OPEN);
             } catch (InterruptedException ie) {
@@ -127,7 +126,7 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
         @Override
         public void performActions(SimpleSiloCtrl ctrl, SiloCtrlEvent e) {
             // TODO Auto-generated method stub
-            LiqueurPlant.LOGGER.finer("S1 Ctrl Action: Message to Silo driver =" + SiloDriverEvent.OUTVALVE_CLOSE);
+            System.out.println("S1 Ctrl Action: Message to Silo driver =" + SiloDriverEvent.OUTVALVE_CLOSE); //Logger finer
             try {
                 ctrl.itsDriver.itsEq.put(SiloDriverEvent.OUTVALVE_CLOSE);
                 //if(e== SiloCtrlEvent.LOW_LEVEL_REACHED)
@@ -136,7 +135,7 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
                 // TODO Auto-generated catch block
                 ie.printStackTrace();
             }
-            LiqueurPlant.LOGGER.fine("S1 Ctrl Action: Message to lgpA =" + LGPTypeAEvent.S1_EMPTYINGCOMPLETED);
+            System.out.println("S1 Ctrl Action: Message to lgpA =" + SiloEvent.S1_EMPTYINGCOMPLETED); // Logger fienr
         }
     },
     IDLE {
@@ -161,7 +160,7 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
         public void performActions(SimpleSiloCtrl ctrl, SiloCtrlEvent e) {
             // TODO Auto-generated method stub
             if(e== SiloCtrlEvent.START){
-                LiqueurPlant.LOGGER.info("S1 Ctrl: started");
+                System.out.println("S1 Ctrl: started"); // Logger Info
             }
             if(e== SiloCtrlEvent.STOP){
                 try {
@@ -170,7 +169,7 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
                     // TODO Auto-generated catch block
                     ie.printStackTrace();
                 }
-                LiqueurPlant.LOGGER.severe("S1 Ctrl: stopped");
+                System.out.println("S1 Ctrl: stopped"); // Logger Severe
             }
         }
     }

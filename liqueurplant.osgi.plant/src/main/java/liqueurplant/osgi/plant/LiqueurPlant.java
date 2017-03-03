@@ -25,7 +25,7 @@ public class LiqueurPlant implements BundleActivator {
     public void start(BundleContext context) throws Exception {
         plant = new LiqueurPlant();
         plant.simpleSiloCtrl = new SimpleSiloCtrl(plant, SimpleSiloCtrlState.EMPTY);
-        plant.simpleSiloCtrl.start();
+        new Thread(simpleSiloCtrl).start();
         plant.liqueurTypeA = new LiqueurTypeAGenP(plant.siloCtrlEventQueue);
         new Thread(plant.liqueurTypeA).start();
     }

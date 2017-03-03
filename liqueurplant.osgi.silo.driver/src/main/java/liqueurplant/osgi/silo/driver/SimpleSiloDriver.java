@@ -1,6 +1,5 @@
 package liqueurplant.osgi.silo.driver;
 
-import liqueurplant.osgi.plant.LiqueurPlant;
 import liqueurplant.osgi.silo.controller.SiloCtrlEvent;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -10,8 +9,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class SimpleSiloDriver extends SiloDriver implements Runnable {
 
-    public SimpleSiloDriver(LiqueurPlant plant, ArrayBlockingQueue<SiloCtrlEvent> eq) {
-        this.plant = plant;
+    public SimpleSiloDriver(ArrayBlockingQueue<SiloCtrlEvent> eq) {
         itsCtrlEq = eq;
         itsEq = new ArrayBlockingQueue<SiloDriverEvent>(10);
     }
@@ -22,9 +20,9 @@ public class SimpleSiloDriver extends SiloDriver implements Runnable {
             curEvent.sendEvent(this);
             if (curEvent == SiloDriverEvent.STOP) break;
             curEvent = getNextEvent();
-            LiqueurPlant.LOGGER.finest("Simple Silo Driver: Event arrived:= " + curEvent);
+            System.out.println("Simple Silo Driver: Event arrived:= " + curEvent); // Replace with logger finest.
         }
-        LiqueurPlant.LOGGER.warning("Simple Silo Driver: terminated.");
+        System.out.println("Simple Silo Driver: terminated."); // Replace with logger warning.
 
     }
 

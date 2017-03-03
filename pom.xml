@@ -16,6 +16,7 @@
         <module>liqueurplant.osgi.client</module>
         <module>liqueurplant.osgi.plant</module>
         <module>liqueurplant.osgi.gpio.test</module>
+        <module>liqueurplant.osgi.silo</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -24,13 +24,13 @@ public class LiqueurTypeAGenP implements Runnable{
             Thread.sleep(2000);
             eventQueue.put(SiloCtrlEvent.FILL);
             Thread.sleep(2000);
-            eventQueue.put(SiloCtrlEvent.FILLINGCOMPLETED);
-            Thread.sleep(2000);
-            eventQueue.put(SiloCtrlEvent.EMPTY);
-            Thread.sleep(2000);
-            eventQueue.put(SiloCtrlEvent.EMPTYINGCOMPLETED);
-            Thread.sleep(2000);
-            eventQueue.put(SiloCtrlEvent.EMPTYINGCOMPLETED);
+            //eventQueue.put(SiloCtrlEvent.FILLINGCOMPLETED);
+            //Thread.sleep(2000);
+            //eventQueue.put(SiloCtrlEvent.EMPTY);
+            //Thread.sleep(2000);
+            //eventQueue.put(SiloCtrlEvent.EMPTYINGCOMPLETED);
+            //Thread.sleep(2000);
+            //eventQueue.put(SiloCtrlEvent.EMPTYINGCOMPLETED);
             Thread.sleep(2000);
             eventQueue.put(SiloCtrlEvent.STOP);
         } catch (InterruptedException e) {

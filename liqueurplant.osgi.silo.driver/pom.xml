@@ -11,7 +11,7 @@
     <dependencies>
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.plant</artifactId>
+            <artifactId>liqueurplant.osgi.silo</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

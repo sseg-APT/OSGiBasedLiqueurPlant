@@ -1,7 +1,6 @@
 package liqueurplant.osgi.silo.driver;
 
-import liqueurplant.osgi.plant.LiqueurPlant;
-import liqueurplant.osgi.plant.PSiloState;
+import liqueurplant.osgi.silo.SiloState;
 import liqueurplant.osgi.silo.controller.SiloCtrlEvent;
 
 /**
@@ -12,36 +11,35 @@ public enum SiloDriverEvent {
         @Override
         public void sendEvent(SiloDriver d) {
             //d.itsPlantState.setText(PSiloState.FILLING.toString());
-            System.out.println("[Silo Driver]: " + PSiloState.FILLING.toString());
+            System.out.println("[Silo Driver]: " + SiloState.FILLING.toString());
         }
     },
     INVALVE_CLOSE {
         @Override
         public void sendEvent(SiloDriver d) {
             //d.itsPlantState.setText(PSiloState.FULL.toString());
-            System.out.println("[Silo Driver]: " + PSiloState.FULL.toString());
+            System.out.println("[Silo Driver]: " + SiloState.FULL.toString());
         }
     },
     OUTVALVE_OPEN {
         @Override
         public void sendEvent(SiloDriver d) {
             //d.itsPlantState.setText(PSiloState.EMPTYING.toString());
-            System.out.println("[Silo Driver]: " + PSiloState.EMPTYING.toString());
+            System.out.println("[Silo Driver]: " + SiloState.EMPTYING.toString());
         }
     },
     OUTVALVE_CLOSE {
         @Override
         public void sendEvent(SiloDriver d) {
             //d.itsPlantState.setText(PSiloState.EMPTY.toString());
-            System.out.println("[Silo Driver]: " + PSiloState.EMPTY.toString());
+            System.out.println("[Silo Driver]: " + SiloState.EMPTY.toString());
         }
     },
     STOP {
         @Override
         public void sendEvent(SiloDriver d) {
             //d.itsPlantState.setText(PSiloState.OFF.toString());
-            System.out.println("[Silo Driver]: " + PSiloState.OFF.toString());
-            LiqueurPlant.LOGGER.severe("Physical silo out of control");
+            System.out.println("[Silo Driver]: " + SiloState.OFF.toString());
         }
     },
     LOW_LEVEL_REACHED {
