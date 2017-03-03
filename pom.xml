@@ -17,6 +17,7 @@
         <module>liqueurplant.osgi.plant</module>
         <module>liqueurplant.osgi.gpio.test</module>
         <module>liqueurplant.osgi.silo</module>
+        <module>liqueurplant.osgi.silo.driver</module>
     </modules>
     <packaging>pom</packaging>
 

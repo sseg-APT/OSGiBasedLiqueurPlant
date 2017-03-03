@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 /**
  * Created by bocha on 20/2/2017.
  */
-public class LiqueurPlant implements BundleActivator {
+public class zLiqueurPlant implements BundleActivator {
 
     private SimpleSiloCtrl simpleSiloCtrl;
     private ArrayBlockingQueue<SiloCtrlEvent> siloCtrlEventQueue;
