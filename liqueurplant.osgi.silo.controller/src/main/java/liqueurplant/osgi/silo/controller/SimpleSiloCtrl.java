@@ -16,10 +16,10 @@ public class SimpleSiloCtrl extends SiloCtrl implements Runnable {
     public ArrayBlockingQueue<SiloCtrlEvent> itsEq;
     private ArrayBlockingQueue<SiloDriverEvent> itsDriverEq;
 
-    public SimpleSiloCtrl(SimpleSiloCtrlState s) {
+    public SimpleSiloCtrl(SimpleSiloCtrlState s, ArrayBlockingQueue<SiloCtrlEvent> eq) {
         //this.itsPlant = plant;
         state = s;
-        itsEq = new ArrayBlockingQueue<SiloCtrlEvent>(20);
+        itsEq = eq;
         itsDriver = new SimpleSiloDriver(itsEq);
         itsDriverEq = itsDriver.itsEq;
     }

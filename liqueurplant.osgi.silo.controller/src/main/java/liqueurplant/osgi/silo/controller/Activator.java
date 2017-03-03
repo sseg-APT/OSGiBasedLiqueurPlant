@@ -11,10 +11,10 @@ import java.util.Hashtable;
 public class Activator implements BundleActivator {
     @Override
     public void start(BundleContext context) throws Exception {
-        Hashtable props = new Hashtable();
-        props.put("osgi.command.scope", "silo");
-        props.put("osgi.command.function", "run");
-        context.registerService(SimpleSiloCtrl.class.getName(), new SimpleSiloCtrl(SimpleSiloCtrlState.EMPTY), props);
+        //Hashtable props = new Hashtable();
+        //props.put("osgi.command.scope", "silo");
+        //props.put("osgi.command.function", "run");
+        //context.registerService(SimpleSiloCtrl.class.getName(), new SimpleSiloCtrl(SimpleSiloCtrlState.EMPTY), props);
     }
 
     @Override
