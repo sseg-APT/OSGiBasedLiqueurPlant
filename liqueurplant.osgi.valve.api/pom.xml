@@ -10,8 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>liqueurplant.osgi.valve.api</artifactId>
-
-
     <packaging>bundle</packaging>
 
     <dependencies>

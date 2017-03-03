@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
-
     <packaging>bundle</packaging>
 
     <dependencies>
@@ -40,6 +39,7 @@
                 <configuration>
                     <instructions>
                         <Export-Package>liqueurplant.osgi.silo.controller.api</Export-Package>
+                        <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
                     </instructions>
                 </configuration>
 
