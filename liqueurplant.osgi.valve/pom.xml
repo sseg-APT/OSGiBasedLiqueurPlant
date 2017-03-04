@@ -16,27 +16,18 @@
 
         <dependency>
             <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.compendium</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
             <artifactId>osgi.annotation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.framework</artifactId>
+            <version>1.8.0</version>
         </dependency>
 
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.valve.api</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-core -->
-        <dependency>
-            <groupId>com.pi4j</groupId>
-            <artifactId>pi4j-core</artifactId>
-            <version>1.1</version>
         </dependency>
 
     </dependencies>
@@ -49,9 +40,9 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>liqueurplant.osgi.valve</Export-Package>
+                        <Bundle-Activator>liqueurplant.osgi.valve.ActivatorValve</Bundle-Activator>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-                        <Import-Package>liqueurplant.osgi.valve.api</Import-Package>
+                        <Import-Package>liqueurplant.osgi.valve.api, org.osgi.framework</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
