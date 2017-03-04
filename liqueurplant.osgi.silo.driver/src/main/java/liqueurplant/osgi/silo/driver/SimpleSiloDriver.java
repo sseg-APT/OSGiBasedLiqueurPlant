@@ -11,7 +11,7 @@ public class SimpleSiloDriver extends SiloDriver implements Runnable {
 
     public SimpleSiloDriver(ArrayBlockingQueue<SiloCtrlEvent> eq) {
         itsCtrlEq = eq;
-        itsEq = new ArrayBlockingQueue<SiloDriverEvent>(10);
+        itsEq = new ArrayBlockingQueue<>(10);
     }
 
     public void run() {

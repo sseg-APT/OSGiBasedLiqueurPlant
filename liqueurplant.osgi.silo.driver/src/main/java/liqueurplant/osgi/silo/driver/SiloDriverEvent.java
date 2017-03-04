@@ -12,6 +12,11 @@ public enum SiloDriverEvent {
         public void sendEvent(SiloDriver d) {
             //d.itsPlantState.setText(PSiloState.FILLING.toString());
             System.out.println("[Silo Driver]: " + SiloState.FILLING.toString());
+            try {
+                SiloDriverActivator.inValve.open();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     },
     INVALVE_CLOSE {
@@ -19,6 +24,11 @@ public enum SiloDriverEvent {
         public void sendEvent(SiloDriver d) {
             //d.itsPlantState.setText(PSiloState.FULL.toString());
             System.out.println("[Silo Driver]: " + SiloState.FULL.toString());
+            try {
+                SiloDriverActivator.inValve.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     },
     OUTVALVE_OPEN {

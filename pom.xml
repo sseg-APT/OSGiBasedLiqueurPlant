@@ -19,6 +19,7 @@
         <module>liqueurplant.osgi.valve.api</module>
         <module>liqueurplant.server</module>
         <module>liqueurplant.osgi.valve.consumer</module>
+        <module>liqueurplant.osgi.valve.in</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -33,7 +34,6 @@
         <californium.version>2.0.0-M2</californium.version>
         <osgi.version>6.0.0</osgi.version>
         <pax.version>1.9.1</pax.version>
-
     </properties>
 
     <dependencies>
@@ -136,6 +136,12 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>liqueurplant.osgi.valve</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>liqueurplant.osgi.valve.in</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
