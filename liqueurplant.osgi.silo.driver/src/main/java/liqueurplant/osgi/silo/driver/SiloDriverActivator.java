@@ -1,20 +1,29 @@
 package liqueurplant.osgi.silo.driver;
 
 import liqueurplant.osgi.valve.api.ValveIf;
-import org.apache.felix.scr.impl.manager.ServiceTracker;
+
 import org.osgi.framework.*;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * Created by bojit on 04-Mar-17.
  */
+
 public class SiloDriverActivator implements BundleActivator {
 
-    //private BundleContext context;
+    private BundleContext context;
     protected static ValveIf inValve;
-    private ServiceListener serviceListener;
+    protected static ServiceTracker serviceTracker;
 
     @Override
     public void start(BundleContext context) throws Exception {
+        this.context = context;
+        serviceTracker = new ServiceTracker(context, ValveIf.class.getName(), null);
+
+        serviceTracker.open();
+
+        /*
         serviceListener = event -> {
             ServiceReference inValveService = event.getServiceReference();
             switch (event.getType()) {
@@ -32,6 +41,8 @@ public class SiloDriverActivator implements BundleActivator {
         } catch (InvalidSyntaxException ex) {
             ex.printStackTrace();
         }
+        //*/
+        // Service Reference
         //this.context = context;
         //ServiceReference inValveService = null;
         //while(inValveService == null){
@@ -42,6 +53,8 @@ public class SiloDriverActivator implements BundleActivator {
 
     @Override
     public void stop(BundleContext context) throws Exception {
-
+        serviceTracker.close();
     }
+
+
 }
