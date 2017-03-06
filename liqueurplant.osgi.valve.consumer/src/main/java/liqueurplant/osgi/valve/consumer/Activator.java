@@ -4,25 +4,46 @@ import liqueurplant.osgi.valve.in.api.ValveIf;
 import org.osgi.annotation.versioning.ConsumerType;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.*;
 
 /**
  * Created by bojit on 03-Mar-17.
  */
 @Component
-
-public class Activator implements BundleActivator {
+public class Activator {
 
     private ValveIf valveService;
 
-    @Override
-    public void start(BundleContext context) throws Exception {
-        valveService.open();
+    @Activate
+    public void activate() {
+        try {
+            valveService.open();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public void stop(BundleContext context) throws Exception {
-
+    @Deactivate
+    public void deactivate(){
+        try {
+            valveService.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    @Reference(
+            name = "invalvedriver.service",
+            service = ValveIf.class,
+            cardinality = ReferenceCardinality.MANDATORY,
+            policy = ReferencePolicy.STATIC,
+            unbind = "unsetValveIf"
+    )
+    protected void setValveIf(ValveIf valveService){
+        this.valveService = valveService;
+    }
+
+    protected void unsetValveIf(ValveIf valveService){
+        this.valveService = null;
+    }
 }
