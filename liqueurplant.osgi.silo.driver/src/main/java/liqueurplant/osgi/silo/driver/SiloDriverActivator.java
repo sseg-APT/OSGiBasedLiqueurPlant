@@ -1,7 +1,8 @@
 package liqueurplant.osgi.silo.driver;
 
-import liqueurplant.osgi.valve.api.ValveIf;
+import liqueurplant.osgi.valve.in.api.ValveIf;
 
+import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
 import org.osgi.framework.*;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
@@ -13,14 +14,13 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 public class SiloDriverActivator implements BundleActivator {
 
     private BundleContext context;
-    protected static ValveIf inValve;
     protected static ServiceTracker serviceTracker;
 
     @Override
     public void start(BundleContext context) throws Exception {
         this.context = context;
         serviceTracker = new ServiceTracker(context, ValveIf.class.getName(), null);
-
+        serviceTracker.addingService(context.getServiceReference(OutValveDriverIf.class.getName()));
         serviceTracker.open();
 
         /*

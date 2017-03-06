@@ -1,6 +1,6 @@
 package liqueurplant.osgi.valve.in;
 
-import liqueurplant.osgi.valve.api.ValveIf;
+import liqueurplant.osgi.valve.in.api.ValveIf;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 

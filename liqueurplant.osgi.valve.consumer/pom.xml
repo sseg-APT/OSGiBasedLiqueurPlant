@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.valve.api</artifactId>
+            <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
         </dependency>
     </dependencies>
 </project>

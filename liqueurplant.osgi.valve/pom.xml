@@ -15,8 +15,10 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>osgi.annotation</artifactId>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr.ds-annotations</artifactId>
+            <version>1.2.4</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -27,9 +29,8 @@
 
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.valve.api</artifactId>
+            <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -40,12 +41,12 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Bundle-Activator>liqueurplant.osgi.valve.ActivatorValve</Bundle-Activator>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-                        <Import-Package>liqueurplant.osgi.valve.api, org.osgi.framework</Import-Package>
+                        <Import-Package>liqueurplant.osgi.valve.in.api, org.osgi.framework</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>

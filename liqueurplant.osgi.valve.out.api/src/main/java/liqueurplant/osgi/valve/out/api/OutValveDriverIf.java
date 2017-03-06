@@ -1,10 +1,12 @@
-package liqueurplant.osgi.valve.api;
+package liqueurplant.osgi.valve.out.api;
 
 import org.osgi.annotation.versioning.ProviderType;
 
-
+/**
+ * Created by pBochalis on 3/6/2017.
+ */
 @ProviderType
-public interface ValveIf {
+public interface OutValveDriverIf {
 
     void open() throws Exception;
 

@@ -9,16 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>liqueurplant.osgi.valve.api</artifactId>
+    <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
     <packaging>bundle</packaging>
 
     <dependencies>
-
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>osgi.annotation</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -29,7 +27,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>liqueurplant.osgi.valve.api</Export-Package>
+                        <Export-Package>liqueurplant.osgi.valve.out.api</Export-Package>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
                     </instructions>
@@ -38,6 +36,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

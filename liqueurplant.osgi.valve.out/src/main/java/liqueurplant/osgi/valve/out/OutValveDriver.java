@@ -1,18 +1,17 @@
-package liqueurplant.osgi.valve.in;
+package liqueurplant.osgi.valve.out;
 
 import com.pi4j.io.gpio.*;
-import liqueurplant.osgi.valve.in.api.ValveIf;
+import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
 
 /**
- * Created by bojit on 04-Mar-17.
+ * Created by pBochalis on 3/6/2017.
  */
-public class InValveDriver implements ValveIf {
+public class OutValveDriver implements OutValveDriverIf{
 
-    private GpioPinDigitalOutput inValve;
     private GpioController gpioController;
+    private GpioPinDigitalOutput outValve;
 
-
-    public InValveDriver() {
+    public OutValveDriver() {
         gpioController = GpioFactory.getInstance();
     }
 
@@ -22,16 +21,16 @@ public class InValveDriver implements ValveIf {
             while (!gpioController.getProvisionedPins().isEmpty())
                 gpioController.unprovisionPin(gpioController.getProvisionedPins().iterator().next());
 
-            inValve = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_04, "IN-VALVE", PinState.HIGH);
+            outValve = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_00, "OUT-VALVE", PinState.HIGH);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
+    }
     @Override
     public void close() throws Exception {
-        try {
-            inValve.setState(PinState.LOW);
+        try{
+            outValve.setState(PinState.LOW);
         } catch (Exception e) {
             e.printStackTrace();
         }

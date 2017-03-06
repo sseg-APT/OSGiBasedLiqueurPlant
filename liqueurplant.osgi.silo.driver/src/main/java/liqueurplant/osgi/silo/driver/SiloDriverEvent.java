@@ -2,7 +2,8 @@ package liqueurplant.osgi.silo.driver;
 
 import liqueurplant.osgi.silo.SiloState;
 import liqueurplant.osgi.silo.controller.SiloCtrlEvent;
-import liqueurplant.osgi.valve.api.ValveIf;
+import liqueurplant.osgi.valve.in.api.ValveIf;
+import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
 
 /**
  * Created by bocha on 1/3/2017.
@@ -37,6 +38,11 @@ public enum SiloDriverEvent {
         public void sendEvent(SiloDriver d) {
             //d.itsPlantState.setText(PSiloState.EMPTYING.toString());
             System.out.println("[Silo Driver]: " + SiloState.EMPTYING.toString());
+            try {
+                ((OutValveDriverIf) SiloDriverActivator.serviceTracker.getService()).open();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     },
     OUTVALVE_CLOSE {
@@ -44,6 +50,11 @@ public enum SiloDriverEvent {
         public void sendEvent(SiloDriver d) {
             //d.itsPlantState.setText(PSiloState.EMPTY.toString());
             System.out.println("[Silo Driver]: " + SiloState.EMPTY.toString());
+            try {
+                ((OutValveDriverIf) SiloDriverActivator.serviceTracker.getService()).close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     },
     STOP {
