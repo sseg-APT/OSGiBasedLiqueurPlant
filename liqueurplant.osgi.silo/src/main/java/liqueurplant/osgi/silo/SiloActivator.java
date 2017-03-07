@@ -18,6 +18,7 @@ public class SiloActivator implements BundleActivator {
     private SiloProcess siloProcess;
     SiloActivator silo;
 
+
     @Override
     public void start(BundleContext context) throws Exception {
         siloCtrlEventQueue = new ArrayBlockingQueue<SiloCtrlEvent>(20);

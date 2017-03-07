@@ -33,12 +33,12 @@ public class Activator {
             name = "invalvedriver.service",
             service = InValveDriverIf.class,
             /* Cardinality (Whether the bundle works with or without service.
-            // Mandatory: mandatory and unary
-            // At least one: mandatory and multiple
-            // Multiple: optional and multiple
-            // Optional: optional and unary
+            // Mandatory: mandatory and unary 1..1
+            // At least one: mandatory and multiple 1..n
+            // Multiple: optional and multiple 0..n
+            // Optional: optional and unary 0..1
             //*/
-            cardinality = ReferenceCardinality.MANDATORY,
+            cardinality = ReferenceCardinality.OPTIONAL,
             /*
             //
             //*/
