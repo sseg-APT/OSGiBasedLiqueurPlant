@@ -2,7 +2,7 @@ package liqueurplant.osgi.silo.driver;
 
 import liqueurplant.osgi.silo.SiloState;
 import liqueurplant.osgi.silo.controller.SiloCtrlEvent;
-import liqueurplant.osgi.valve.in.api.ValveIf;
+import liqueurplant.osgi.valve.in.api.InValveDriverIf;
 import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
 
 /**
@@ -15,7 +15,7 @@ public enum SiloDriverEvent {
             //d.itsPlantState.setText(PSiloState.FILLING.toString());
             System.out.println("[Silo Driver]: " + SiloState.FILLING.toString());
             try {
-                ((ValveIf)SiloDriverActivator.serviceTracker.getService()).open();
+                SiloDriverActivator.inValve.open();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -27,7 +27,7 @@ public enum SiloDriverEvent {
             //d.itsPlantState.setText(PSiloState.FULL.toString());
             System.out.println("[Silo Driver]: " + SiloState.FULL.toString());
             try {
-                ((ValveIf)SiloDriverActivator.serviceTracker.getService()).close();
+                SiloDriverActivator.inValve.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -39,7 +39,7 @@ public enum SiloDriverEvent {
             //d.itsPlantState.setText(PSiloState.EMPTYING.toString());
             System.out.println("[Silo Driver]: " + SiloState.EMPTYING.toString());
             try {
-                ((OutValveDriverIf) SiloDriverActivator.serviceTracker.getService()).open();
+                SiloDriverActivator.outValve.open();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -51,7 +51,7 @@ public enum SiloDriverEvent {
             //d.itsPlantState.setText(PSiloState.EMPTY.toString());
             System.out.println("[Silo Driver]: " + SiloState.EMPTY.toString());
             try {
-                ((OutValveDriverIf) SiloDriverActivator.serviceTracker.getService()).close();
+                SiloDriverActivator.outValve.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }

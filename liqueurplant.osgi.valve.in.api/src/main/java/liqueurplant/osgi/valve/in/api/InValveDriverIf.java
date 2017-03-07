@@ -4,7 +4,7 @@ import org.osgi.annotation.versioning.ProviderType;
 
 
 @ProviderType
-public interface ValveIf {
+public interface InValveDriverIf {
 
     void open() throws Exception;
 

@@ -32,6 +32,7 @@
                         <Export-Package>liqueurplant.osgi.valve.in.api</Export-Package>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
+                        <_dsannotations>*</_dsannotations>
                     </instructions>
                 </configuration>
 
