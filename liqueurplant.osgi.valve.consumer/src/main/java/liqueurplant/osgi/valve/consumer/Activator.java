@@ -1,9 +1,6 @@
 package liqueurplant.osgi.valve.consumer;
 
 import liqueurplant.osgi.valve.in.api.ValveIf;
-import org.osgi.annotation.versioning.ConsumerType;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.*;
 
 /**
