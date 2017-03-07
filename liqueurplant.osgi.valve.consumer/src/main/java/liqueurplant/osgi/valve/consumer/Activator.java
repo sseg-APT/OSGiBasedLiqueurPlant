@@ -1,9 +1,6 @@
 package liqueurplant.osgi.valve.consumer;
 
-import liqueurplant.osgi.valve.in.api.ValveIf;
-import org.osgi.annotation.versioning.ConsumerType;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
+import liqueurplant.osgi.valve.in.api.InValveDriverIf;
 import org.osgi.service.component.annotations.*;
 
 /**
@@ -12,7 +9,7 @@ import org.osgi.service.component.annotations.*;
 @Component
 public class Activator {
 
-    private ValveIf valveService;
+    private InValveDriverIf valveService;
 
     @Activate
     public void activate() {
@@ -34,16 +31,27 @@ public class Activator {
 
     @Reference(
             name = "invalvedriver.service",
-            service = ValveIf.class,
+            service = InValveDriverIf.class,
+            /* Cardinality (Whether the bundle works with or without service.
+            // Mandatory: mandatory and unary
+            // At least one: mandatory and multiple
+            // Multiple: optional and multiple
+            // Optional: optional and unary
+            //*/
             cardinality = ReferenceCardinality.MANDATORY,
-            policy = ReferencePolicy.STATIC,
+            /*
+            //
+            //*/
+            policy = ReferencePolicy.DYNAMIC,
             unbind = "unsetValveIf"
     )
-    protected void setValveIf(ValveIf valveService){
+    protected void setValveIf(InValveDriverIf valveService){
+        System.out.println("Binding valve service");
         this.valveService = valveService;
     }
 
-    protected void unsetValveIf(ValveIf valveService){
+    protected void unsetValveIf(InValveDriverIf valveService){
+        System.out.println("Unbinding valve service");
         this.valveService = null;
     }
 }

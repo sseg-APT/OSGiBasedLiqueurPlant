@@ -9,21 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>liqueurplant.osgi.valve</artifactId>
+    <artifactId>liqueurplant.osgi.valve.tester</artifactId>
     <packaging>bundle</packaging>
 
     <dependencies>
-
-
         <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.framework</artifactId>
-            <version>1.8.0</version>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
+            <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
         </dependency>
     </dependencies>
 
@@ -36,12 +33,12 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-                        <Import-Package>liqueurplant.osgi.valve.in.api, org.osgi.framework</Import-Package>
+                        <Import-Package>*</Import-Package>
                         <_dsannotations>*</_dsannotations>
                     </instructions>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
+
 </project>
