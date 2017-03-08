@@ -1,7 +1,5 @@
 package liqueurplant.osgi.silo.driver;
 
-import liqueurplant.osgi.silo.controller.SiloCtrlEvent;
-
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -9,6 +7,6 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class SiloDriver {
     public ArrayBlockingQueue<SiloDriverEvent> itsEq;
-    protected ArrayBlockingQueue<SiloCtrlEvent> itsCtrlEq;
+    protected ArrayBlockingQueue itsCtrlEq;
     SiloDriverEvent curEvent;
 }

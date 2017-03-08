@@ -17,7 +17,7 @@ public class ValveDriver implements InValveDriverIf {
 
     @Activate
     public void activate(BundleContext context) throws Exception {
-        context.registerService(InValveDriverIf.class.getName(), new ValveDriver(), null);
+        //context.registerService(InValveDriverIf.class.getName(), new ValveDriver(), null);
     }
 
     @Deactivate

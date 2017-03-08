@@ -14,7 +14,7 @@ public class Activator {
     protected static OutValveDriverIf outValve;
 
     @Activate
-    public void activate(){
+    public void activate() {
         try {
             inValve.open();
             outValve.open();
@@ -24,7 +24,7 @@ public class Activator {
     }
 
     @Deactivate
-    public void deactivate(){
+    public void deactivate() {
         try {
             inValve.close();
             outValve.close();
