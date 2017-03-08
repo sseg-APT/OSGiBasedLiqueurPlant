@@ -30,7 +30,7 @@ public class Activator {
     }
 
     @Reference(
-            name = "invalvedriver.service",
+            name = "invalvedriver.service",`
             service = InValveDriverIf.class,
             /* Cardinality (Whether the bundle works with or without service.
             // Mandatory: mandatory and unary 1..1
