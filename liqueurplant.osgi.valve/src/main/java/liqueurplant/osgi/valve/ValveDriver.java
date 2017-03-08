@@ -8,7 +8,9 @@ import org.osgi.service.component.annotations.*;
 /**
  * Created by bochalito on 4/12/2016.
  */
-@Component(service = InValveDriverIf.class)
+@Component(
+        property = {"foo=valve.v1"}
+)
 public class ValveDriver implements InValveDriverIf {
 
     public ValveDriver(){

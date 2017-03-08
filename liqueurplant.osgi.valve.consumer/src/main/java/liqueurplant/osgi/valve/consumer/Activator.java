@@ -39,11 +39,9 @@ public class Activator {
             // Optional: optional and unary 0..1
             //*/
             cardinality = ReferenceCardinality.OPTIONAL,
-            /*
-            //
-            //*/
             policy = ReferencePolicy.DYNAMIC,
-            unbind = "unsetValveIf"
+            unbind = "unsetValveIf",
+            target = "(foo=valve.v2)"
     )
     protected void setValveIf(InValveDriverIf valveService){
         System.out.println("Binding valve service");
