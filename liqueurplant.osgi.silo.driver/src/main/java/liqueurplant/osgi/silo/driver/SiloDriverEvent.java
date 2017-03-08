@@ -2,8 +2,6 @@ package liqueurplant.osgi.silo.driver;
 
 import liqueurplant.osgi.silo.SiloState;
 import liqueurplant.osgi.silo.controller.SiloCtrlEvent;
-import liqueurplant.osgi.valve.in.api.InValveDriverIf;
-import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
 
 /**
  * Created by bocha on 1/3/2017.
