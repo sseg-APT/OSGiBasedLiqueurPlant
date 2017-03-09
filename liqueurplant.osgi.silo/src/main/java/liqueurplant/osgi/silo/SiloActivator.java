@@ -1,8 +1,6 @@
 package liqueurplant.osgi.silo;
 
-import liqueurplant.osgi.silo.controller.SiloCtrlEvent;
 import liqueurplant.osgi.silo.controller.SimpleSiloCtrl;
-import liqueurplant.osgi.silo.controller.SimpleSiloCtrlState;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 

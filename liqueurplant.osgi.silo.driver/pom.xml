@@ -15,17 +15,29 @@
     <dependencies>
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.silo</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.silo.driver.api</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-core</artifactId>
+            <version>1.1</version>
         </dependency>
     </dependencies>
 
@@ -37,8 +49,6 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Bundle-Activator>liqueurplant.osgi.silo.driver.SiloDriverActivator</Bundle-Activator>
-                        <Export-Package>liqueurplant.osgi.silo.driver</Export-Package>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
                         <_dsannotations>*</_dsannotations>

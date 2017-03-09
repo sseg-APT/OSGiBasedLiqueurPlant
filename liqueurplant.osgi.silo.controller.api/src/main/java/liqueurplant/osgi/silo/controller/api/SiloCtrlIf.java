@@ -12,4 +12,6 @@ public interface SiloCtrlIf {
     void fill() throws Exception;
 
     void empty() throws Exception;
+
+    void put2EventQueue(Object event) throws Exception;
 }

@@ -1,84 +1,66 @@
 package liqueurplant.osgi.silo.controller;
 
 //import liqueurplant.osgi.plant.LiqueurPlant;
-import liqueurplant.osgi.silo.driver.SiloDriverEvent;
-import liqueurplant.osgi.silo.driver.SimpleSiloDriver;
+import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
+import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-@Component(name = "liqueurplant.siloCtrl")
-public class SimpleSiloCtrl extends SiloCtrl implements Runnable {
+@Component(
+        name = "liqueurplant.osgi.silo.controller.SimpleSiloController",
+        service = liqueurplant.osgi.silo.controller.api.SiloCtrlIf.class,
+        immediate = true
+)
+public class SimpleSiloCtrl extends Thread implements SiloCtrlIf {
 
-    //LiqueurPlant itsPlant;
-    public SimpleSiloDriver itsDriver;
-    SimpleSiloCtrlState state;
-    public ArrayBlockingQueue<SiloCtrlEvent> itsEq;
-    private ArrayBlockingQueue<SiloDriverEvent> itsDriverEq;
+    public ArrayBlockingQueue siloCtrlEventQueue;
+    private SiloDriverIf siloDriver;
 
-    public SimpleSiloCtrl(SimpleSiloCtrlState s, ArrayBlockingQueue<SiloCtrlEvent> eq) {
-        //this.itsPlant = plant;
-        state = s;
-        itsEq = eq;
-        itsDriver = new SimpleSiloDriver(itsEq);
-        itsDriverEq = itsDriver.itsEq;
+    public SimpleSiloCtrl() {
+
     }
 
     public void run() {
-        SiloCtrlEvent scEvent;
-        SimpleSiloCtrlState newState = null;
-        boolean stop = false;
-
-        new Thread(itsDriver).start();
-        System.out.println("S1: Controller State = " + state + "\n"); // Logger info
-        while (state != null) {
-            if (stop) {
-                stopProcess();
-                break;
-            }
-            scEvent = getNextEvent();
-            System.out.println("S1: Event arrived = " + scEvent + "\n"); // Logger fine
-            if (scEvent == SiloCtrlEvent.STOP)
-                stop = true;
-            else {
-                newState = this.state.processEvent(this, scEvent);
-                if (newState != state) {
-                    state = newState;
-                    System.out.println("S1: Controller State= " + state + "\n"); // Loger fine
-                }
-            }
-        }
-    }
-    private void stopProcess(){
-        try {
-            itsDriver.itsEq.put(SiloDriverEvent.STOP);
-
-            System.out.println("S1 Ctrl: stopped"); // loger severe
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    private SiloCtrlEvent getNextEvent() {
-        // TODO Auto-generated method stub
-        SiloCtrlEvent event = null;
-
-        try {
-            event = itsEq.take();
-        } catch (InterruptedException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-
-        return event;
 
     }
 
-    public ArrayBlockingQueue<SiloCtrlEvent> getEventQueue() {
-        // TODO Auto-generated method stub
-        return this.itsEq;
+    @Override
+    public void fill() throws Exception {
+        System.out.println("Silo fill");
+        System.out.println(SiloDriverIf.Event.HIGH_LEVEL_REACHED.toString());
     }
+
+    @Override
+    public void empty() throws Exception {
+
+    }
+
+    @Override
+    public void put2EventQueue(Object event) throws Exception {
+        siloCtrlEventQueue.put(event);
+    }
+
+    @Reference(
+            name ="siloDriver.service",
+            service = SiloDriverIf.class,
+            cardinality = ReferenceCardinality.MANDATORY,
+            policy = ReferencePolicy.DYNAMIC,
+            unbind = "unsetSiloDriver"
+    )
+    private void setSiloDriver(SiloDriverIf siloDriver){
+        System.out.println("Silo driver binded.");
+        this.siloDriver = siloDriver;
+    }
+
+    private void unsetSiloDriver(SiloDriverIf siloDriver){
+        System.out.println("Silo driver unbinded.");
+        this.siloDriver = null;
+    }
+
     /*
     public interface StateChangedListener {
         void stateChanged(String newState);

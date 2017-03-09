@@ -2,10 +2,7 @@ package liqueurplant.osgi.valve.in;
 
 import com.pi4j.io.gpio.*;
 import liqueurplant.osgi.valve.in.api.InValveDriverIf;
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * Created by bojit on 04-Mar-17.
@@ -21,16 +18,6 @@ public class InValveDriver implements InValveDriverIf {
 
     public InValveDriver() {
         gpioController = GpioFactory.getInstance();
-    }
-
-    @Activate
-    public void activate(BundleContext context) {
-        context.registerService(InValveDriverIf.class.getName(), new InValveDriver(), null);
-    }
-
-    @Deactivate
-    public void deactivate() {
-
     }
 
     @Override
