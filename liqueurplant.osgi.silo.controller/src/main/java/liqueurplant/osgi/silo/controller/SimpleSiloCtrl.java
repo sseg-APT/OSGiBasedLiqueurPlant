@@ -8,7 +8,7 @@ import org.osgi.service.component.annotations.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 @Component
-public class SimpleSiloCtrl extends Thread implements SiloCtrlIf {
+public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
     private ArrayBlockingQueue<String> eventQueue;
 
@@ -26,11 +26,13 @@ public class SimpleSiloCtrl extends Thread implements SiloCtrlIf {
     public void put2EventQueue(String event) {
         try {
             eventQueue.put(event);
+            System.out.println(eventQueue.take());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
+    @Override
     public void run() {
         while(true){
             if(!eventQueue.isEmpty()){

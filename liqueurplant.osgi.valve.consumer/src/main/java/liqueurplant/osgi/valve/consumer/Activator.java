@@ -25,7 +25,7 @@ public class Activator {
     @Deactivate
     public void deactivate(){
         try {
-            siloCtrl.put2EventQueue("event");
+            siloCtrl.put2EventQueue("event from consumer");
             valveService.close();
         } catch (Exception e) {
             e.printStackTrace();
