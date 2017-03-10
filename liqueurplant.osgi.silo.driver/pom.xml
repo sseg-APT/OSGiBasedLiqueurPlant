@@ -19,6 +19,10 @@
             <artifactId>liqueurplant.osgi.silo.driver.api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
+        </dependency>
         <!--
         <dependency>
             <groupId>liqueurplant.osgi</groupId>

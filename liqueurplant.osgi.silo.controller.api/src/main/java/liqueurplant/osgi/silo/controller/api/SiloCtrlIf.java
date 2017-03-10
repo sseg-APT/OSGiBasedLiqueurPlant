@@ -9,9 +9,5 @@ import org.osgi.annotation.versioning.ProviderType;
 //SiloCtrlIf + heat2temp, getState, mix
 public interface SiloCtrlIf {
 
-    void fill() throws Exception;
-
-    void empty() throws Exception;
-
-    void put2EventQueue(Object event) throws Exception;
+    void put2EventQueue(String event);
 }

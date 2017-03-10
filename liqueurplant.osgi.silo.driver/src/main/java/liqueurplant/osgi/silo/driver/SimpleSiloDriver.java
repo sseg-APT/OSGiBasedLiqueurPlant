@@ -1,11 +1,9 @@
 package liqueurplant.osgi.silo.driver;
 
-//import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
+import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.ComponentContext;
+import org.osgi.service.component.annotations.*;
 
 /**
  * Created by bocha on 1/3/2017.
@@ -19,12 +17,16 @@ public class SimpleSiloDriver implements SiloDriverIf {
     //private GpioPinDigitalInput highLevelReachedSensor;
     //private InValveDriverIf inValve;
     //private OutValveDriverIf outValve;
-    //private SiloCtrlIf siloCtrl;
+    public SiloCtrlIf siloCtrl;
+
 
     public SimpleSiloDriver() {
 
         //gpioController = GpioFactory.getInstance();
+        System.out.println("Silo Driver new instance.");
     }
+
+
 
 
     @Override
@@ -129,7 +131,7 @@ public class SimpleSiloDriver implements SiloDriverIf {
     /*
     @Reference(
             name = "siloController.service",
-            service = SiloCtrlIf.class,
+            service = liqueurplant.osgi.silo.controller.api.SiloCtrlIf.class,
             cardinality = ReferenceCardinality.MANDATORY,
             policy = ReferencePolicy.DYNAMIC,
             unbind = "unsetSiloCtrl"

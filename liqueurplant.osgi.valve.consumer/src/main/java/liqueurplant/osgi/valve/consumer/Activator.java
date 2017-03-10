@@ -1,5 +1,6 @@
 package liqueurplant.osgi.valve.consumer;
 
+import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import liqueurplant.osgi.valve.in.api.InValveDriverIf;
 import org.osgi.service.component.annotations.*;
 
@@ -10,6 +11,7 @@ import org.osgi.service.component.annotations.*;
 public class Activator {
 
     private InValveDriverIf valveService;
+    private SiloCtrlIf siloCtrl;
 
     @Activate
     public void activate() {
@@ -23,6 +25,7 @@ public class Activator {
     @Deactivate
     public void deactivate(){
         try {
+            siloCtrl.put2EventQueue("event");
             valveService.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,4 +54,29 @@ public class Activator {
         System.out.println("Unbinding valve service");
         this.valveService = null;
     }
+
+    @Reference(
+            name = "siloCtrl.service",
+            service = SiloCtrlIf.class,
+            /* Cardinality (Whether the bundle works with or without service.
+            // Mandatory: mandatory and unary 1..1
+            // At least one: mandatory and multiple 1..n
+            // Multiple: optional and multiple 0..n
+            // Optional: optional and unary 0..1
+            //*/
+            cardinality = ReferenceCardinality.OPTIONAL,
+            policy = ReferencePolicy.DYNAMIC,
+            unbind = "unsetSiloCtrlIf"
+    )
+    protected void setSiloCtrlIf(SiloCtrlIf siloCtrl){
+        System.out.println("Binding silo controller service");
+        this.siloCtrl = siloCtrl;
+    }
+
+    protected void unsetSiloCtrlIf(SiloCtrlIf siloCtrl){
+        System.out.println("Unbinding silo controller service.");
+        this.siloCtrl = null;
+    }
+
+
 }
