@@ -31,10 +31,10 @@
                     <instructions>
                         <Export-Package>liqueurplant.osgi.silo.controller.api</Export-Package>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+                        <Import-Package>*</Import-Package>
                         <_dsannotations>*</_dsannotations>
                     </instructions>
                 </configuration>
-
             </plugin>
         </plugins>
     </build>

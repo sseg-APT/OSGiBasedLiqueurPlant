@@ -1,32 +1,29 @@
 package liqueurplant.osgi.silo.driver;
 
-import com.pi4j.io.gpio.*;
-import com.pi4j.io.gpio.event.GpioPinListenerDigital;
-import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
+//import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
-import liqueurplant.osgi.valve.in.api.InValveDriverIf;
-import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.*;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 
 /**
  * Created by bocha on 1/3/2017.
  */
-@Component(
-        name = "liqueurplant.osgi.silo.driver.SimpleSiloDriver",
-        service = liqueurplant.osgi.silo.driver.api.SiloDriverIf.class,
-        immediate = true
-)
+
+
+@Component
 public class SimpleSiloDriver implements SiloDriverIf {
 
-    private GpioController gpioController;
-    private GpioPinDigitalInput highLevelReachedSensor;
-    private InValveDriverIf inValve;
-    private OutValveDriverIf outValve;
-    private SiloCtrlIf siloCtrl;
+    //private GpioController gpioController;
+    //private GpioPinDigitalInput highLevelReachedSensor;
+    //private InValveDriverIf inValve;
+    //private OutValveDriverIf outValve;
+    //private SiloCtrlIf siloCtrl;
 
     public SimpleSiloDriver() {
-        gpioController = GpioFactory.getInstance();
+
+        //gpioController = GpioFactory.getInstance();
     }
 
 
@@ -42,6 +39,7 @@ public class SimpleSiloDriver implements SiloDriverIf {
 
     @Override
     public String highLevelReached() throws Exception {
+        /*
 
         String[] sensorState = {null};
 
@@ -63,10 +61,13 @@ public class SimpleSiloDriver implements SiloDriverIf {
             e.printStackTrace();
         }
         return sensorState[0];
+        */
+        return null;
     }
 
     @Override
     public String lowLevelReached() throws Exception {
+        /*
         String[] sensorState = {null};
 
         try {
@@ -87,8 +88,10 @@ public class SimpleSiloDriver implements SiloDriverIf {
             e.printStackTrace();
         }
         return sensorState[0];
+        */
+        return null;
     }
-
+    /*
     @Reference(
             name = "inValveDriver.service",
             service = InValveDriverIf.class,
@@ -122,7 +125,7 @@ public class SimpleSiloDriver implements SiloDriverIf {
         System.out.println("Unbinding outValve");
         this.outValve = null;
     }
-
+    */
     /*
     @Reference(
             name = "siloController.service",

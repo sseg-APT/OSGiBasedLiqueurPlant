@@ -13,17 +13,13 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.silo.driver.api</artifactId>
         </dependency>
 
-
+        <!--
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
@@ -39,6 +35,7 @@
             <artifactId>pi4j-core</artifactId>
             <version>1.1</version>
         </dependency>
+        -->
     </dependencies>
 
     <build>

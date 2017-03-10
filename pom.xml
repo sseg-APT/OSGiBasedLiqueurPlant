@@ -41,7 +41,7 @@
     </properties>
 
     <dependencies>
-
+        <!--
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.service.metatype</artifactId>
@@ -66,7 +66,7 @@
             <version>2.0.8</version>
         </dependency>
 
-        <!-- Web Console -->
+
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.webconsole</artifactId>
@@ -85,11 +85,7 @@
             <version>1.0.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.3.2</version>
-        </dependency>
+
 
         <dependency>
             <groupId>org.json</groupId>
@@ -109,13 +105,55 @@
             <version>3.5.6</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.scr -->
+
+        -->
+        <!-- OSGi Declarative Service Annotations -->
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.component.annotations</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+
+        <!-- OSGi Declarative Services on Apache Felix -->
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.scr</artifactId>
             <version>2.0.8</version>
         </dependency>
 
+        <!-- OSGi core 6.0.0 -->
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.cm</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+
+        <!-- Apache Felix Web Console -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.webconsole</artifactId>
+            <version>4.3.0</version>
+        </dependency>
+
+        <!-- Required for Felix Web Console -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
+        <!-- Required to start Felix Web Console on localhost -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.http.jetty</artifactId>
+            <version>2.2.0</version>
+        </dependency>
 
     </dependencies>
 

@@ -2,7 +2,7 @@ package liqueurplant.osgi.silo.controller;
 
 //import liqueurplant.osgi.plant.LiqueurPlant;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
-import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
+//import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -10,15 +10,11 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-@Component(
-        name = "liqueurplant.osgi.silo.controller.SimpleSiloController",
-        service = liqueurplant.osgi.silo.controller.api.SiloCtrlIf.class,
-        immediate = true
-)
+@Component
 public class SimpleSiloCtrl extends Thread implements SiloCtrlIf {
 
     public ArrayBlockingQueue siloCtrlEventQueue;
-    private SiloDriverIf siloDriver;
+    //private SiloDriverIf siloDriver;
 
     public SimpleSiloCtrl() {
 
@@ -31,7 +27,7 @@ public class SimpleSiloCtrl extends Thread implements SiloCtrlIf {
     @Override
     public void fill() throws Exception {
         System.out.println("Silo fill");
-        System.out.println(SiloDriverIf.Event.HIGH_LEVEL_REACHED.toString());
+        //System.out.println(SiloDriverIf.Event.HIGH_LEVEL_REACHED.toString());
     }
 
     @Override
@@ -43,7 +39,7 @@ public class SimpleSiloCtrl extends Thread implements SiloCtrlIf {
     public void put2EventQueue(Object event) throws Exception {
         siloCtrlEventQueue.put(event);
     }
-
+    /*
     @Reference(
             name ="siloDriver.service",
             service = SiloDriverIf.class,
@@ -60,7 +56,7 @@ public class SimpleSiloCtrl extends Thread implements SiloCtrlIf {
         System.out.println("Silo driver unbinded.");
         this.siloDriver = null;
     }
-
+    */
     /*
     public interface StateChangedListener {
         void stateChanged(String newState);
