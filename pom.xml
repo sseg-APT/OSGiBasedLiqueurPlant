@@ -10,8 +10,6 @@
     <modules>
         <module>liqueurplant.osgi.client</module>
         <module>liqueurplant.osgi.gpio.test</module>
-        <module>liqueurplant.osgi.plant</module>
-        <module>liqueurplant.osgi.silo</module>
         <module>liqueurplant.osgi.silo.controller</module>
         <module>liqueurplant.osgi.silo.controller.api</module>
         <module>liqueurplant.osgi.silo.driver</module>
@@ -138,7 +136,7 @@
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.webconsole</artifactId>
-            <version>4.3.0</version>
+            <version>3.1.8</version>
         </dependency>
 
         <!-- Required for Felix Web Console -->

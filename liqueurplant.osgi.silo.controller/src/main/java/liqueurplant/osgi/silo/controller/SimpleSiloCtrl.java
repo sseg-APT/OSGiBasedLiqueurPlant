@@ -1,20 +1,17 @@
 package liqueurplant.osgi.silo.controller;
 
-//import liqueurplant.osgi.plant.LiqueurPlant;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
-//import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
 import org.osgi.service.component.annotations.*;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-@Component
+@Component( immediate = true )
 public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
     private ArrayBlockingQueue<String> eventQueue;
 
     public SimpleSiloCtrl() {
         eventQueue = new ArrayBlockingQueue<String>(20);
-
     }
 
     @Activate

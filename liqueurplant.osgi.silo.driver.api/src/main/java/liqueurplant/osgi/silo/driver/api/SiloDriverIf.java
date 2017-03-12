@@ -12,13 +12,6 @@ public interface SiloDriverIf {
 
     void closeDriver();
 
-    String highLevelReached() throws Exception;
 
-    String lowLevelReached() throws Exception;
-
-    enum Event{
-        HIGH_LEVEL_REACHED,
-        LOW_LEVEL_REACHED
-    }
 
 }

@@ -1,6 +1,6 @@
 package liqueurplant.osgi.valve.consumer;
 
-import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
+import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
 import liqueurplant.osgi.valve.in.api.InValveDriverIf;
 import org.osgi.service.component.annotations.*;
 
@@ -11,12 +11,14 @@ import org.osgi.service.component.annotations.*;
 public class Activator {
 
     private InValveDriverIf valveService;
-    private SiloCtrlIf siloCtrl;
+
+    private SiloDriverIf siloDriver;
 
     @Activate
     public void activate() {
         try {
             valveService.open();
+            siloDriver.openDriver();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -25,7 +27,6 @@ public class Activator {
     @Deactivate
     public void deactivate(){
         try {
-            siloCtrl.put2EventQueue("event from consumer");
             valveService.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,25 +58,25 @@ public class Activator {
 
     @Reference(
             name = "siloCtrl.service",
-            service = SiloCtrlIf.class,
+    service = SiloDriverIf.class,
             /* Cardinality (Whether the bundle works with or without service.
             // Mandatory: mandatory and unary 1..1
             // At least one: mandatory and multiple 1..n
             // Multiple: optional and multiple 0..n
             // Optional: optional and unary 0..1
             //*/
-            cardinality = ReferenceCardinality.OPTIONAL,
-            policy = ReferencePolicy.DYNAMIC,
-            unbind = "unsetSiloCtrlIf"
-    )
-    protected void setSiloCtrlIf(SiloCtrlIf siloCtrl){
+    cardinality = ReferenceCardinality.OPTIONAL,
+    policy = ReferencePolicy.DYNAMIC,
+    unbind = "unsetSiloDriver"
+            )
+    protected void setSiloDriver(SiloDriverIf siloDriver){
         System.out.println("Binding silo controller service");
-        this.siloCtrl = siloCtrl;
+        this.siloDriver = siloDriver;
     }
 
-    protected void unsetSiloCtrlIf(SiloCtrlIf siloCtrl){
+    protected void unsetSiloDriver(SiloDriverIf siloDriver){
         System.out.println("Unbinding silo controller service.");
-        this.siloCtrl = null;
+        this.siloDriver = null;
     }
 
 

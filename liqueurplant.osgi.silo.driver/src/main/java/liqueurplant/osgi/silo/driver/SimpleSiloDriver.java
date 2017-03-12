@@ -2,7 +2,6 @@ package liqueurplant.osgi.silo.driver;
 
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
-import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.*;
 
 /**
@@ -10,141 +9,39 @@ import org.osgi.service.component.annotations.*;
  */
 
 
-@Component
+@Component(immediate = true)
 public class SimpleSiloDriver implements SiloDriverIf {
 
-    //private GpioController gpioController;
-    //private GpioPinDigitalInput highLevelReachedSensor;
-    //private InValveDriverIf inValve;
-    //private OutValveDriverIf outValve;
-    public SiloCtrlIf siloCtrl;
+    private SiloCtrlIf siloCtrl;
 
-
-    public SimpleSiloDriver() {
-
-        //gpioController = GpioFactory.getInstance();
-        System.out.println("Silo Driver new instance.");
+    @Activate
+    public void activate() {
+        System.out.println("Driver activated.");
     }
 
+    @Deactivate
+    public void deactivate() {
 
-
+    }
 
     @Override
     public void openDriver() {
-        System.out.println("Driver started.");
+        siloCtrl.put2EventQueue("High lever reached");
     }
 
     @Override
     public void closeDriver() {
-        System.out.println("Driver stopped.");
+
     }
 
-    @Override
-    public String highLevelReached() throws Exception {
-        /*
-
-        String[] sensorState = {null};
-
-        try {
-            while (!gpioController.getProvisionedPins().isEmpty())
-                gpioController.unprovisionPin(gpioController.getProvisionedPins().iterator().next());
-
-            highLevelReachedSensor = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_03, PinPullResistance.PULL_DOWN);
-            highLevelReachedSensor.setShutdownOptions(true);
-
-            highLevelReachedSensor.addListener((GpioPinListenerDigital) event -> {
-                if(event.getState() == PinState.HIGH){
-                    sensorState[0] = Event.HIGH_LEVEL_REACHED.toString();
-                }
-            });
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return sensorState[0];
-        */
-        return null;
-    }
-
-    @Override
-    public String lowLevelReached() throws Exception {
-        /*
-        String[] sensorState = {null};
-
-        try {
-            while (!gpioController.getProvisionedPins().isEmpty())
-                gpioController.unprovisionPin(gpioController.getProvisionedPins().iterator().next());
-
-            highLevelReachedSensor = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02, PinPullResistance.PULL_DOWN);
-            highLevelReachedSensor.setShutdownOptions(true);
-
-            highLevelReachedSensor.addListener((GpioPinListenerDigital) event -> {
-                if(event.getState() == PinState.HIGH){
-                    sensorState[0] = SimpleSiloDriverEvent.LOW_LEVEL_REACHED.toString();
-                }
-            });
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return sensorState[0];
-        */
-        return null;
-    }
-    /*
-    @Reference(
-            name = "inValveDriver.service",
-            service = InValveDriverIf.class,
-            cardinality = ReferenceCardinality.MANDATORY,
-            policy = ReferencePolicy.DYNAMIC,
-            unbind = "unsetInValve"
-    )
-    private void setInValve(InValveDriverIf inValve) {
-        System.out.println("Binding inValve");
-        this.inValve = inValve;
-    }
-
-    private void unsetInValve(InValveDriverIf inValve) {
-        System.out.println("Unbind inValve");
-        this.inValve = null;
-    }
-
-    @Reference(
-            name = "outValveDriver.service",
-            service = OutValveDriverIf.class,
-            cardinality = ReferenceCardinality.MANDATORY,
-            policy = ReferencePolicy.DYNAMIC,
-            unbind = "unsetOutValve"
-    )
-    private void setOutValve(OutValveDriverIf outValve) {
-        System.out.println("Binding outValve");
-        this.outValve = outValve;
-    }
-
-    private void unsetOutValve(OutValveDriverIf outValve) {
-        System.out.println("Unbinding outValve");
-        this.outValve = null;
-    }
-    */
-    /*
-    @Reference(
-            name = "siloController.service",
-            service = liqueurplant.osgi.silo.controller.api.SiloCtrlIf.class,
-            cardinality = ReferenceCardinality.MANDATORY,
-            policy = ReferencePolicy.DYNAMIC,
-            unbind = "unsetSiloCtrl"
-    )
-    private void setSiloCtrl(SiloCtrlIf siloCtrl) {
-        System.out.println("Binding silo controller.");
+    @Reference
+    protected void setSiloCtrlIf(SiloCtrlIf siloCtrl){
+        System.out.println("Binding silo controller service");
         this.siloCtrl = siloCtrl;
     }
 
-    private void unsetSiloCtrl(SiloCtrlIf siloCtrl) {
-        System.out.println("Unbinding silo controller");
+    protected void unsetSiloCtrlIf(SiloCtrlIf siloCtrl){
+        System.out.println("Unbinding silo controller service.");
         this.siloCtrl = null;
     }
-    //*/
-
 }
