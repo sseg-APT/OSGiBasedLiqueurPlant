@@ -15,7 +15,6 @@
         <module>liqueurplant.osgi.silo.driver</module>
         <module>liqueurplant.osgi.valve</module>
         <module>liqueurplant.osgi.valve.in.api</module>
-        <module>liqueurplant.server</module>
         <module>liqueurplant.osgi.valve.consumer</module>
         <module>liqueurplant.osgi.valve.in</module>
         <module>liqueurplant.osgi.valve.out.api</module>
