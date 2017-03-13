@@ -15,11 +15,11 @@
         <module>liqueurplant.osgi.silo.driver</module>
         <module>liqueurplant.osgi.valve</module>
         <module>liqueurplant.osgi.valve.in.api</module>
-        <module>liqueurplant.osgi.valve.consumer</module>
+        <!--<module>liqueurplant.osgi.valve.consumer</module>-->
         <module>liqueurplant.osgi.valve.in</module>
         <module>liqueurplant.osgi.valve.out.api</module>
         <module>liqueurplant.osgi.valve.out</module>
-        <module>liqueurplant.osgi.valve.tester</module>
+        <!--<module>liqueurplant.osgi.valve.tester</module>-->
         <module>liqueurplant.osgi.silo.driver.api</module>
     </modules>
     <packaging>pom</packaging>
@@ -323,6 +323,17 @@
                         <target>1.8</target>
                         <debug>true</debug>
                         <optimize>true</optimize>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <obrRepository>repository.xml</obrRepository>
+                        <instructions>
+                            <!-- bnd instructions -->
+                        </instructions>
                     </configuration>
                 </plugin>
             </plugins>
