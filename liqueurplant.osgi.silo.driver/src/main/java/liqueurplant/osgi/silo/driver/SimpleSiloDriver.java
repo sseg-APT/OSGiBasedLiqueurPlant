@@ -1,13 +1,13 @@
 package liqueurplant.osgi.silo.driver;
 
-import com.pi4j.io.gpio.*;
-import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by bocha on 1/3/2017.
@@ -18,6 +18,7 @@ import org.osgi.service.component.annotations.Reference;
 public class SimpleSiloDriver implements SiloDriverIf, Runnable {
 
     private SiloCtrlIf siloCtrl;
+    public static Logger LOGGER = LoggerFactory.getLogger(SimpleSiloDriver.class);
     //private final GpioController gpioController;
     //private GpioPinDigitalInput highLevelSensor;
     //private GpioPinDigitalInput lowLevelSensor;
@@ -38,7 +39,7 @@ public class SimpleSiloDriver implements SiloDriverIf, Runnable {
         highLevelSensor.setShutdownOptions(true);
         lowLevelSensor.setShutdownOptions(true);
         //*/
-        siloCtrl.put2EventQueue(Driver2SiloEvent.HIGH_LEVEL_REACHED);
+        //siloCtrl.put2EventQueue(Driver2SiloEvent.HIGH_LEVEL_REACHED);
     }
 
     @Deactivate
@@ -72,13 +73,13 @@ public class SimpleSiloDriver implements SiloDriverIf, Runnable {
     ///*
     @Reference
     protected void setSiloCtrlIf(SiloCtrlIf siloCtrl){
-        System.out.println("Binding silo controller service");
         this.siloCtrl = siloCtrl;
+        LOGGER.info(" SILO-CONTROLLER binded.");
     }
 
     protected void unsetSiloCtrlIf(SiloCtrlIf siloCtrl){
-        System.out.println("Unbinding silo controller service.");
         this.siloCtrl = null;
+        LOGGER.info(" SILO-CONTROLLER unbinded.");
     }
     //*/
 

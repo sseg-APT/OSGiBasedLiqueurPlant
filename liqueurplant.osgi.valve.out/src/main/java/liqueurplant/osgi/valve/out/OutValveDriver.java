@@ -13,15 +13,16 @@ import org.osgi.service.component.annotations.Component;
 )
 public class OutValveDriver implements OutValveDriverIf {
 
-    private GpioController gpioController;
-    private GpioPinDigitalOutput outValve;
+    //private GpioController gpioController;
+    //private GpioPinDigitalOutput outValve;
 
     public OutValveDriver() {
-        gpioController = GpioFactory.getInstance();
+        //gpioController = GpioFactory.getInstance();
     }
 
     @Override
     public void open() throws Exception {
+        /*
         try {
             while (!gpioController.getProvisionedPins().isEmpty())
                 gpioController.unprovisionPin(gpioController.getProvisionedPins().iterator().next());
@@ -30,15 +31,18 @@ public class OutValveDriver implements OutValveDriverIf {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //*/
 
     }
 
     @Override
     public void close() throws Exception {
+        /*
         try {
             outValve.setState(PinState.LOW);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //*/
     }
 }

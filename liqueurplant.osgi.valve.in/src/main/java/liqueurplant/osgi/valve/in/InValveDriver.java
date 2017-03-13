@@ -13,15 +13,16 @@ import org.osgi.service.component.annotations.Component;
 )
 public class InValveDriver implements InValveDriverIf {
 
-    private GpioPinDigitalOutput inValve;
-    private GpioController gpioController;
+    //private GpioPinDigitalOutput inValve;
+    //private GpioController gpioController;
 
     public InValveDriver() {
-        gpioController = GpioFactory.getInstance();
+        //gpioController = GpioFactory.getInstance();
     }
 
     @Override
     public void open() throws Exception {
+        /*
         try {
             while (!gpioController.getProvisionedPins().isEmpty())
                 gpioController.unprovisionPin(gpioController.getProvisionedPins().iterator().next());
@@ -30,14 +31,17 @@ public class InValveDriver implements InValveDriverIf {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //*/
     }
 
     @Override
     public void close() throws Exception {
+        /*
         try {
             inValve.setState(PinState.LOW);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        */
     }
 }

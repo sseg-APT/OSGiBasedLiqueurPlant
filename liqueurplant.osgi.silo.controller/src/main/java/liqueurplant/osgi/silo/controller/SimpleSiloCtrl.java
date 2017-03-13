@@ -2,15 +2,23 @@ package liqueurplant.osgi.silo.controller;
 
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
-import org.osgi.service.component.annotations.*;
+import liqueurplant.osgi.valve.in.api.InValveDriverIf;
+import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
-import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component( immediate = true )
 public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
-    private ArrayBlockingQueue<SiloDriverIf.Driver2SiloEvent> eventQueue;
+    protected ArrayBlockingQueue<SiloDriverIf.Driver2SiloEvent> eventQueue;
+    protected InValveDriverIf inValve;
+    protected OutValveDriverIf outValve;
+    public static Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
 
     public SimpleSiloCtrl() {
         eventQueue = new ArrayBlockingQueue<>(20);
@@ -18,7 +26,7 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
     @Activate
     public void activate() {
-        System.out.println("Silo controller activated.");
+
     }
 
     @Override
@@ -43,4 +51,27 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
             }
         }
     }
+
+    @Reference
+    protected void setInValve(InValveDriverIf inValve) {
+        this.inValve = inValve;
+        LOGGER.info("IN-VALVE binded.");
+    }
+
+    protected void unsetInValve(InValveDriverIf inValve) {
+        this.inValve = null;
+        LOGGER.info("IN-VALVE unbinded.");
+    }
+
+    @Reference
+    protected void setOutValve(OutValveDriverIf outValve) {
+        this.outValve = outValve;
+        LOGGER.info("OUT-VALVE binded.");
+    }
+
+    protected void unsetOutValve(OutValveDriverIf outValve) {
+        this.outValve = null;
+        LOGGER.info("OUT-VALVE unbinded.");
+    }
+
 }
