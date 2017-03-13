@@ -4,16 +4,31 @@ import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
 import org.eclipse.leshan.client.resource.ObjectsInitializer;
 
 import java.util.List;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
 
 /**
  * Created by bocha on 1/12/2016.
  */
+@Component
 public class SiloDevice extends AbstractDevice {
 
-    SiloObject silo = new SiloObject();
+    SiloObject silo;
+
+    public SiloDevice() {
+        super("silo", null);
+
+    }
 
     public SiloDevice(String endpoint, String[] args) {
         super(endpoint, args);
+    }
+
+    @Activate
+    public void activate(){
+        System.out.println("Silo device activated.");
+        silo = new SiloObject();
+        init();
     }
 
     @Override

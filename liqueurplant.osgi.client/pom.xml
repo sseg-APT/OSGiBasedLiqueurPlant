@@ -16,19 +16,17 @@
     <dependencies>
 
         <dependency>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.compendium</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.core</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>osgi.annotation</artifactId>
-        </dependency>
+
 
         <dependency>
             <groupId>org.eclipse.leshan</groupId>
@@ -79,10 +77,7 @@
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.valve</artifactId>
         </dependency>
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.silo</artifactId>
-        </dependency>
+
 
     </dependencies>
 
@@ -94,14 +89,12 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>liqueurplant.osgi.silo</Export-Package>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-                        <Bundle-Activator>liqueurplant.osgi.client.ClientActivator</Bundle-Activator>
                         <Import-Package>*</Import-Package>
                         <Include-Resource>
                             {maven-resources}
                         </Include-Resource>
-
+                        <_dsannotations>*</_dsannotations>
                     </instructions>
                 </configuration>
             </plugin>

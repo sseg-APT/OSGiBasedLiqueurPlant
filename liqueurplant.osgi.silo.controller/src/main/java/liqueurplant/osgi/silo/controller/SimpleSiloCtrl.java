@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 @Component( immediate = true )
 public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
-    protected ArrayBlockingQueue<SiloDriverIf.Driver2SiloEvent> eventQueue;
+    protected ArrayBlockingQueue eventQueue;
     protected InValveDriverIf inValve;
     protected OutValveDriverIf outValve;
     public static Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
@@ -32,7 +32,7 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
     @Override
     public void put2EventQueue(Object o) {
         try {
-            eventQueue.put((SiloDriverIf.Driver2SiloEvent) o);
+            eventQueue.put(o);
             System.out.println(eventQueue.take().toString());
         } catch (InterruptedException e) {
             e.printStackTrace();
