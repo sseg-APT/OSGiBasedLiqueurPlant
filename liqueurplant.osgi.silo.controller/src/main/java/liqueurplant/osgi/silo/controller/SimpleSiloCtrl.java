@@ -1,17 +1,19 @@
 package liqueurplant.osgi.silo.controller;
 
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
+import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
 import org.osgi.service.component.annotations.*;
 
+import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 
 @Component( immediate = true )
 public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
-    private ArrayBlockingQueue<String> eventQueue;
+    private ArrayBlockingQueue<SiloDriverIf.Driver2SiloEvent> eventQueue;
 
     public SimpleSiloCtrl() {
-        eventQueue = new ArrayBlockingQueue<String>(20);
+        eventQueue = new ArrayBlockingQueue<>(20);
     }
 
     @Activate
@@ -20,10 +22,10 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
     }
 
     @Override
-    public void put2EventQueue(String event) {
+    public void put2EventQueue(Object o) {
         try {
-            eventQueue.put(event);
-            System.out.println(eventQueue.take());
+            eventQueue.put((SiloDriverIf.Driver2SiloEvent) o);
+            System.out.println(eventQueue.take().toString());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -41,6 +43,4 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
             }
         }
     }
-
-
 }

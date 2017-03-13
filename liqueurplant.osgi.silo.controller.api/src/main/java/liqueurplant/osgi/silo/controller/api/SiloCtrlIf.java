@@ -8,5 +8,5 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface SiloCtrlIf {
 
-    void put2EventQueue(String event);
+    void put2EventQueue(Object o);
 }
