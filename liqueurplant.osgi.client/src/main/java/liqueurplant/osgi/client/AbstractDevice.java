@@ -48,7 +48,7 @@ public abstract class AbstractDevice {
 
         this.endpoint = endpoint;
         this.localAddress = localAddress;
-        this.localPort = (new Random()).nextInt(60000 - 20000) + 20000;
+        this.localPort = 58464;
         this.secureLocalAddress = secureLocalAddress;
         this.secureLocalPort = secureLocalPort;
         this.needBootstrap = false;

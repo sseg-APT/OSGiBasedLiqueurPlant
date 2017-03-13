@@ -31,7 +31,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <leshan.version>0.1.11-M14</leshan.version>
+        <leshan.version>1.0.0-M1</leshan.version>
         <netty.version>4.1.6.Final</netty.version>
         <californium.version>2.0.0-M2</californium.version>
         <osgi.version>6.0.0</osgi.version>
@@ -151,6 +151,25 @@
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.http.jetty</artifactId>
             <version>2.2.0</version>
+        </dependency>
+
+        <!-- Required for gogo shell -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.shell</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.gogo.shell</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.gogo.command</artifactId>
+            <version>1.0.2</version>
         </dependency>
 
     </dependencies>

@@ -25,9 +25,6 @@
             <artifactId>org.osgi.compendium</artifactId>
         </dependency>
 
-
-
-
         <dependency>
             <groupId>org.eclipse.leshan</groupId>
             <artifactId>leshan-client-cf</artifactId>
@@ -70,11 +67,6 @@
 
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.silo.api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.valve</artifactId>
         </dependency>
 
@@ -89,7 +81,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
                         <Include-Resource>
                             {maven-resources}

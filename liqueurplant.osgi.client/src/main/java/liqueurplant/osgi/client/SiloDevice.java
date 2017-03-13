@@ -6,14 +6,15 @@ import org.eclipse.leshan.client.resource.ObjectsInitializer;
 import java.util.List;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
-/**
- * Created by bocha on 1/12/2016.
- */
+import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
+
+
 @Component
 public class SiloDevice extends AbstractDevice {
 
-    SiloObject silo;
+    SiloObject silo = new SiloObject();
 
     public SiloDevice() {
         super("silo", null);
@@ -27,16 +28,9 @@ public class SiloDevice extends AbstractDevice {
     @Activate
     public void activate(){
         System.out.println("Silo device activated.");
-        silo = new SiloObject();
         init();
     }
 
-    @Override
-    public void init() {
-        super.init();
-
-        //new Thread(silo).start();
-    }
     @Override
     protected List<LwM2mObjectEnabler> getEnablers(ObjectsInitializer initializer) {
         List<LwM2mObjectEnabler> superEnablers = super.getEnablers(initializer);
@@ -53,6 +47,15 @@ public class SiloDevice extends AbstractDevice {
         initializer.setInstancesForObject(SiloObject.modelId, silo);
         initializer.setClassForObject(FirmwareObject.modelId, FirmwareObject.class);
         return initializer;
+    }
+
+    @Reference
+    protected void setSiloController(SiloCtrlIf siloCtrl) {
+        silo.setSiloController(siloCtrl);
+    }
+
+    protected void unsetSiloController(SiloCtrlIf siloCtrl){
+        silo.unsetSiloController();
     }
 
 }
