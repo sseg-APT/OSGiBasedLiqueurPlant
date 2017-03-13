@@ -45,5 +45,7 @@ bin/
 *.war
 *.ear
 
+#obr file
+repository.xml
 
 RTTdata.txt
