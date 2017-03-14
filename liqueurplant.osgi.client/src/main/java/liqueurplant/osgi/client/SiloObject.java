@@ -1,19 +1,13 @@
 package liqueurplant.osgi.client;
 
+import liqueurplant.osgi.silo.controller.api.Process2SiloCtrlEvent;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
-import liqueurplant.osgi.silo.controller.api.SiloCtrlIf.Process2SiloCtrlEvent;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 public class SiloObject extends BaseInstanceEnabler {
@@ -21,23 +15,35 @@ public class SiloObject extends BaseInstanceEnabler {
     public static Logger LOG = LoggerFactory.getLogger(SiloObject.class);
     public static int modelId = 20000;
     static SiloCtrlIf siloCtrl;
+    public boolean fillingCompleted = false;
 
+    public SiloObject(){
+        new Thread(() -> {
+            while(true){
+                if(fillingCompleted != siloCtrl.getFillingCompleted()){
+                    fillingCompleted = siloCtrl.getFillingCompleted();
+                    fireResourcesChange(7);
+                }
+            }
+        });
+
+    }
 
     @Override
     public ReadResponse read(int resourceid) {
-        /*
+
         switch (resourceid) {
-            case 0:
-                return ReadResponse.success(resourceid, siloComponent.state);
+            //case 0:
+            //    return ReadResponse.success(resourceid, siloComponent.state);
             case 7:
-                return ReadResponse.success(resourceid, siloComponent.fillingCompleted);
-            case 8:
-                return ReadResponse.success(resourceid, siloComponent.emptyingCompleted);
+                return ReadResponse.success(resourceid, fillingCompleted);
+            //case 8:
+            //    return ReadResponse.success(resourceid, siloComponent.emptyingCompleted);
             default:
                 return super.read(resourceid);
         }
         //*/
-        return super.read(resourceid);
+        //return super.read(resourceid);
     }
 
     @Override
@@ -113,7 +119,7 @@ public class SiloObject extends BaseInstanceEnabler {
         fireResourcesChange(11);
     }
 
-    @Reference
+
     protected void setSiloController(SiloCtrlIf siloCtrl) {
         this.siloCtrl = siloCtrl;
         LOG.info("SILO CONTROLLER binded.");

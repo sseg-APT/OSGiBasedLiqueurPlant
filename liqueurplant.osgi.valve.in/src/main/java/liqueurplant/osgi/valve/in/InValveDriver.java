@@ -2,6 +2,7 @@ package liqueurplant.osgi.valve.in;
 
 import com.pi4j.io.gpio.*;
 import liqueurplant.osgi.valve.in.api.InValveDriverIf;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -13,19 +14,26 @@ import org.osgi.service.component.annotations.Component;
 )
 public class InValveDriver implements InValveDriverIf {
 
-    //private GpioPinDigitalOutput inValve;
-    //private GpioController gpioController;
+    private GpioPinDigitalOutput inValve;
+    private GpioController gpioController;
 
     public InValveDriver() {
-        //gpioController = GpioFactory.getInstance();
+        gpioController = GpioFactory.getInstance();
+    }
+
+    @Activate
+    public void activate(){
+        while (!gpioController.getProvisionedPins().isEmpty())
+            gpioController.unprovisionPin(gpioController.getProvisionedPins().iterator().next());
+        System.out.println("Valve started");
+
     }
 
     @Override
     public void open() throws Exception {
-        /*
+        ///*
         try {
-            while (!gpioController.getProvisionedPins().isEmpty())
-                gpioController.unprovisionPin(gpioController.getProvisionedPins().iterator().next());
+
 
             inValve = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_04, "IN-VALVE", PinState.HIGH);
         } catch (Exception e) {
@@ -36,12 +44,12 @@ public class InValveDriver implements InValveDriverIf {
 
     @Override
     public void close() throws Exception {
-        /*
+        ///*
         try {
             inValve.setState(PinState.LOW);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        */
+        //*/
     }
 }

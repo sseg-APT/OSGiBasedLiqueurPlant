@@ -1,6 +1,10 @@
 package liqueurplant.osgi.silo.driver;
 
+import com.pi4j.io.gpio.*;
+import com.pi4j.io.gpio.event.GpioPinListenerDigital;
+import liqueurplant.osgi.silo.controller.api.SiloCtrlEvent;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
+import liqueurplant.osgi.silo.driver.api.Driver2SiloCtrlEvent;
 import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -15,21 +19,21 @@ import org.slf4j.LoggerFactory;
 
 
 @Component(immediate = true)
-public class SimpleSiloDriver implements SiloDriverIf, Runnable {
+public class SimpleSiloDriver implements SiloDriverIf {
 
     private SiloCtrlIf siloCtrl;
     public static Logger LOGGER = LoggerFactory.getLogger(SimpleSiloDriver.class);
-    //private final GpioController gpioController;
-    //private GpioPinDigitalInput highLevelSensor;
-    //private GpioPinDigitalInput lowLevelSensor;
+    private final GpioController gpioController;
+    private GpioPinDigitalInput highLevelSensor;
+    private GpioPinDigitalInput lowLevelSensor;
 
     public SimpleSiloDriver() {
-        //gpioController = GpioFactory.getInstance();
+        gpioController = GpioFactory.getInstance();
     }
 
     @Activate
     public void activate() {
-        /*
+        ///*
         while (!gpioController.getProvisionedPins().isEmpty())
             gpioController.unprovisionPin(gpioController.getProvisionedPins().iterator().next());
 
@@ -38,6 +42,19 @@ public class SimpleSiloDriver implements SiloDriverIf, Runnable {
 
         highLevelSensor.setShutdownOptions(true);
         lowLevelSensor.setShutdownOptions(true);
+
+        highLevelSensor.addListener((GpioPinListenerDigital) event -> {
+            // display pin state on console
+
+            siloCtrl.put2EventQueue(Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED);
+            System.out.println(" --> GPIO PIN STATE CHANGE: " + event.getPin() + " = " + event.getState());
+        });
+
+        lowLevelSensor.addListener((GpioPinListenerDigital) event -> {
+            System.out.println(" --> GPIO PIN STATE CHANGE: " + event.getPin() + " = " + event.getState());
+            siloCtrl.put2EventQueue(Driver2SiloCtrlEvent.LOW_LEVEL_REACHED);
+        });
+        System.out.println("Silo driver activated.");
         //*/
         //siloCtrl.put2EventQueue(Driver2SiloEvent.HIGH_LEVEL_REACHED);
     }
@@ -47,28 +64,6 @@ public class SimpleSiloDriver implements SiloDriverIf, Runnable {
 
     }
 
-    @Override
-    public void run() {
-        /*
-        highLevelSensor.addListener((GpioPinListenerDigital) event -> {
-            // display pin state on console
-            System.out.println(" --> GPIO PIN STATE CHANGE: " + event.getPin() + " = " + event.getState());
-            siloCtrl.put2EventQueue(Driver2SiloEvent.HIGH_LEVEL_REACHED);
-        });
-
-        lowLevelSensor.addListener((GpioPinListenerDigital) event -> {
-            System.out.println(" --> GPIO PIN STATE CHANGE: " + event.getPin() + " = " + event.getState());
-            siloCtrl.put2EventQueue(Driver2SiloEvent.LOW_LEVEL_REACHED);
-        });
-        while(true){
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        //*/
-    }
 
     ///*
     @Reference
@@ -80,6 +75,12 @@ public class SimpleSiloDriver implements SiloDriverIf, Runnable {
     protected void unsetSiloCtrlIf(SiloCtrlIf siloCtrl){
         this.siloCtrl = null;
         LOGGER.info(" SILO-CONTROLLER unbinded.");
+    }
+
+
+    @Override
+    public void execute() {
+
     }
     //*/
 

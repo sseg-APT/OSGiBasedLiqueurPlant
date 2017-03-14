@@ -23,7 +23,7 @@ import static org.eclipse.leshan.client.object.Security.noSecBootstap;
 import static org.eclipse.leshan.client.object.Security.psk;
 import static org.eclipse.leshan.client.object.Security.pskBootstrap;
 
-public abstract class AbstractDevice {
+public abstract class AbstractDevice implements Runnable {
     String endpoint, localAddress, secureLocalAddress, serverURI;
     int localPort, secureLocalPort;
     boolean needBootstrap;
@@ -33,7 +33,7 @@ public abstract class AbstractDevice {
 
     public AbstractDevice(String endpoint, String[] args) {
 
-        serverURI = "coap://localhost:5683";
+        serverURI = "coap://150.140.188.185:5683";
 
         // get security info
         byte[] pskIdentity = null;
@@ -55,9 +55,10 @@ public abstract class AbstractDevice {
         this.serverURI = serverURI;
         this.pskIdentity = pskIdentity;
         this.pskKey = pskKey;
-    }
 
-    public void init() {
+    }
+    @Override
+    public void run() {
         List<LwM2mObjectEnabler> enablers = this.createObjects();
         // Create client
         LeshanClientBuilder builder = new LeshanClientBuilder(endpoint);

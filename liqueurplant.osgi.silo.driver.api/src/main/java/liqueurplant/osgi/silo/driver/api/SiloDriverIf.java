@@ -8,9 +8,6 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface SiloDriverIf {
 
-    enum Driver2SiloEvent{
-        HIGH_LEVEL_REACHED,
-        LOW_LEVEL_REACHED
-    }
+    void execute();
 
 }
