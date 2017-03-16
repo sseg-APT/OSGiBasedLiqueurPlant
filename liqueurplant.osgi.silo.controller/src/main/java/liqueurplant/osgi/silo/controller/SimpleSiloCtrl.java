@@ -81,6 +81,11 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
                 stop = true;
             } else {
                 newState = this.state.processEvent(this, scEvent);
+                try {
+                    stateQueue.put(new ObservableTuple(null, newState));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 if (newState != state) {
                     state = newState;
                     LOGGER.info("S1: Controller State= " + state + "\n");

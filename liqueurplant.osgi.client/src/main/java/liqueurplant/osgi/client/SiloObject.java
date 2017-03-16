@@ -28,11 +28,13 @@ public class SiloObject extends BaseInstanceEnabler {
                 if(siloCtrl != null){
                     observation = siloCtrl.getFromStateQueue();
                     LOG.info("Ctrl2Wrapper Event arrived: " + observation.toString());
-                    if(observation.getEvent() == Ctrl2WrapperEvent.FILLING_COMPLETED){
-                        setFillingCompleted(true);
-                    }
-                    else if (observation.getEvent() == Ctrl2WrapperEvent.EMPTYING_COMPLETED){
-                        setEmptyingCompleted(true);
+                    if(observation.getEvent() != null){
+                        if(observation.getEvent() == Ctrl2WrapperEvent.FILLING_COMPLETED){
+                            setFillingCompleted(true);
+                        }
+                        else if (observation.getEvent() == Ctrl2WrapperEvent.EMPTYING_COMPLETED){
+                            setEmptyingCompleted(true);
+                        }
                     }
                     setState(observation.getState().toString());
                 }
