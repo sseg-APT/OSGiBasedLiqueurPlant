@@ -2,13 +2,13 @@ package liqueurplant.osgi.silo.controller;
 
 import liqueurplant.osgi.silo.controller.api.Process2SiloCtrlEvent;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlEvent;
+import liqueurplant.osgi.silo.controller.api.SiloCtrlState;
 import liqueurplant.osgi.silo.driver.api.Driver2SiloCtrlEvent;
 
 /**
  * Created by pBochalis on 3/13/2017.
  */
-public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
-    ///*
+public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf, SiloCtrlState {
     EMPTY {
         @Override
         public SimpleSiloCtrlState processEvent(SimpleSiloCtrl ctrl, SiloCtrlEvent e) {
@@ -51,7 +51,7 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
         public SimpleSiloCtrlState processEvent(SimpleSiloCtrl ctrl, SiloCtrlEvent e) {
             SimpleSiloCtrlState targetState;
 
-            if (e ==  Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED || e == Process2SiloCtrlEvent.STOP_FILLING) {
+            if (e == Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED || e == Process2SiloCtrlEvent.STOP_FILLING) {
                 targetState = SimpleSiloCtrlState.FULL;
                 performActions(ctrl, e);
             } else
@@ -65,10 +65,10 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
             // TODO Auto-generated method stub
             try {
                 ctrl.inValve.close();
-                if (e == Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED){
+                if (e == Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED) {
                     ctrl.fillingCompleted = true;
                 }
-                    //ctrl.itsPlant.lgpA.itsEq.put(Ctrl2LGPTypeAEvent.S1_FILLINGCOMPLETED);
+                //ctrl.itsPlant.lgpA.itsEq.put(Ctrl2LGPTypeAEvent.S1_FILLINGCOMPLETED);
 
             } catch (InterruptedException ie) {
                 // TODO Auto-generated catch block
@@ -98,7 +98,6 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
             // TODO Auto-generated method stub
 
             try {
-                //ctrl.itsDriver.itsEq.put(Ctrl2SiloDriverEvent.OUTVALVE_OPEN);
                 ctrl.outValve.open();
             } catch (InterruptedException ie) {
                 // TODO Auto-generated catch block
@@ -127,14 +126,12 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
         public void performActions(SimpleSiloCtrl ctrl, SiloCtrlEvent e) {
             // TODO Auto-generated method stub
             try {
-                //ctrl.itsDriver.itsEq.put(Ctrl2SiloDriverEvent.OUTVALVE_CLOSE);
+
                 ctrl.outValve.close();
-                if (e == Driver2SiloCtrlEvent.LOW_LEVEL_REACHED){
+                if (e == Driver2SiloCtrlEvent.LOW_LEVEL_REACHED) {
                     ctrl.fillingCompleted = false;
                     //send emptying completed
                 }
-
-                    //ctrl.itsPlant.lgpA.itsEq.put(Ctrl2LGPTypeAEvent.S1_EMPTYINGCOMPLETED);
             } catch (InterruptedException ie) {
                 // TODO Auto-generated catch block
                 ie.printStackTrace();
@@ -178,5 +175,4 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf {
             }
         }
     }
-    //*/
 }

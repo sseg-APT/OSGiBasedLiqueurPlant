@@ -86,7 +86,7 @@ public class SiloObject extends BaseInstanceEnabler {
     }
 
     public void initialize() {
-        //siloCtrl.put2EventQueue(Process2SiloCtrlEvent);
+        siloCtrl.put2EventQueue(Process2SiloCtrlEvent.START);
     }
 
     public void heat() {

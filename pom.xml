@@ -17,6 +17,8 @@
         <module>liqueurplant.osgi.valve.out.api</module>
         <module>liqueurplant.osgi.valve.out</module>
         <module>liqueurplant.osgi.silo.driver.api</module>
+        <module>liqueurplant.osgi.eventdispatcher.api</module>
+        <module>liqueurplant.osgi.eventdispatcher</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -106,9 +108,16 @@
 
     <dependencyManagement>
         <dependencies>
+
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.silo</artifactId>
+                <artifactId>liqueurplant.osgi.eventdispatcher</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>liqueurplant.osgi.eventdispatcher.api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -138,12 +147,6 @@
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.valve</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
                 <artifactId>liqueurplant.osgi.valve.in</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -163,12 +166,6 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.valve.tester</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

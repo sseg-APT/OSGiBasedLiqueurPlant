@@ -9,44 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>liqueurplant.osgi.silo.controller</artifactId>
+    <artifactId>liqueurplant.osgi.eventdispatcher.api</artifactId>
     <packaging>bundle</packaging>
 
     <dependencies>
 
         <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.eventdispatcher.api</artifactId>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.annotation</artifactId>
         </dependency>
-
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.silo.driver.api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-service</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-api</artifactId>
         </dependency>
 
     </dependencies>
@@ -59,6 +33,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
+                        <Export-Package>liqueurplant.osgi.eventdispatcher.api</Export-Package>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
                         <_dsannotations>*</_dsannotations>
@@ -67,5 +42,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>

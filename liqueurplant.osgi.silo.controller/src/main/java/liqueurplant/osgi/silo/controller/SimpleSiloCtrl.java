@@ -1,27 +1,28 @@
 package liqueurplant.osgi.silo.controller;
 
+import liqueurplant.osgi.eventdispatcher.api.EventDispatcherIf;
 import liqueurplant.osgi.silo.controller.api.Process2SiloCtrlEvent;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlEvent;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
-import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
 import liqueurplant.osgi.valve.in.api.InValveDriverIf;
 import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-
-import java.util.concurrent.ArrayBlockingQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Component( immediate = true )
+import java.util.concurrent.ArrayBlockingQueue;
+
+@Component(immediate = true)
 public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
     protected ArrayBlockingQueue<SiloCtrlEvent> eventQueue;
     protected InValveDriverIf inValve;
     protected OutValveDriverIf outValve;
-    SimpleSiloCtrlState state = SimpleSiloCtrlState.EMPTY;
+    private EventDispatcherIf eventDispatcher;
+    SimpleSiloCtrlState state = SimpleSiloCtrlState.IDLE;
     public static Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
     public boolean fillingCompleted = false;
 
@@ -31,20 +32,19 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
     @Activate
     public void activate() {
-        LOGGER.info("Silo controller activated.");
         new Thread(this).start();
+        LOGGER.info("SILO CONTROLLER activated.");
     }
 
     @Deactivate
     public void deactivate() {
-
+        LOGGER.info("SILO CONTROLLER deactivated.");
     }
 
     @Override
     public void put2EventQueue(SiloCtrlEvent event) {
         try {
             eventQueue.put(event);
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -57,32 +57,31 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
     @Override
     public void run() {
-        System.out.println("Run controller");
         SiloCtrlEvent scEvent;
-        SimpleSiloCtrlState newState = null;
+        SimpleSiloCtrlState newState;
 
         boolean stop = false;
         LOGGER.info("CONTROLLER state: " + state + "\n");
-        while(state != null){
-            if(stop){
+        while (state != null) {
+            if (stop) {
                 stopProcess();
                 break;
             }
             scEvent = getNextEvent();
-            LOGGER.info("S1: Event arrived = " + scEvent +"\n");
-            if( scEvent.equals(Process2SiloCtrlEvent.STOP)) {
+            LOGGER.info("S1: Event arrived = " + scEvent + "\n");
+            if (scEvent.equals(Process2SiloCtrlEvent.STOP)) {
                 stop = true;
-            } else{
+            } else {
                 newState = this.state.processEvent(this, scEvent);
-                if(newState != state){
+                if (newState != state) {
                     state = newState;
-                    LOGGER.info("S1: Controller State= " + state +"\n");
+                    LOGGER.info("S1: Controller State= " + state + "\n");
                 }
             }
         }
     }
 
-    private void stopProcess(){
+    private void stopProcess() {
         LOGGER.warn("S1 Ctrl: stopped");
     }
 
@@ -122,5 +121,14 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
         LOGGER.info("OUT-VALVE unbinded.");
     }
 
+    @Reference
+    protected void setEventDispatcher(EventDispatcherIf eventDispatcher) {
+        this.eventDispatcher = eventDispatcher;
+        LOGGER.info("EVENT DISPATCHER binded.");
+    }
 
+    protected void unsetSiloCtrl(EventDispatcherIf eventDispatcher) {
+        this.eventDispatcher = null;
+        LOGGER.info("EVENT DISPATCHER unbinded.");
+    }
 }

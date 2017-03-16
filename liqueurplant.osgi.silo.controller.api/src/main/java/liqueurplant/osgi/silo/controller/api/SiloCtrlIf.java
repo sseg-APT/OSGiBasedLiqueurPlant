@@ -11,4 +11,5 @@ public interface SiloCtrlIf {
     void put2EventQueue(SiloCtrlEvent event);
 
     boolean getFillingCompleted();
+
 }

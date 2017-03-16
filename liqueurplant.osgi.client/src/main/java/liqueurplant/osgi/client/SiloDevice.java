@@ -1,20 +1,21 @@
 package liqueurplant.osgi.client;
 
+import liqueurplant.osgi.eventdispatcher.api.EventDispatcherIf;
+import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
 import org.eclipse.leshan.client.resource.ObjectsInitializer;
-
-import java.util.List;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
+import java.util.List;
 
 
 @Component
 public class SiloDevice extends AbstractDevice {
 
     SiloObject silo = new SiloObject();
+    private EventDispatcherIf eventDispatcher;
 
     public SiloDevice() {
         super("silo", null);
@@ -58,4 +59,15 @@ public class SiloDevice extends AbstractDevice {
         silo.unsetSiloController();
     }
 
+    @Reference
+    protected void setEventDispatcher(EventDispatcherIf eventDispatcher){
+        this.eventDispatcher = eventDispatcher;
+        SiloObject.LOG.info("EVENT DISPATCHER binded.");
+    }
+
+    protected void unsetEventDispatcher(EventDispatcherIf eventDispatcher) {
+        this.eventDispatcher = null;
+        SiloObject.LOG.info("EVENT DISPATCHER unbinded.");
+
+    }
 }
