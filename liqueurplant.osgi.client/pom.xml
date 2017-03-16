@@ -15,9 +15,11 @@
 
     <dependencies>
 
+
+
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.eventdispatcher.api</artifactId>
+            <artifactId>liqueurplant.osgi.client.api</artifactId>
         </dependency>
 
         <dependency>

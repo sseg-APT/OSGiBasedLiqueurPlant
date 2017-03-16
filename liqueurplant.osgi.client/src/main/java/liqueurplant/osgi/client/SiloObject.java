@@ -1,5 +1,7 @@
 package liqueurplant.osgi.client;
 
+import liqueurplant.osgi.silo.controller.api.Ctrl2WrapperEvent;
+import liqueurplant.osgi.silo.controller.api.ObservableTuple;
 import liqueurplant.osgi.silo.controller.api.Process2SiloCtrlEvent;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
@@ -15,17 +17,27 @@ public class SiloObject extends BaseInstanceEnabler {
     public static Logger LOG = LoggerFactory.getLogger(SiloObject.class);
     public static int modelId = 20000;
     static SiloCtrlIf siloCtrl;
+    public String state = "";
     public boolean fillingCompleted = false;
+    public boolean emptyingCompleted = false;
 
     public SiloObject(){
         new Thread(() -> {
+            ObservableTuple observation;
             while(true){
-                if(fillingCompleted != siloCtrl.getFillingCompleted()){
-                    fillingCompleted = siloCtrl.getFillingCompleted();
-                    fireResourcesChange(7);
+                if(siloCtrl != null){
+                    observation = siloCtrl.getFromStateQueue();
+                    LOG.info("Ctrl2Wrapper Event arrived: " + observation.toString());
+                    if(observation.getEvent() == Ctrl2WrapperEvent.FILLING_COMPLETED){
+                        setFillingCompleted(true);
+                    }
+                    else if (observation.getEvent() == Ctrl2WrapperEvent.EMPTYING_COMPLETED){
+                        setEmptyingCompleted(true);
+                    }
+                    setState(observation.getState().toString());
                 }
             }
-        });
+        }).start();
 
     }
 
@@ -33,12 +45,12 @@ public class SiloObject extends BaseInstanceEnabler {
     public ReadResponse read(int resourceid) {
 
         switch (resourceid) {
-            //case 0:
-            //    return ReadResponse.success(resourceid, siloComponent.state);
+            case 0:
+                return ReadResponse.success(resourceid, state);
             case 7:
                 return ReadResponse.success(resourceid, fillingCompleted);
-            //case 8:
-            //    return ReadResponse.success(resourceid, siloComponent.emptyingCompleted);
+            case 8:
+                return ReadResponse.success(resourceid, emptyingCompleted);
             default:
                 return super.read(resourceid);
         }
@@ -50,15 +62,21 @@ public class SiloObject extends BaseInstanceEnabler {
     public ExecuteResponse execute(int resourceid, String params) {
         switch (resourceid) {
             case 1:
+                setEmptyingCompleted(false);
+                setFillingCompleted(false);
                 fill();
                 return ExecuteResponse.success();
             case 2:
+                setEmptyingCompleted(false);
+                setFillingCompleted(false);
                 empty();
                 return ExecuteResponse.success();
             case 3:
                 stop();
                 return ExecuteResponse.success();
             case 4:
+                setEmptyingCompleted(false);
+                setFillingCompleted(false);
                 initialize();
                 return ExecuteResponse.success();
             case 5:
@@ -98,20 +116,20 @@ public class SiloObject extends BaseInstanceEnabler {
     }
 
     private void setState(String newState) {
-        //siloComponent.state = newState;
-        fireResourcesChange(0);
+        if ( !newState.equals(state)) {
+            state = newState;
+            fireResourcesChange(0);
+        }
     }
 
     private void setFillingCompleted(Boolean newValue) {
-        //siloComponent.fillingCompleted = newValue;
+        fillingCompleted = newValue;
         fireResourcesChange(7);
-        if (newValue) setState("FULL");
     }
 
     private void setEmptyingCompleted(Boolean newValue) {
-        //siloComponent.emptyingCompleted = newValue;
+        emptyingCompleted = newValue;
         fireResourcesChange(8);
-        if (newValue) setState("EMPTY");
     }
 
     private void setTemperature(Double newTemp) {

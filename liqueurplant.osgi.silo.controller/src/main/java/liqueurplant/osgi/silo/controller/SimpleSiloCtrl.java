@@ -1,9 +1,6 @@
 package liqueurplant.osgi.silo.controller;
 
-import liqueurplant.osgi.eventdispatcher.api.EventDispatcherIf;
-import liqueurplant.osgi.silo.controller.api.Process2SiloCtrlEvent;
-import liqueurplant.osgi.silo.controller.api.SiloCtrlEvent;
-import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
+import liqueurplant.osgi.silo.controller.api.*;
 import liqueurplant.osgi.valve.in.api.InValveDriverIf;
 import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
 import org.osgi.service.component.annotations.Activate;
@@ -19,15 +16,16 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
     protected ArrayBlockingQueue<SiloCtrlEvent> eventQueue;
+    protected ArrayBlockingQueue<ObservableTuple> stateQueue;
     protected InValveDriverIf inValve;
     protected OutValveDriverIf outValve;
-    private EventDispatcherIf eventDispatcher;
     SimpleSiloCtrlState state = SimpleSiloCtrlState.IDLE;
     public static Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
     public boolean fillingCompleted = false;
 
     public SimpleSiloCtrl() {
         eventQueue = new ArrayBlockingQueue<>(20);
+        stateQueue = new ArrayBlockingQueue<>(20);
     }
 
     @Activate
@@ -48,6 +46,16 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public ObservableTuple getFromStateQueue() {
+        try {
+            return stateQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -121,14 +129,4 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
         LOGGER.info("OUT-VALVE unbinded.");
     }
 
-    @Reference
-    protected void setEventDispatcher(EventDispatcherIf eventDispatcher) {
-        this.eventDispatcher = eventDispatcher;
-        LOGGER.info("EVENT DISPATCHER binded.");
-    }
-
-    protected void unsetSiloCtrl(EventDispatcherIf eventDispatcher) {
-        this.eventDispatcher = null;
-        LOGGER.info("EVENT DISPATCHER unbinded.");
-    }
 }
