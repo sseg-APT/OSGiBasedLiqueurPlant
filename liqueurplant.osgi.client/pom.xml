@@ -65,12 +65,6 @@
             <artifactId>netty-buffer</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.valve</artifactId>
-        </dependency>
-
-
     </dependencies>
 
     <build>
