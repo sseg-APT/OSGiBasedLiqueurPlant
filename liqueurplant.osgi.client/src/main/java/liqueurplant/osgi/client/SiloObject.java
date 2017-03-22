@@ -49,9 +49,9 @@ public class SiloObject extends BaseInstanceEnabler {
         switch (resourceid) {
             case 0:
                 return ReadResponse.success(resourceid, state);
-            case 7:
+            case 10:
                 return ReadResponse.success(resourceid, fillingCompleted);
-            case 8:
+            case 11:
                 return ReadResponse.success(resourceid, emptyingCompleted);
             default:
                 return super.read(resourceid);
@@ -64,28 +64,16 @@ public class SiloObject extends BaseInstanceEnabler {
     public ExecuteResponse execute(int resourceid, String params) {
         switch (resourceid) {
             case 1:
-                setEmptyingCompleted(false);
-                setFillingCompleted(false);
-                fill();
-                return ExecuteResponse.success();
-            case 2:
-                setEmptyingCompleted(false);
-                setFillingCompleted(false);
-                empty();
-                return ExecuteResponse.success();
-            case 3:
-                stop();
-                return ExecuteResponse.success();
-            case 4:
-                setEmptyingCompleted(false);
-                setFillingCompleted(false);
                 initialize();
                 return ExecuteResponse.success();
-            case 5:
-                heat();
+            case 2:
+                fill();
                 return ExecuteResponse.success();
-            case 6:
-                mix();
+            case 3:
+                empty();
+                return ExecuteResponse.success();
+            case 8:
+                stop();
                 return ExecuteResponse.success();
             default:
                 return super.execute(resourceid, params);
@@ -94,10 +82,14 @@ public class SiloObject extends BaseInstanceEnabler {
 
 
     public void fill() {
+        setEmptyingCompleted(false);
+        setFillingCompleted(false);
         siloCtrl.put2EventQueue(Process2SiloCtrlEvent.FILL);
     }
 
     public void empty() {
+        setEmptyingCompleted(false);
+        setFillingCompleted(false);
         siloCtrl.put2EventQueue(Process2SiloCtrlEvent.EMPTY);
     }
 
@@ -106,16 +98,11 @@ public class SiloObject extends BaseInstanceEnabler {
     }
 
     public void initialize() {
+        setEmptyingCompleted(false);
+        setFillingCompleted(false);
         siloCtrl.put2EventQueue(Process2SiloCtrlEvent.START);
     }
 
-    public void heat() {
-        siloCtrl.put2EventQueue(Process2SiloCtrlEvent.START_HEATING);
-    }
-
-    public void mix() {
-        siloCtrl.put2EventQueue(Process2SiloCtrlEvent.START_MIXING);
-    }
 
     private void setState(String newState) {
         if ( !newState.equals(state)) {

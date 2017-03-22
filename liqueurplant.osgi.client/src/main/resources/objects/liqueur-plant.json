@@ -19,39 +19,6 @@
       },
       {
         "id": 1,
-        "name": "fill",
-        "operations": "E",
-        "instancetype": "single",
-        "mandatory": true,
-        "type": "boolean",
-        "range": "",
-        "units": "",
-        "description": ""
-      },
-      {
-        "id": 2,
-        "name": "empty",
-        "operations": "E",
-        "instancetype": "single",
-        "mandatory": true,
-        "type": "boolean",
-        "range": "",
-        "units": "",
-        "description": ""
-      },
-      {
-        "id": 3,
-        "name": "stop",
-        "operations": "E",
-        "instancetype": "single",
-        "mandatory": true,
-        "type": "boolean",
-        "range": "",
-        "units": "",
-        "description": ""
-      },
-      {
-        "id": 4,
         "name": "initialize",
         "operations": "E",
         "instancetype": "single",
@@ -62,8 +29,8 @@
         "description": ""
       },
       {
-        "id": 5,
-        "name": "heat",
+        "id": 2,
+        "name": "fill",
         "operations": "E",
         "instancetype": "single",
         "mandatory": true,
@@ -73,8 +40,41 @@
         "description": ""
       },
       {
-        "id": 6,
+        "id": 3,
+        "name": "empty",
+        "operations": "E",
+        "instancetype": "single",
+        "mandatory": true,
+        "type": "boolean",
+        "range": "",
+        "units": "",
+        "description": ""
+      },
+      {
+        "id": 4,
+        "name": "heat",
+        "operations": "E",
+        "instancetype": "single",
+        "mandatory": false,
+        "type": "boolean",
+        "range": "",
+        "units": "",
+        "description": ""
+      },
+      {
+        "id": 5,
         "name": "mix",
+        "operations": "E",
+        "instancetype": "single",
+        "mandatory": false,
+        "type": "boolean",
+        "range": "",
+        "units": "",
+        "description": ""
+      },
+      {
+        "id": 6,
+        "name": "stop_filling",
         "operations": "E",
         "instancetype": "single",
         "mandatory": true,
@@ -85,6 +85,39 @@
       },
       {
         "id": 7,
+        "name": "stop_emptying",
+        "operations": "E",
+        "instancetype": "single",
+        "mandatory": true,
+        "type": "boolean",
+        "range": "",
+        "units": "",
+        "description": ""
+      },
+      {
+        "id": 8,
+        "name": "stop",
+        "operations": "E",
+        "instancetype": "single",
+        "mandatory": true,
+        "type": "boolean",
+        "range": "",
+        "units": "",
+        "description": ""
+      },
+      {
+        "id": 9,
+        "name": "start",
+        "operations": "E",
+        "instancetype": "single",
+        "mandatory": true,
+        "type": "boolean",
+        "range": "",
+        "units": "",
+        "description": ""
+      },
+      {
+        "id": 10,
         "name": "filling completed",
         "operations": "R",
         "instancetype": "single",
@@ -95,7 +128,7 @@
         "description": ""
       },
       {
-        "id": 8,
+        "id": 11,
         "name": "emptying completed",
         "operations": "R",
         "instancetype": "single",
@@ -106,29 +139,29 @@
         "description": ""
       },
       {
-        "id": 9,
+        "id": 12,
         "name": "heating completed",
         "operations": "R",
         "instancetype": "single",
-        "mandatory": true,
+        "mandatory": false,
         "type": "boolean",
         "range": "",
         "units": "",
         "description": ""
       },
       {
-        "id": 10,
+        "id": 13,
         "name": "mixing completed",
         "operations": "R",
         "instancetype": "single",
-        "mandatory": true,
+        "mandatory": false,
         "type": "boolean",
         "range": "",
         "units": "",
         "description": ""
       },
       {
-        "id": 11,
+        "id": 14,
         "name": "target temperature",
         "operations": "RW",
         "instancetype": "single",
