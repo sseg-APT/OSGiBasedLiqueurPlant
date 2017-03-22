@@ -48,7 +48,7 @@ public class SimpleSiloDriver implements SiloDriverIf {
         });
 
         lowLevelSensor.addListener((GpioPinListenerDigital) event -> {
-            if (event.getState() == PinState.HIGH){
+            if (event.getState() == PinState.LOW){
                 siloCtrl.put2EventQueue(Driver2SiloCtrlEvent.LOW_LEVEL_REACHED);
             }
         });
