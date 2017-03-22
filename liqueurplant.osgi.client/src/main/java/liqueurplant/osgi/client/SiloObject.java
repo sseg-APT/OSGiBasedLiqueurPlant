@@ -72,6 +72,12 @@ public class SiloObject extends BaseInstanceEnabler {
             case 3:
                 empty();
                 return ExecuteResponse.success();
+            case 6:
+                stopFilling();
+                return ExecuteResponse.success();
+            case 7:
+                stopEmptying();
+                return ExecuteResponse.success();
             case 8:
                 stop();
                 return ExecuteResponse.success();
@@ -120,8 +126,17 @@ public class SiloObject extends BaseInstanceEnabler {
         emptyingCompleted = newValue;
         fireResourcesChange(11);
     }
-    
 
+    private void stopFilling() {
+        LOG.debug("Stop emptying");
+        siloCtrl.put2EventQueue(Process2SiloCtrlEvent.STOP_FILLING);
+
+    }
+    private void stopEmptying() {
+        LOG.debug("Stop emptying");
+        siloCtrl.put2EventQueue(Process2SiloCtrlEvent.STOP_EPMTYING);
+
+    }
 
     protected void setSiloController(SiloCtrlIf siloCtrl) {
         this.siloCtrl = siloCtrl;
