@@ -113,18 +113,14 @@ public class SiloObject extends BaseInstanceEnabler {
 
     private void setFillingCompleted(Boolean newValue) {
         fillingCompleted = newValue;
-        fireResourcesChange(7);
+        fireResourcesChange(10);
     }
 
     private void setEmptyingCompleted(Boolean newValue) {
         emptyingCompleted = newValue;
-        fireResourcesChange(8);
-    }
-
-    private void setTemperature(Double newTemp) {
-        //siloComponent.targetTemperature = newTemp;
         fireResourcesChange(11);
     }
+    
 
 
     protected void setSiloController(SiloCtrlIf siloCtrl) {
