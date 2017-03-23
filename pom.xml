@@ -17,6 +17,9 @@
         <module>liqueurplant.osgi.valve.out.api</module>
         <module>liqueurplant.osgi.valve.out</module>
         <module>liqueurplant.osgi.silo.driver.api</module>
+        <module>liqueurplant.osgi.silo.driver.sim</module>
+        <module>liqueurplant.osgi.valve.in.sim</module>
+        <module>liqueurplant.osgi.valve.out.sim</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -152,6 +155,24 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>liqueurplant.osgi.silo.driver.sim</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>liqueurplant.osgi.valve.in.sim</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>liqueurplant.osgi.valve.out.sim</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

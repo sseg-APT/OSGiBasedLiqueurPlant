@@ -7,4 +7,7 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface SiloDriverIf {
+
+    void put2EventQueue(Driver2SiloCtrlEvent event);
+ 
 }

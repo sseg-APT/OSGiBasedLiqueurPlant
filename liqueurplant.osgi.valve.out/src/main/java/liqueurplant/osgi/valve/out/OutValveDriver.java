@@ -40,7 +40,7 @@ public class OutValveDriver implements OutValveDriverIf {
     @Override
     public void open() throws Exception {
         try {
-            outValve.setState(PinState.HIGH);
+            outValve.setState(PinState.LOW);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,7 +49,7 @@ public class OutValveDriver implements OutValveDriverIf {
     @Override
     public void close() throws Exception {
         try {
-            outValve.setState(PinState.LOW);
+            outValve.setState(PinState.HIGH);
         } catch (Exception e) {
             e.printStackTrace();
         }

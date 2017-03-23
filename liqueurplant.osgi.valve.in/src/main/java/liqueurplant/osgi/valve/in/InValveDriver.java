@@ -35,13 +35,13 @@ public class InValveDriver implements InValveDriverIf {
     @Deactivate
     public void deactivate() {
         unprovisionPins(this.gpioController);
-        LOGGER.info("OUT-VALVE deactivated.");
+        LOGGER.info("IN-VALVE deactivated.");
     }
 
     @Override
     public void open() throws Exception {
         try {
-            inValve.setState(PinState.HIGH);
+            inValve.setState(PinState.LOW);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,7 +50,7 @@ public class InValveDriver implements InValveDriverIf {
     @Override
     public void close() throws Exception {
         try {
-            inValve.setState(PinState.LOW);
+            inValve.setState(PinState.HIGH);
         } catch (Exception e) {
             e.printStackTrace();
         }

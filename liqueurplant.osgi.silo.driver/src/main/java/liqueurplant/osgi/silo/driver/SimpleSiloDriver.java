@@ -74,7 +74,4 @@ public class SimpleSiloDriver implements SiloDriverIf {
         this.siloCtrl = null;
         LOGGER.info(" SILO-CONTROLLER unbinded.");
     }
-
-
-
 }
