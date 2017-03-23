@@ -59,11 +59,6 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
     }
 
     @Override
-    public boolean getFillingCompleted() {
-        return this.fillingCompleted;
-    }
-
-    @Override
     public void run() {
         SiloCtrlEvent scEvent;
         SimpleSiloCtrlState newState;
