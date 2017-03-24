@@ -28,7 +28,7 @@ public class InValveDriver implements InValveDriverIf {
 
     @Activate
     public void activate() {
-        inValve = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_04, "IN-VALVE", PinState.LOW);
+        inValve = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_04, "IN-VALVE", PinState.HIGH);
         LOGGER.info("IN-VALVE activated.");
     }
 

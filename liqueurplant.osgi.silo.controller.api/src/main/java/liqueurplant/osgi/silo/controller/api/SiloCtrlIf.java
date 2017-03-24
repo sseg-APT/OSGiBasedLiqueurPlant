@@ -1,5 +1,6 @@
 package liqueurplant.osgi.silo.controller.api;
 
+import com.sun.org.apache.bcel.internal.generic.NOP;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -10,6 +11,6 @@ public interface SiloCtrlIf {
 
     void put2EventQueue(SiloCtrlEvent event);
 
-    ObservableTuple getFromStateQueue();
+    void addListener(NotificationListener listener);
 
 }

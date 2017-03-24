@@ -1,9 +1,6 @@
 package liqueurplant.osgi.client;
 
-import liqueurplant.osgi.silo.controller.api.Ctrl2WrapperEvent;
-import liqueurplant.osgi.silo.controller.api.ObservableTuple;
-import liqueurplant.osgi.silo.controller.api.Process2SiloCtrlEvent;
-import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
+import liqueurplant.osgi.silo.controller.api.*;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
@@ -11,8 +8,10 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ArrayBlockingQueue;
 
-public class SiloObject extends BaseInstanceEnabler {
+
+public class SiloObject extends BaseInstanceEnabler implements NotificationListener{
 
     public static Logger LOG = LoggerFactory.getLogger(SiloObject.class);
     public static int modelId = 20000;
@@ -20,23 +19,29 @@ public class SiloObject extends BaseInstanceEnabler {
     public String state = "";
     public boolean fillingCompleted = false;
     public boolean emptyingCompleted = false;
+    ArrayBlockingQueue<ObservableTuple> observationQueue;
 
     public SiloObject(){
+        observationQueue = new ArrayBlockingQueue<>(20);
         new Thread(() -> {
             ObservableTuple observation;
             while(true){
                 if(siloCtrl != null){
-                    observation = siloCtrl.getFromStateQueue();
-                    LOG.info("Ctrl2Wrapper Event arrived: " + observation.toString());
-                    if(observation.getEvent() != null){
-                        if(observation.getEvent() == Ctrl2WrapperEvent.FILLING_COMPLETED){
-                            setFillingCompleted(true);
+                    try {
+                        observation = observationQueue.take();
+                        LOG.info("Ctrl2Wrapper Event arrived: " + observation.toString());
+                        if(observation.getEvent() != null){
+                            if(observation.getEvent() == Ctrl2WrapperEvent.FILLING_COMPLETED){
+                                setFillingCompleted(true);
+                            }
+                            else if (observation.getEvent() == Ctrl2WrapperEvent.EMPTYING_COMPLETED){
+                                setEmptyingCompleted(true);
+                            }
                         }
-                        else if (observation.getEvent() == Ctrl2WrapperEvent.EMPTYING_COMPLETED){
-                            setEmptyingCompleted(true);
-                        }
+                        setState(observation.getState().toString());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    setState(observation.getState().toString());
                 }
             }
         }).start();
@@ -140,6 +145,7 @@ public class SiloObject extends BaseInstanceEnabler {
 
     protected void setSiloController(SiloCtrlIf siloCtrl) {
         this.siloCtrl = siloCtrl;
+        siloCtrl.addListener(this);
         LOG.info("SILO CONTROLLER binded.");
     }
 
@@ -148,4 +154,13 @@ public class SiloObject extends BaseInstanceEnabler {
         LOG.info("SILO CONTROLLER unbinded.");
     }
 
+    @Override
+    public void updateNotification(ObservableTuple observable) {
+        try {
+            observationQueue.put(observable);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

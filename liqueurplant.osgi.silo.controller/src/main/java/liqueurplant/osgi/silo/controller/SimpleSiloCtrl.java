@@ -10,22 +10,24 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 
 @Component(immediate = true)
 public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
     protected ArrayBlockingQueue<SiloCtrlEvent> eventQueue;
-    protected ArrayBlockingQueue<ObservableTuple> stateQueue;
     protected InValveDriverIf inValve;
     protected OutValveDriverIf outValve;
     SimpleSiloCtrlState state = SimpleSiloCtrlState.IDLE;
     public static Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
     public boolean fillingCompleted = false;
+    ArrayList<NotificationListener> notifications;
 
     public SimpleSiloCtrl() {
         eventQueue = new ArrayBlockingQueue<>(20);
-        stateQueue = new ArrayBlockingQueue<>(20);
+        notifications = new ArrayList<>(10);
+
     }
 
     @Activate
@@ -49,16 +51,6 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
     }
 
     @Override
-    public ObservableTuple getFromStateQueue() {
-        try {
-            return stateQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
     public void run() {
         SiloCtrlEvent scEvent;
         SimpleSiloCtrlState newState;
@@ -76,11 +68,7 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
                 stop = true;
             } else {
                 newState = this.state.processEvent(this, scEvent);
-                try {
-                    stateQueue.put(new ObservableTuple(null, newState));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                notifyListeners(new ObservableTuple(null, newState));
                 if (newState != state) {
                     state = newState;
                     LOGGER.info("S1: Controller State= " + state + "\n");
@@ -105,6 +93,18 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
         return event;
 
     }
+
+    @Override
+    public void addListener(NotificationListener listener) {
+        notifications.add(listener);
+    }
+
+    void notifyListeners(ObservableTuple observable) {
+        for (NotificationListener listener : notifications ) {
+            listener.updateNotification(observable);
+        }
+    }
+
 
 
     @Reference

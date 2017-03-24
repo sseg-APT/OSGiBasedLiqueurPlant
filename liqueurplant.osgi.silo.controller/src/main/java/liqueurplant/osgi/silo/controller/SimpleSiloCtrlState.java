@@ -64,7 +64,7 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf, SiloCtr
             try {
                 ctrl.inValve.close();
                 if (e == Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED) {
-                    ctrl.stateQueue.put(new ObservableTuple(Ctrl2WrapperEvent.FILLING_COMPLETED,SimpleSiloCtrlState.FULL));
+                    ctrl.notifyListeners(new ObservableTuple(Ctrl2WrapperEvent.FILLING_COMPLETED,SimpleSiloCtrlState.FULL));
                 }
             } catch (InterruptedException ie) {
                 // TODO Auto-generated catch block
@@ -111,8 +111,8 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf, SiloCtr
 
             if (e == Driver2SiloCtrlEvent.LOW_LEVEL_REACHED || e == Process2SiloCtrlEvent.STOP_EPMTYING) {
                 try {
-                    ctrl.stateQueue.put(new ObservableTuple(Ctrl2WrapperEvent.EMPTYING_COMPLETED, SimpleSiloCtrlState.EMPTY));
-                } catch (InterruptedException e1) {
+                    ctrl.notifyListeners(new ObservableTuple(Ctrl2WrapperEvent.EMPTYING_COMPLETED, SimpleSiloCtrlState.EMPTY));
+                } catch (Exception e1) {
                     e1.printStackTrace();
                 }
                 targetState = SimpleSiloCtrlState.EMPTY;
