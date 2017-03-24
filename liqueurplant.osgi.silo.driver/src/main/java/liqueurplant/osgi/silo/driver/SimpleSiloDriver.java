@@ -74,4 +74,9 @@ public class SimpleSiloDriver implements SiloDriverIf {
         this.siloCtrl = null;
         LOGGER.info(" SILO-CONTROLLER unbinded.");
     }
+
+    @Override
+    public void put2EventQueue(Driver2SiloCtrlEvent event) {
+
+    }
 }

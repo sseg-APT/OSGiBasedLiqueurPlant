@@ -17,10 +17,7 @@
 
 
 
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.client.api</artifactId>
-        </dependency>
+
 
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
