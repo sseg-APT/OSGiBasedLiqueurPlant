@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
-public class SiloObject extends BaseInstanceEnabler implements NotificationListener{
+public class SiloObject extends BaseInstanceEnabler implements NotificationListener, Runnable{
 
     public static Logger LOG = LoggerFactory.getLogger(SiloObject.class);
     public static int modelId = 20000;
@@ -23,29 +23,6 @@ public class SiloObject extends BaseInstanceEnabler implements NotificationListe
 
     public SiloObject(){
         observationQueue = new ArrayBlockingQueue<>(20);
-        new Thread(() -> {
-            ObservableTuple observation;
-            while(true){
-                if(siloCtrl != null){
-                    try {
-                        observation = observationQueue.take();
-                        LOG.info("Ctrl2Wrapper Event arrived: " + observation.toString());
-                        if(observation.getEvent() != null){
-                            if(observation.getEvent() == Ctrl2WrapperEvent.FILLING_COMPLETED){
-                                setFillingCompleted(true);
-                            }
-                            else if (observation.getEvent() == Ctrl2WrapperEvent.EMPTYING_COMPLETED){
-                                setEmptyingCompleted(true);
-                            }
-                        }
-                        setState(observation.getState().toString());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-
     }
 
     @Override
@@ -88,6 +65,31 @@ public class SiloObject extends BaseInstanceEnabler implements NotificationListe
                 return ExecuteResponse.success();
             default:
                 return super.execute(resourceid, params);
+        }
+    }
+
+    @Override
+    public void run() {
+        ObservableTuple observation;
+        LOG.info("Leshan Wrapper started.");
+        while(true){
+            if(siloCtrl != null){
+                try {
+                    observation = observationQueue.take();
+                    LOG.info("Ctrl2Wrapper Event arrived: " + observation.toString());
+                    if(observation.getEvent() != null){
+                        if(observation.getEvent() == Ctrl2WrapperEvent.FILLING_COMPLETED){
+                            setFillingCompleted(true);
+                        }
+                        else if (observation.getEvent() == Ctrl2WrapperEvent.EMPTYING_COMPLETED){
+                            setEmptyingCompleted(true);
+                        }
+                    }
+                    setState(observation.getState().toString());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -163,4 +165,6 @@ public class SiloObject extends BaseInstanceEnabler implements NotificationListe
         }
 
     }
+
+
 }

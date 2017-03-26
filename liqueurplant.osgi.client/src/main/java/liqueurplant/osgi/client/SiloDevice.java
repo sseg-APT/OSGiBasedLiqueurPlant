@@ -28,6 +28,7 @@ public class SiloDevice extends AbstractDevice {
     public void activate(){
         System.out.println("Silo device activated.");
         new Thread(this).start();
+        new Thread(silo).start();
     }
 
     @Override
