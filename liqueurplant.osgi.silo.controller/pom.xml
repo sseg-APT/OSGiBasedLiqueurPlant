@@ -44,6 +44,11 @@
             <artifactId>pax-logging-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.silo.driver.sim.api</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

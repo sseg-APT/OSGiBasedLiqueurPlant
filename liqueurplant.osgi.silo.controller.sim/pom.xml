@@ -9,14 +9,29 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>liqueurplant.osgi.valve.in.sim</artifactId>
+    <artifactId>liqueurplant.osgi.silo.controller.sim</artifactId>
     <packaging>bundle</packaging>
 
     <dependencies>
 
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.silo.driver.api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
         </dependency>
 
         <dependency>
@@ -28,7 +43,6 @@
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-api</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -47,6 +61,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

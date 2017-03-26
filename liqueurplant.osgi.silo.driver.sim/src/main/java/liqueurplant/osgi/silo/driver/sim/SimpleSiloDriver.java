@@ -26,9 +26,9 @@ public class SimpleSiloDriver implements SiloDriverIf, Runnable {
     private ArrayBlockingQueue<Driver2SiloCtrlEvent> driverEq;
     Driver2SiloCtrlEvent curEvent;
 
+
     public SimpleSiloDriver() {
         driverEq = new ArrayBlockingQueue<>(10);
-
     }
 
     @Activate
@@ -86,12 +86,5 @@ public class SimpleSiloDriver implements SiloDriverIf, Runnable {
     }
 
 
-    @Override
-    public void put2EventQueue(Driver2SiloCtrlEvent event) {
-        try {
-            this.driverEq.put(event);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+
 }

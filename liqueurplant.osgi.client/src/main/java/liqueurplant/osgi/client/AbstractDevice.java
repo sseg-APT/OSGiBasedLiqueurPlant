@@ -33,7 +33,7 @@ public abstract class AbstractDevice implements Runnable {
 
     public AbstractDevice(String endpoint, String[] args) {
 
-        serverURI = "coap://150.140.188.185:5683";
+        serverURI = "coap://192.168.1.5:5683";
 
         // get security info
         byte[] pskIdentity = null;

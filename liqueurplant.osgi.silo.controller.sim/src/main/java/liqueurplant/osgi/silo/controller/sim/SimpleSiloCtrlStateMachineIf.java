@@ -1,4 +1,4 @@
-package liqueurplant.osgi.silo.controller;
+package liqueurplant.osgi.silo.controller.sim;
 
 import liqueurplant.osgi.silo.controller.api.SiloCtrlEvent;
 

@@ -27,11 +27,6 @@
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-api</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.silo.driver.sim</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

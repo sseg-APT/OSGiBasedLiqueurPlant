@@ -1,7 +1,6 @@
 package liqueurplant.osgi.valve.out.sim;
 
-import liqueurplant.osgi.silo.driver.api.Driver2SiloCtrlEvent;
-import liqueurplant.osgi.silo.driver.sim.SimpleSiloDriver;
+
 import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -14,11 +13,12 @@ import org.slf4j.LoggerFactory;
  */
 @Component(immediate = true)
 public class OutValveDriver implements OutValveDriverIf {
+
     public Logger LOGGER = LoggerFactory.getLogger(OutValveDriver.class);
-    SimpleSiloDriver siloDriver;
+
 
     public OutValveDriver() {
-        siloDriver = new SimpleSiloDriver();
+
     }
 
     @Activate
@@ -34,7 +34,7 @@ public class OutValveDriver implements OutValveDriverIf {
     @Override
     public void open() throws Exception {
         LOGGER.info("OUT-VALVE opened.");
-        siloDriver.put2EventQueue(Driver2SiloCtrlEvent.LOW_LEVEL_REACHED);
+
 
     }
 
@@ -42,5 +42,6 @@ public class OutValveDriver implements OutValveDriverIf {
     public void close() throws Exception {
         LOGGER.info("OUT-VALVE closed.");
     }
+
 
 }
