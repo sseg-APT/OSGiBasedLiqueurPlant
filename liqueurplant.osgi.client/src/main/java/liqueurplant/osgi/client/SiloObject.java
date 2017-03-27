@@ -76,8 +76,9 @@ public class SiloObject extends BaseInstanceEnabler implements NotificationListe
             if(siloCtrl != null){
                 try {
                     observation = observationQueue.take();
-                    LOG.info("Ctrl2Wrapper Event arrived: " + observation.toString());
+
                     if(observation.getEvent() != null){
+                        LOG.info("Ctrl2Wrapper Event arrived: " + observation.getEvent().toString());
                         if(observation.getEvent() == Ctrl2WrapperEvent.FILLING_COMPLETED){
                             setFillingCompleted(true);
                         }
