@@ -90,8 +90,8 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
         SiloCtrlEvent event = null;
         try {
             event = eventQueue.take();
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
         return event;
     }

@@ -13,21 +13,23 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 
-@Component(immediate = true)
+@Component(
+        name = "liqueurplant.osgi.silo.controller",
+        service = liqueurplant.osgi.silo.controller.api.SiloCtrlIf.class,
+        immediate = true
+)
 public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
-    protected ArrayBlockingQueue<SiloCtrlEvent> eventQueue;
-    protected InValveDriverIf inValve;
-    protected OutValveDriverIf outValve;
+    ArrayBlockingQueue<SiloCtrlEvent> eventQueue;
+    InValveDriverIf inValve;
+    OutValveDriverIf outValve;
     SimpleSiloCtrlState state = SimpleSiloCtrlState.IDLE;
-    public static Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
-    public boolean fillingCompleted = false;
-    ArrayList<NotificationListener> notifications;
+    static Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
+    private ArrayList<NotificationListener> notifications;
 
     public SimpleSiloCtrl() {
         eventQueue = new ArrayBlockingQueue<>(20);
         notifications = new ArrayList<>(10);
-
     }
 
     @Activate
@@ -54,8 +56,8 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
     public void run() {
         SiloCtrlEvent scEvent;
         SimpleSiloCtrlState newState;
-
         boolean stop = false;
+
         LOGGER.info("CONTROLLER state: " + state + "\n");
         while (state != null) {
             if (stop) {
@@ -83,11 +85,10 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
     private SiloCtrlEvent getNextEvent() {
         SiloCtrlEvent event = null;
-
         try {
             event = eventQueue.take();
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
 
         return event;
@@ -95,16 +96,13 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
     }
 
     @Override
-    public void addListener(NotificationListener listener) {
-        notifications.add(listener);
-    }
+    public void addListener(NotificationListener listener) { notifications.add(listener); }
 
     void notifyListeners(ObservableTuple observable) {
-        for (NotificationListener listener : notifications ) {
+        for (NotificationListener listener : notifications) {
             listener.updateNotification(observable);
         }
     }
-
 
 
     @Reference

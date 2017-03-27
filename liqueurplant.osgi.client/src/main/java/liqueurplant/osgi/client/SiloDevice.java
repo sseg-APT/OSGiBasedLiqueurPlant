@@ -10,7 +10,10 @@ import org.osgi.service.component.annotations.Reference;
 import java.util.List;
 
 
-@Component
+@Component(
+        name = "liqueurplant.osgi.client",
+        immediate = true
+)
 public class SiloDevice extends AbstractDevice {
 
     SiloObject silo = new SiloObject();

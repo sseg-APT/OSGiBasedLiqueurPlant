@@ -25,20 +25,18 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf, SiloCtr
 
         @Override
         public void performActions(SimpleSiloCtrl ctrl, SiloCtrlEvent e) {
-            // TODO Auto-generated method stub
             if (e == Process2SiloCtrlEvent.STOP) {
                 try {
                     ctrl.eventQueue.put(Process2SiloCtrlEvent.STOP);
                 } catch (InterruptedException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
             }
             try {
                 ctrl.inValve.open();
                 ctrl.put2EventQueue(Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED);
-            } catch (Exception e1) {
-                e1.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
     },
@@ -58,16 +56,16 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf, SiloCtr
 
         @Override
         public void performActions(SimpleSiloCtrl ctrl, SiloCtrlEvent e) {
-            // TODO Auto-generated method stub
             try {
                 ctrl.inValve.close();
-            } catch (Exception e1) {
-                e1.printStackTrace();
+                if (e == Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED)
+                    ctrl.notifyListeners(
+                            new ObservableTuple(
+                                    Ctrl2WrapperEvent.FILLING_COMPLETED, SimpleSiloCtrlState.FULL)
+                    );
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            if (e == Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED)
-                ctrl.notifyListeners(
-                        new ObservableTuple(
-                                Ctrl2WrapperEvent.FILLING_COMPLETED, SimpleSiloCtrlState.FULL));
         }
     },
     FULL {
@@ -89,8 +87,8 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf, SiloCtr
             try {
                 ctrl.outValve.open();
                 ctrl.put2EventQueue(Driver2SiloCtrlEvent.LOW_LEVEL_REACHED);
-            } catch (Exception e1) {
-                e1.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
     },
@@ -102,8 +100,8 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf, SiloCtr
             if (e == Driver2SiloCtrlEvent.LOW_LEVEL_REACHED || e == Process2SiloCtrlEvent.STOP_EPMTYING) {
                 ctrl.notifyListeners(
                         new ObservableTuple(
-                                Ctrl2WrapperEvent.EMPTYING_COMPLETED, SimpleSiloCtrlState.EMPTY));
-
+                                Ctrl2WrapperEvent.EMPTYING_COMPLETED, SimpleSiloCtrlState.EMPTY)
+                );
                 targetState = SimpleSiloCtrlState.EMPTY;
                 performActions(ctrl, e);
             } else
@@ -116,8 +114,8 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf, SiloCtr
         public void performActions(SimpleSiloCtrl ctrl, SiloCtrlEvent e) {
             try {
                 ctrl.outValve.close();
-            } catch (Exception e1) {
-                e1.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
     },

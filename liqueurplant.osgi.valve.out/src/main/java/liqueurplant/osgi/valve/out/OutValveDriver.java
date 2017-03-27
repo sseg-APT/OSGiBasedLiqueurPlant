@@ -13,13 +13,14 @@ import org.slf4j.LoggerFactory;
  */
 @Component(
         name = "liqueurplant.osgi.valve.out",
-        service = liqueurplant.osgi.valve.out.api.OutValveDriverIf.class
+        service = liqueurplant.osgi.valve.out.api.OutValveDriverIf.class,
+        immediate = true
 )
 public class OutValveDriver implements OutValveDriverIf {
 
     private GpioController gpioController;
     private GpioPinDigitalOutput outValve;
-    public Logger LOGGER = LoggerFactory.getLogger(OutValveDriver.class);
+    private Logger LOGGER = LoggerFactory.getLogger(OutValveDriver.class);
 
     public OutValveDriver() {
         gpioController = GpioFactory.getInstance();
