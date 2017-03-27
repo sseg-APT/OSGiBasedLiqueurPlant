@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 public class SimpleSiloDriver implements SiloDriverIf {
 
     private SiloCtrlIf siloCtrl;
-    public Logger LOGGER = LoggerFactory.getLogger(SimpleSiloDriver.class);
+    private Logger LOGGER = LoggerFactory.getLogger(SimpleSiloDriver.class);
     private final GpioController gpioController;
     private GpioPinDigitalInput highLevelSensor;
     private GpioPinDigitalInput lowLevelSensor;
@@ -41,7 +41,7 @@ public class SimpleSiloDriver implements SiloDriverIf {
 
         highLevelSensor.setShutdownOptions(true);
         lowLevelSensor.setShutdownOptions(true);
-
+        // Check if it works with interrupt or polling.
         highLevelSensor.addListener((GpioPinListenerDigital) event -> {
             if(event.getState() == PinState.HIGH){
                 siloCtrl.put2EventQueue(Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED);
@@ -68,11 +68,11 @@ public class SimpleSiloDriver implements SiloDriverIf {
     @Reference
     protected void setSiloCtrlIf(SiloCtrlIf siloCtrl){
         this.siloCtrl = siloCtrl;
-        LOGGER.info(" SILO-CONTROLLER binded.");
+        LOGGER.info("SILO-CONTROLLER binded.");
     }
 
     protected void unsetSiloCtrlIf(SiloCtrlIf siloCtrl){
         this.siloCtrl = null;
-        LOGGER.info(" SILO-CONTROLLER unbinded.");
+        LOGGER.info("SILO-CONTROLLER unbinded.");
     }
 }
