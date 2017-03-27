@@ -16,16 +16,16 @@ import java.util.concurrent.ArrayBlockingQueue;
 @Component(immediate = true)
 public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
+    ArrayBlockingQueue<ObservableTuple> notificationQueue;
     ArrayBlockingQueue<SiloCtrlEvent> eventQueue;
     InValveDriverIf inValve;
     OutValveDriverIf outValve;
     SimpleSiloCtrlState state = SimpleSiloCtrlState.IDLE;
     static Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
-    private ArrayList<NotificationListener> notifications;
 
     public SimpleSiloCtrl() {
         eventQueue = new ArrayBlockingQueue<>(20);
-        notifications = new ArrayList<>(10);
+        notificationQueue = new ArrayBlockingQueue<>(10);
     }
 
     @Activate
@@ -49,6 +49,16 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
     }
 
     @Override
+    public ObservableTuple takeNotification() {
+        try {
+            return notificationQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return  null;
+        }
+    }
+
+    @Override
     public void run() {
         SiloCtrlEvent scEvent;
         SimpleSiloCtrlState newState;
@@ -66,7 +76,11 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
                 stop = true;
             } else {
                 newState = this.state.processEvent(this, scEvent);
-                notifyListeners(new ObservableTuple(null, newState));
+                try {
+                    notificationQueue.put(new ObservableTuple(null, newState));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 if (newState != state) {
                     state = newState;
                     LOGGER.info("S1: Controller State= " + state + "\n");
@@ -95,18 +109,6 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
         }
         return event;
     }
-
-    @Override
-    public void addListener(NotificationListener listener) {
-        notifications.add(listener);
-    }
-
-    void notifyListeners(ObservableTuple observable) {
-        for (NotificationListener listener : notifications) {
-            listener.updateNotification(observable);
-        }
-    }
-
 
     @Reference
     protected void setInValve(InValveDriverIf inValve) {

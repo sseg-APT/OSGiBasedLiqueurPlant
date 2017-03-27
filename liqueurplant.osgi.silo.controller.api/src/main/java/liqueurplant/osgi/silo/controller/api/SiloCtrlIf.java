@@ -11,6 +11,5 @@ public interface SiloCtrlIf {
 
     void put2EventQueue(SiloCtrlEvent event);
 
-    void addListener(NotificationListener listener);
-
+    ObservableTuple takeNotification();
 }

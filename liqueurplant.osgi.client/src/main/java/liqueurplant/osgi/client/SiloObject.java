@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
-public class SiloObject extends BaseInstanceEnabler implements NotificationListener, Runnable{
+public class SiloObject extends BaseInstanceEnabler implements Runnable {
 
     public static Logger LOG = LoggerFactory.getLogger(SiloObject.class);
     public static int modelId = 20000;
@@ -21,7 +21,7 @@ public class SiloObject extends BaseInstanceEnabler implements NotificationListe
     public boolean emptyingCompleted = false;
     ArrayBlockingQueue<ObservableTuple> observationQueue;
 
-    public SiloObject(){
+    public SiloObject() {
         observationQueue = new ArrayBlockingQueue<>(20);
     }
 
@@ -72,24 +72,20 @@ public class SiloObject extends BaseInstanceEnabler implements NotificationListe
     public void run() {
         ObservableTuple observation;
         LOG.info("Leshan Wrapper started.");
-        while(true){
-            if(siloCtrl != null){
-                try {
-                    observation = observationQueue.take();
+        while (true) {
+            if (siloCtrl != null) {
+                observation = siloCtrl.takeNotification();
 
-                    if(observation.getEvent() != null){
-                        LOG.info("Ctrl2Wrapper Event arrived: " + observation.getEvent().toString());
-                        if(observation.getEvent() == Ctrl2WrapperEvent.FILLING_COMPLETED){
-                            setFillingCompleted(true);
-                        }
-                        else if (observation.getEvent() == Ctrl2WrapperEvent.EMPTYING_COMPLETED){
-                            setEmptyingCompleted(true);
-                        }
+                if (observation.getEvent() != null) {
+                    LOG.info("Ctrl2Wrapper Event arrived: " + observation.getEvent().toString());
+                    if (observation.getEvent() == Ctrl2WrapperEvent.FILLING_COMPLETED) {
+                        setFillingCompleted(true);
+                    } else if (observation.getEvent() == Ctrl2WrapperEvent.EMPTYING_COMPLETED) {
+                        setEmptyingCompleted(true);
                     }
-                    setState(observation.getState().toString());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
+                setState(observation.getState().toString());
+
             }
         }
     }
@@ -119,7 +115,7 @@ public class SiloObject extends BaseInstanceEnabler implements NotificationListe
 
 
     private void setState(String newState) {
-        if ( !newState.equals(state)) {
+        if (!newState.equals(state)) {
             state = newState;
             fireResourcesChange(0);
         }
@@ -140,6 +136,7 @@ public class SiloObject extends BaseInstanceEnabler implements NotificationListe
         siloCtrl.put2EventQueue(Process2SiloCtrlEvent.STOP_FILLING);
 
     }
+
     private void stopEmptying() {
         LOG.debug("Stop emptying");
         siloCtrl.put2EventQueue(Process2SiloCtrlEvent.STOP_EPMTYING);
@@ -148,24 +145,15 @@ public class SiloObject extends BaseInstanceEnabler implements NotificationListe
 
     protected void setSiloController(SiloCtrlIf siloCtrl) {
         this.siloCtrl = siloCtrl;
-        siloCtrl.addListener(this);
         LOG.info("SILO CONTROLLER binded.");
     }
 
-    protected void unsetSiloController(){
+    protected void unsetSiloController() {
         this.siloCtrl = null;
         LOG.info("SILO CONTROLLER unbinded.");
     }
 
-    @Override
-    public void updateNotification(ObservableTuple observable) {
-        try {
-            observationQueue.put(observable);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-    }
 
 
 }
