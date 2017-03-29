@@ -5,6 +5,8 @@ package mytest;
  *
  */
 
+import liqueurplant.osgi.valve.in.api.InValveDriverIf;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
@@ -24,7 +26,7 @@ import static org.ops4j.pax.exam.CoreOptions.*;
 public class SampleTest {
 
     @Inject
-    BundleContext bundleContext;
+    InValveDriverIf driver;
 
 
     @Configuration
@@ -33,12 +35,18 @@ public class SampleTest {
         return options(
                 cleanCaches(),
                 mavenBundle("org.apache.felix", "org.apache.felix.framework"),
+                mavenBundle("org.apache.felix","org.apache.felix.scr"),
+                mavenBundle("liqueurplant.osgi","liqueurplant.osgi.valve.in.api"),
+                mavenBundle("liqueurplant.osgi","liqueurplant.osgi.valve.in.sim"),
+
                 junitBundles()
         );
     }
 
     @Test
     public void getHelloService() {
+        Assert.assertNotNull(driver);
+        Assert.assertEquals(driver.test() , "Error.");
         System.out.println("********** Hello Test *************");
     }
 }

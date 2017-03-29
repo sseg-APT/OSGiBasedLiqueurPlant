@@ -14,7 +14,16 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr</artifactId>
+            <version>2.0.8</version>
+        </dependency>
 
         <!--Used for Pax Exam unit testing only -->
         <dependency>
