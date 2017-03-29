@@ -21,6 +21,7 @@
         <module>liqueurplant.osgi.valve.in.sim</module>
         <module>liqueurplant.osgi.valve.out.sim</module>
         <module>liqueurplant.osgi.silo.controller.sim</module>
+        <module>sample.test</module>
     </modules>
     <packaging>pom</packaging>
 

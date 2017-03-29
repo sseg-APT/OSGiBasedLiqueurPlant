@@ -9,4 +9,6 @@ public interface InValveDriverIf {
     void open() throws Exception;
 
     void close() throws Exception;
+
+    String test();
 }

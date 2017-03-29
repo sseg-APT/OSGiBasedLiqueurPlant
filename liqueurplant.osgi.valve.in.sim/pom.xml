@@ -43,6 +43,7 @@
                         <Import-Package>*</Import-Package>
                         <_dsannotations>*</_dsannotations>
                     </instructions>
+
                 </configuration>
             </plugin>
         </plugins>

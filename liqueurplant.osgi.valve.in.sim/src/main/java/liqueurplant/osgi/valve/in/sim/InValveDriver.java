@@ -39,6 +39,10 @@ public class InValveDriver implements InValveDriverIf {
         LOGGER.info("IN-VALVE closed.");
     }
 
+    @Override
+    public String test() {
+        return "Test ok.";
+    }
 
 
 }

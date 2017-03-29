@@ -57,6 +57,11 @@ public class InValveDriver implements InValveDriverIf {
         }
     }
 
+    @Override
+    public String test() {
+        return null;
+    }
+
     private void unprovisionPins(GpioController gpioController) {
         while (!gpioController.getProvisionedPins().isEmpty())
             gpioController.unprovisionPin(gpioController.getProvisionedPins().iterator().next());
