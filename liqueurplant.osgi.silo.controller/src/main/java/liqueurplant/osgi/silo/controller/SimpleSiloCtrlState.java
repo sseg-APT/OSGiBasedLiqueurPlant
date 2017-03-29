@@ -108,7 +108,7 @@ public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf, SiloCtr
         public void performActions(SimpleSiloCtrl ctrl, SiloCtrlEvent e) {
             try {
                 ctrl.outValve.close();
-                if(e == Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED) {
+                if(e == Driver2SiloCtrlEvent.LOW_LEVEL_REACHED) {
                     ctrl.notificationQueue.put(
                             new ObservableTuple(
                                     Ctrl2WrapperEvent.EMPTYING_COMPLETED, SimpleSiloCtrlState.EMPTY)
