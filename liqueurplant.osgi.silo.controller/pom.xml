@@ -56,6 +56,14 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
+                        <Export-Package>liqueurplant.osgi.silo.controller.api</Export-Package>
+                        <Private-Package>liqueurplant.osgi.silo.controller</Private-Package>
+                        <Require-Bundle>
+                            liqueurplant.osgi.silo.controller.api,
+                            liqueurplant.osgi.silo.driver.api,
+                            liqueurplant.osgi.valve.in.api,
+                            liqueurplant.osgi.valve.out.api
+                        </Require-Bundle>
                         <_dsannotations>*</_dsannotations>
                     </instructions>
                 </configuration>

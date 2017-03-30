@@ -47,6 +47,9 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
+                        <Export-Package>liqueurplant.osgi.valve.out.api</Export-Package>
+                        <Private-Package>liqueurplant.osgi.valve.out</Private-Package>
+                        <Require-Bundle>liqueurplant.osgi.valve.out.api</Require-Bundle>
                         <_dsannotations>*</_dsannotations>
                     </instructions>
                 </configuration>

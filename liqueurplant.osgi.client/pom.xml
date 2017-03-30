@@ -76,6 +76,9 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
+                        <Export-Package/>
+                        <Private-Package>liqueurplant.osgi.client</Private-Package>
+                        <Require-Bundle>liqueurplant.osgi.silo.controller.api</Require-Bundle>
                         <Include-Resource>
                             {maven-resources}
                         </Include-Resource>
