@@ -1,16 +1,17 @@
 package test;
 
-import junit.framework.TestCase;
 import liqueurplant.osgi.valve.in.sim.InValveDriver;
+import org.junit.Assert;
 
 /**
  * Created by bojit on 02-Apr-17.
  */
-public class Test extends TestCase {
+public class Test {
 
+    @org.junit.Test
     public void testSimple() throws Exception {
         InValveDriver t = new InValveDriver();
-        assertEquals( t.test(), "Test ok.");
+        Assert.assertEquals( t.test(), "Test ok.");
     }
 
 }
