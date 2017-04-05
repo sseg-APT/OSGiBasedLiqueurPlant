@@ -9,30 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>liqueurplant.osgi.valve.in.sim</artifactId>
+    <artifactId>liqueurplant.osgi.client.config</artifactId>
     <packaging>bundle</packaging>
 
     <dependencies>
 
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
-        </dependency>
-        <!--
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-service</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-api</artifactId>
-        </dependency>
-        -->
     </dependencies>
 
     <build>
-        <!-- <directory>../targets</directory> -->
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -44,11 +28,9 @@
                         <Import-Package>*</Import-Package>
                         <_dsannotations>*</_dsannotations>
                     </instructions>
-
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 
 </project>

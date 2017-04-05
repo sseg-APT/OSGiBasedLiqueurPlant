@@ -22,8 +22,8 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
 
     public SiloObject() {
         observationQueue = new ArrayBlockingQueue<>(20);
-        Test obj = new Test();
-        obj.getFile("/objects/config.properties");
+        //Test obj = new Test();
+        //obj.getFile("/objects/config.properties");
     }
 
     @Override

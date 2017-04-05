@@ -39,7 +39,7 @@
     </dependencies>
 
     <build>
-        <directory>../targets</directory>
+        <!-- <directory>../targets</directory> -->
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>

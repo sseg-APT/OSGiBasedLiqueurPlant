@@ -22,6 +22,7 @@
         <module>liqueurplant.osgi.valve.out.sim</module>
         <module>liqueurplant.osgi.silo.controller.sim</module>
         <module>sample.test</module>
+        <module>liqueurplant.osgi.client.config</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -201,6 +202,12 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>liqueurplant.osgi.silo.controller.sim</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>liqueurplant.osgi.client.config</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
