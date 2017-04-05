@@ -1,5 +1,6 @@
 package liqueurplant.osgi.client;
 
+import liqueurplant.osgi.client.config.api.ConfigManagerIf;
 import org.eclipse.leshan.client.californium.LeshanClient;
 import org.eclipse.leshan.client.californium.LeshanClientBuilder;
 import org.eclipse.leshan.client.object.Device;
@@ -10,6 +11,11 @@ import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectLoader;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.request.BindingMode;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sun.misc.Contended;
 
 import java.io.InputStream;
 import java.util.List;
@@ -29,12 +35,16 @@ public abstract class AbstractDevice implements Runnable {
     boolean needBootstrap;
     byte[] pskIdentity, pskKey;
 
+
     private static final String USAGE = "java -jar [filename] [OPTIONS]";
 
     public AbstractDevice(String endpoint, String[] args) {
 
-        serverURI = "coap://150.140.188.186:5683";
 
+        //serverURI = "coap://" + configManager.getIP() + ":" +;
+
+        serverURI = "coap://192.168.1.56:5683";
+        //System.out.println("ServerUri: " + serverURI);
         // get security info
         byte[] pskIdentity = null;
         byte[] pskKey = null;
@@ -127,5 +137,13 @@ public abstract class AbstractDevice implements Runnable {
         return new LwM2mModel(models);
     }
 
+
+    protected void setConfigManager(ConfigManagerIf configManager){
+        this.setConfigManager(configManager);
+    }
+
+    protected void unsetConfigManager() {
+        this.unsetConfigManager();
+    }
 
 }

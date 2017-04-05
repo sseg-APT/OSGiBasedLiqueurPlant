@@ -23,6 +23,7 @@
         <module>liqueurplant.osgi.silo.controller.sim</module>
         <module>sample.test</module>
         <module>liqueurplant.osgi.client.config</module>
+        <module>liqueurplant.osgi.client.config.api</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -208,6 +209,12 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>liqueurplant.osgi.client.config</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>liqueurplant.osgi.client.config.api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

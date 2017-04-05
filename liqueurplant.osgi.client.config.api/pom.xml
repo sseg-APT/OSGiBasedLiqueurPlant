@@ -9,29 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>liqueurplant.osgi.client.config</artifactId>
+    <artifactId>liqueurplant.osgi.client.config.api</artifactId>
     <packaging>bundle</packaging>
 
     <dependencies>
-
         <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-service</artifactId>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.annotation</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.client.config.api</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>
+        <!-- <directory>../targets</directory> -->
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -39,10 +28,8 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Export-Package>liqueurplant.osgi.client.config.api</Export-Package>
-                        <Private-Package>liqueurplant.osgi.client.config</Private-Package>
-                        <Require-Bundle>liqueurplant.osgi.client.config.api</Require-Bundle>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
                         <_dsannotations>*</_dsannotations>
                     </instructions>

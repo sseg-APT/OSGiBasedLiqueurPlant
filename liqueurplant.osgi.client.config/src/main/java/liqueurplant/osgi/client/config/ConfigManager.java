@@ -1,5 +1,6 @@
 package liqueurplant.osgi.client.config;
 
+import liqueurplant.osgi.client.config.api.ConfigManagerIf;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
@@ -20,10 +21,12 @@ import java.util.Hashtable;
         name = "liqueurplant.osgi.client.config",
         immediate = true
 )
-public class ConfigManager implements ManagedService {
+public class ConfigManager implements ManagedService, ConfigManagerIf {
 
     private ServiceRegistration service;
     private Logger LOGGER = LoggerFactory.getLogger(ConfigManager.class);
+    private String IP = "";
+    private String port = "";
 
     public ConfigManager(){}
 
@@ -44,8 +47,25 @@ public class ConfigManager implements ManagedService {
         } else {
             // apply configuration from config admin
             LOGGER.info("IP: " + properties.get("IP"));
+            this.IP = properties.get("IP").toString();
             LOGGER.info("Port: "  + properties.get("port"));
-
+            this.port = properties.get("port").toString();
         }
+    }
+
+    @Override
+    public String getIP() {
+        if(this.IP != null)
+            return this.IP;
+        else
+            return null;
+    }
+
+    @Override
+    public String getPort() {
+        if(this.port != null)
+            return this.port;
+        else
+            return null;
     }
 }

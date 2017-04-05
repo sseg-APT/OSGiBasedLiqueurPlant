@@ -1,5 +1,6 @@
 package liqueurplant.osgi.client;
 
+import liqueurplant.osgi.client.config.api.ConfigManagerIf;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
 import org.eclipse.leshan.client.resource.ObjectsInitializer;
@@ -13,6 +14,8 @@ import org.osgi.service.cm.ManagedService;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -23,11 +26,16 @@ import java.util.List;
         name = "liqueurplant.osgi.client",
         immediate = true
 )
-public class SiloDevice extends AbstractDevice{
+public class SiloDevice extends AbstractDevice {
 
     SiloObject silo = new SiloObject();
+    public static ConfigManagerIf configManager;
+    private Logger LOG = LoggerFactory.getLogger(AbstractDevice.class);
 
-    public SiloDevice() { super("silo", null); }
+
+    public SiloDevice() {
+        super("silo", null);
+    }
 
     public SiloDevice(String endpoint, String[] args) {
         super(endpoint, args);
@@ -67,5 +75,19 @@ public class SiloDevice extends AbstractDevice{
     protected void unsetSiloController(SiloCtrlIf siloCtrl) {
         silo.unsetSiloController();
     }
+
+    @Reference
+    protected void setConfigManager(ConfigManagerIf configManager) {
+       this.configManager = configManager;
+        LOG.info("CONFIG MANAGER binded.");
+
+    }
+
+    protected void unsetConfigManager(ConfigManagerIf configManager) {
+        this.configManager = null;
+        LOG.info("CONFIG MANAGER unbinded.");
+
+    }
+
 
 }
