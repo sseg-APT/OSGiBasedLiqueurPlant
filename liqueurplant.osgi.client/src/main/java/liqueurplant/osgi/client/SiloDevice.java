@@ -3,10 +3,13 @@ package liqueurplant.osgi.client;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
 import org.eclipse.leshan.client.resource.ObjectsInitializer;
+import org.osgi.service.cm.ConfigurationException;
+import org.osgi.service.cm.ManagedService;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import java.util.Dictionary;
 import java.util.List;
 
 
@@ -14,7 +17,7 @@ import java.util.List;
         name = "liqueurplant.osgi.client",
         immediate = true
 )
-public class SiloDevice extends AbstractDevice {
+public class SiloDevice extends AbstractDevice implements ManagedService{
 
     SiloObject silo = new SiloObject();
 
@@ -59,5 +62,13 @@ public class SiloDevice extends AbstractDevice {
     }
 
 
-
+    @Override
+    public void updated(Dictionary<String, ?> dictionary) throws ConfigurationException {
+        int port = -1;
+        if ( dictionary != null) {
+            Object o = dictionary.get("port");
+            if ( o != null )
+                System.out.println((Integer) o);
+        }
+    }
 }

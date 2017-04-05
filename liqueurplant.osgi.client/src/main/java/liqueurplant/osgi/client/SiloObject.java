@@ -4,7 +4,6 @@ import liqueurplant.osgi.silo.controller.api.*;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
-import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +22,8 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
 
     public SiloObject() {
         observationQueue = new ArrayBlockingQueue<>(20);
+        Test obj = new Test();
+        obj.getFile("/objects/config.properties");
     }
 
     @Override
