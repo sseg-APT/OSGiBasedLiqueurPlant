@@ -18,7 +18,7 @@ import static org.eclipse.leshan.LwM2mId.*;
 import static org.eclipse.leshan.client.object.Security.*;
 
 public abstract class AbstractDevice implements Runnable {
-    String endpoint, localAddress, secureLocalAddress, serverURI;
+    String endpoint, localAddress, secureLocalAddress;
     int localPort, secureLocalPort;
     boolean needBootstrap;
     byte[] pskIdentity, pskKey;
@@ -26,13 +26,12 @@ public abstract class AbstractDevice implements Runnable {
 
     private static final String USAGE = "java -jar [filename] [OPTIONS]";
 
-    public AbstractDevice(String serverURI, String endpoint, String[] args) {
+    public AbstractDevice(String endpoint, String[] args) {
 
 
         //serverURI = "coap://" + configManager.getIP() + ":" +;
 
-        this.serverURI = serverURI;
-        System.out.println("ServerUri: " + serverURI);
+
         // get security info
         byte[] pskIdentity = null;
         byte[] pskKey = null;
@@ -50,7 +49,7 @@ public abstract class AbstractDevice implements Runnable {
         this.secureLocalAddress = secureLocalAddress;
         this.secureLocalPort = secureLocalPort;
         this.needBootstrap = false;
-        this.serverURI = serverURI;
+        //this.serverURI = serverURI;
         this.pskIdentity = pskIdentity;
         this.pskKey = pskKey;
 
@@ -103,15 +102,15 @@ public abstract class AbstractDevice implements Runnable {
 
         if (needBootstrap) {
             if (pskIdentity == null)
-                initializer.setInstancesForObject(SECURITY, noSecBootstap(serverURI));
+                initializer.setInstancesForObject(SECURITY, noSecBootstap(SiloDevice.serverURI));
             else
-                initializer.setInstancesForObject(SECURITY, pskBootstrap(serverURI, pskIdentity, pskKey));
+                initializer.setInstancesForObject(SECURITY, pskBootstrap(SiloDevice.serverURI, pskIdentity, pskKey));
         } else {
             if (pskIdentity == null) {
-                initializer.setInstancesForObject(SECURITY, noSec(serverURI, 123));
+                initializer.setInstancesForObject(SECURITY, noSec(SiloDevice.serverURI, 123));
                 initializer.setInstancesForObject(SERVER, new Server(123, 30, BindingMode.U, false));
             } else {
-                initializer.setInstancesForObject(SECURITY, psk(serverURI, 123, pskIdentity, pskKey));
+                initializer.setInstancesForObject(SECURITY, psk(SiloDevice.serverURI, 123, pskIdentity, pskKey));
                 initializer.setInstancesForObject(SERVER, new Server(123, 30, BindingMode.U, false));
             }
         }

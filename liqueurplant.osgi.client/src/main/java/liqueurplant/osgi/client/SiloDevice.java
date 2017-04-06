@@ -35,7 +35,7 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
 
 
     public SiloDevice(){
-        super(serverURI,"silo", null);
+        super("silo", null);
     }
 
     //public SiloDevice() {
@@ -43,7 +43,7 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
     //}
 
     public SiloDevice(String serverURI,String endpoint, String[] args) {
-        super(serverURI, endpoint, args);
+        super(endpoint, args);
     }
 
     @Activate
