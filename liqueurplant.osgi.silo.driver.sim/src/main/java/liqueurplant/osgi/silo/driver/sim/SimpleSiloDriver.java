@@ -18,7 +18,10 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 
 
-@Component(immediate = true)
+@Component(
+        name = "liqueurplant.osgi.silo.driver.sim",
+        service = liqueurplant.osgi.silo.driver.api.SiloDriverIf.class
+)
 public class SimpleSiloDriver implements SiloDriverIf, Runnable {
 
     private SiloCtrlIf siloCtrl;

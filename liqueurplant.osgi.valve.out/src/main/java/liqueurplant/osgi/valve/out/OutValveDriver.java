@@ -13,8 +13,7 @@ import org.slf4j.LoggerFactory;
  */
 @Component(
         name = "liqueurplant.osgi.valve.out",
-        service = liqueurplant.osgi.valve.out.api.OutValveDriverIf.class,
-        immediate = true
+        service = liqueurplant.osgi.valve.out.api.OutValveDriverIf.class
 )
 public class OutValveDriver implements OutValveDriverIf {
 

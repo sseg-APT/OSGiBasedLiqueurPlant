@@ -11,7 +11,10 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by bochalito on 23/3/2017.
  */
-@Component(immediate = true)
+@Component(
+        name = "liqueurplant.osgi.valve.out.sim",
+        service = liqueurplant.osgi.valve.out.api.OutValveDriverIf.class
+)
 public class OutValveDriver implements OutValveDriverIf {
 
     public Logger LOGGER = LoggerFactory.getLogger(OutValveDriver.class);

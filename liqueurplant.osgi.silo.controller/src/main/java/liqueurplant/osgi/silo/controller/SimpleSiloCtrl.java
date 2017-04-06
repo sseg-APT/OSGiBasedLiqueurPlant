@@ -15,8 +15,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 @Component(
         name = "liqueurplant.osgi.silo.controller",
-        service = liqueurplant.osgi.silo.controller.api.SiloCtrlIf.class,
-        immediate = true
+        service = liqueurplant.osgi.silo.controller.api.SiloCtrlIf.class
 )
 public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 

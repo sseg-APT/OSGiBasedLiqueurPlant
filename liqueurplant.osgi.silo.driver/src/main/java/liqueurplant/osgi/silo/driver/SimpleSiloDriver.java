@@ -19,8 +19,7 @@ import org.slf4j.LoggerFactory;
 
 @Component(
         name = "liqueurplant.osgi.silo.driver",
-        service = liqueurplant.osgi.silo.driver.api.SiloDriverIf.class,
-        immediate = true
+        service = liqueurplant.osgi.silo.driver.api.SiloDriverIf.class
 )
 public class SimpleSiloDriver implements SiloDriverIf {
 

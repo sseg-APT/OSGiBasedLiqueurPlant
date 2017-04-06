@@ -10,7 +10,10 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by bochalito on 23/3/2017.
  */
-@Component(immediate = true)
+@Component(
+        name = "liqueurplant.osgi.valve.in.sim",
+        service = liqueurplant.osgi.valve.in.api.InValveDriverIf.class
+)
 public class InValveDriver implements InValveDriverIf {
 
     public Logger LOGGER = LoggerFactory.getLogger(InValveDriver.class);

@@ -13,7 +13,10 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 
-@Component(immediate = true)
+@Component(
+        name = "liqueurplant.osgi.silo.controller.sim",
+        service = liqueurplant.osgi.silo.controller.api.SiloCtrlIf.class
+)
 public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
     ArrayBlockingQueue<ObservableTuple> notificationQueue;
