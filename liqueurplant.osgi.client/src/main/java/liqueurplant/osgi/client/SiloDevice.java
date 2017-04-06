@@ -1,14 +1,11 @@
 package liqueurplant.osgi.client;
 
-import liqueurplant.osgi.client.config.api.ConfigManagerIf;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
 import org.eclipse.leshan.client.resource.ObjectsInitializer;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.framework.wiring.BundleCapability;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 import org.osgi.service.component.annotations.Activate;
@@ -26,27 +23,56 @@ import java.util.List;
         name = "liqueurplant.osgi.client",
         immediate = true
 )
-public class SiloDevice extends AbstractDevice {
+public class SiloDevice extends AbstractDevice implements ManagedService {
 
     SiloObject silo = new SiloObject();
-    public static ConfigManagerIf configManager;
-    private Logger LOG = LoggerFactory.getLogger(AbstractDevice.class);
+    static String serverURI = "coap://0.0.0.0:5683";
+
+    private Logger LOGGER = LoggerFactory.getLogger(AbstractDevice.class);
+    private ServiceRegistration configService;
+    private String IP = "";
+    private String port = "";
 
 
-    public SiloDevice() {
-        super("silo", null);
+    public SiloDevice(){
+        super(serverURI,"silo", null);
     }
 
-    public SiloDevice(String endpoint, String[] args) {
-        super(endpoint, args);
+    //public SiloDevice() {
+    //    super(serverURI,"silo", null);
+    //}
+
+    public SiloDevice(String serverURI,String endpoint, String[] args) {
+        super(serverURI, endpoint, args);
     }
 
     @Activate
     public void activate(BundleContext context) {
-        System.out.println("Silo device activated.");
+        LOGGER.info("Silo device activated.");
+        Dictionary props = new Hashtable();
+        props.put(Constants.SERVICE_PID, "ConfigManagerService");
+        configService = context.registerService(ManagedService.class.getName(),
+                new SiloDevice(), props);
         new Thread(this).start();
         new Thread(silo).start();
 
+    }
+
+    @Override
+    public void updated(Dictionary<String, ?> properties) throws ConfigurationException {
+        if (properties == null) {
+            LOGGER.warn("No configuration found.");
+        } else {
+            // apply configuration from config admin
+            LOGGER.info("IP: " + properties.get("IP"));
+            this.IP = properties.get("IP").toString();
+            LOGGER.info("Port: "  + properties.get("port"));
+            this.port = properties.get("port").toString();
+            serverURI = "coap://" + this.IP + ":" + this.port;
+
+            new SiloDevice(serverURI, "silo", null);
+            //LOGGER.info("ServerURI: " + serverURI);
+        }
     }
 
     @Override
@@ -75,19 +101,4 @@ public class SiloDevice extends AbstractDevice {
     protected void unsetSiloController(SiloCtrlIf siloCtrl) {
         silo.unsetSiloController();
     }
-
-    @Reference
-    protected void setConfigManager(ConfigManagerIf configManager) {
-       this.configManager = configManager;
-        LOG.info("CONFIG MANAGER binded.");
-
-    }
-
-    protected void unsetConfigManager(ConfigManagerIf configManager) {
-        this.configManager = null;
-        LOG.info("CONFIG MANAGER unbinded.");
-
-    }
-
-
 }

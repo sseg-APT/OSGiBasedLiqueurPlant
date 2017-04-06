@@ -1,6 +1,5 @@
 package liqueurplant.osgi.client;
 
-import liqueurplant.osgi.client.config.api.ConfigManagerIf;
 import org.eclipse.leshan.client.californium.LeshanClient;
 import org.eclipse.leshan.client.californium.LeshanClientBuilder;
 import org.eclipse.leshan.client.object.Device;
@@ -11,23 +10,12 @@ import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectLoader;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.request.BindingMode;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import sun.misc.Contended;
 
 import java.io.InputStream;
 import java.util.List;
-import java.util.Random;
 
-import static org.eclipse.leshan.LwM2mId.DEVICE;
-import static org.eclipse.leshan.LwM2mId.SECURITY;
-import static org.eclipse.leshan.LwM2mId.SERVER;
-import static org.eclipse.leshan.client.object.Security.noSec;
-import static org.eclipse.leshan.client.object.Security.noSecBootstap;
-import static org.eclipse.leshan.client.object.Security.psk;
-import static org.eclipse.leshan.client.object.Security.pskBootstrap;
+import static org.eclipse.leshan.LwM2mId.*;
+import static org.eclipse.leshan.client.object.Security.*;
 
 public abstract class AbstractDevice implements Runnable {
     String endpoint, localAddress, secureLocalAddress, serverURI;
@@ -38,13 +26,13 @@ public abstract class AbstractDevice implements Runnable {
 
     private static final String USAGE = "java -jar [filename] [OPTIONS]";
 
-    public AbstractDevice(String endpoint, String[] args) {
+    public AbstractDevice(String serverURI, String endpoint, String[] args) {
 
 
         //serverURI = "coap://" + configManager.getIP() + ":" +;
 
-        serverURI = "coap://192.168.1.56:5683";
-        //System.out.println("ServerUri: " + serverURI);
+        this.serverURI = serverURI;
+        System.out.println("ServerUri: " + serverURI);
         // get security info
         byte[] pskIdentity = null;
         byte[] pskKey = null;
@@ -65,6 +53,8 @@ public abstract class AbstractDevice implements Runnable {
         this.serverURI = serverURI;
         this.pskIdentity = pskIdentity;
         this.pskKey = pskKey;
+
+
 
     }
     @Override
@@ -135,15 +125,6 @@ public abstract class AbstractDevice implements Runnable {
         List<ObjectModel> models = ObjectLoader.loadJsonStream(defaultSpec);
         models.addAll(ObjectLoader.loadJsonStream(liqueurSpec));
         return new LwM2mModel(models);
-    }
-
-
-    protected void setConfigManager(ConfigManagerIf configManager){
-        this.setConfigManager(configManager);
-    }
-
-    protected void unsetConfigManager() {
-        this.unsetConfigManager();
     }
 
 }

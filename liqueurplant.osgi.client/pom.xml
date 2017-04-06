@@ -16,11 +16,6 @@
 
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.client.config.api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
         </dependency>
 
@@ -85,8 +80,7 @@
                         <Export-Package/>
                         <Private-Package>liqueurplant.osgi.client</Private-Package>
                         <Require-Bundle>
-                            liqueurplant.osgi.silo.controller.api,
-                            liqueurplant.osgi.client.config.api
+                            liqueurplant.osgi.silo.controller.api
                         </Require-Bundle>
                         <Include-Resource>
                             {maven-resources}
