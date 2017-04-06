@@ -18,31 +18,25 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
 
-
 @Component(
         name = "liqueurplant.osgi.client",
         immediate = true
 )
 public class SiloDevice extends AbstractDevice implements ManagedService {
 
-    SiloObject silo = new SiloObject();
-    static String serverURI = "coap://0.0.0.0:5683";
-
-    private Logger LOGGER = LoggerFactory.getLogger(AbstractDevice.class);
-    private ServiceRegistration configService;
+    static String serverURI = "";
     private String IP = "";
     private String port = "";
+    private ServiceRegistration configService;
+    private Logger LOGGER = LoggerFactory.getLogger(AbstractDevice.class);
 
+    SiloObject silo = new SiloObject();
 
-    public SiloDevice(){
+    public SiloDevice() {
         super("silo", null);
     }
 
-    //public SiloDevice() {
-    //    super(serverURI,"silo", null);
-    //}
-
-    public SiloDevice(String serverURI,String endpoint, String[] args) {
+    public SiloDevice(String endpoint, String[] args) {
         super(endpoint, args);
     }
 
@@ -51,11 +45,9 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
         LOGGER.info("Silo device activated.");
         Dictionary props = new Hashtable();
         props.put(Constants.SERVICE_PID, "ConfigManagerService");
-        configService = context.registerService(ManagedService.class.getName(),
-                new SiloDevice(), props);
+        configService = context.registerService(ManagedService.class.getName(), new SiloDevice(), props);
         new Thread(this).start();
         new Thread(silo).start();
-
     }
 
     @Override
@@ -63,15 +55,12 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
         if (properties == null) {
             LOGGER.warn("No configuration found.");
         } else {
-            // apply configuration from config admin
             LOGGER.info("IP: " + properties.get("IP"));
             this.IP = properties.get("IP").toString();
-            LOGGER.info("Port: "  + properties.get("port"));
+            LOGGER.info("Port: " + properties.get("port"));
             this.port = properties.get("port").toString();
             serverURI = "coap://" + this.IP + ":" + this.port;
-
-            new SiloDevice(serverURI, "silo", null);
-            //LOGGER.info("ServerURI: " + serverURI);
+            LOGGER.info("Server URI: " + serverURI);
         }
     }
 

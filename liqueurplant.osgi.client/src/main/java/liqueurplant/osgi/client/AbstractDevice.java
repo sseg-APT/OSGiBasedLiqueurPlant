@@ -18,19 +18,15 @@ import static org.eclipse.leshan.LwM2mId.*;
 import static org.eclipse.leshan.client.object.Security.*;
 
 public abstract class AbstractDevice implements Runnable {
-    String endpoint, localAddress, secureLocalAddress;
-    int localPort, secureLocalPort;
-    boolean needBootstrap;
-    byte[] pskIdentity, pskKey;
-
 
     private static final String USAGE = "java -jar [filename] [OPTIONS]";
+    private int localPort, secureLocalPort;
+    private boolean needBootstrap;
+    private byte[] pskIdentity, pskKey;
+    private String endpoint, localAddress, secureLocalAddress;
+
 
     public AbstractDevice(String endpoint, String[] args) {
-
-
-        //serverURI = "coap://" + configManager.getIP() + ":" +;
-
 
         // get security info
         byte[] pskIdentity = null;
