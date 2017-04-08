@@ -19,7 +19,8 @@ import org.slf4j.LoggerFactory;
 
 @Component(
         name = "liqueurplant.osgi.silo.driver",
-        service = liqueurplant.osgi.silo.driver.api.SiloDriverIf.class
+        service = liqueurplant.osgi.silo.driver.api.SiloDriverIf.class,
+        immediate = true
 )
 public class SimpleSiloDriver implements SiloDriverIf {
 
@@ -35,8 +36,8 @@ public class SimpleSiloDriver implements SiloDriverIf {
 
     @Activate
     public void activate() {
-        highLevelSensor = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_03, "HIGH-LEVEL-SENSOR", PinPullResistance.PULL_DOWN);
-        lowLevelSensor = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02, "LOW-LEVEL-SENSOR", PinPullResistance.PULL_DOWN);
+        highLevelSensor = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02, "HIGH-LEVEL-SENSOR", PinPullResistance.PULL_DOWN);
+        lowLevelSensor = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_03, "LOW-LEVEL-SENSOR", PinPullResistance.PULL_DOWN);
 
         highLevelSensor.setShutdownOptions(true);
         lowLevelSensor.setShutdownOptions(true);
