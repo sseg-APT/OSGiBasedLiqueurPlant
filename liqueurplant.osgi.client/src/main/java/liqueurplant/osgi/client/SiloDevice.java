@@ -29,6 +29,7 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
     private String port = "";
     private ServiceRegistration configService;
     private Logger LOGGER = LoggerFactory.getLogger(AbstractDevice.class);
+    private BundleContext context;
 
     SiloObject silo = new SiloObject();
 
@@ -42,10 +43,13 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
 
     @Activate
     public void activate(BundleContext context) {
+        this.context = context;
         LOGGER.info("Silo device activated.");
         Dictionary props = new Hashtable();
         props.put(Constants.SERVICE_PID, "ConfigManagerService");
         configService = context.registerService(ManagedService.class.getName(), new SiloDevice(), props);
+        //ConfigManager configManager = new ConfigManager();
+        //configManager.getFile("/objects/config.properties");
         new Thread(this).start();
         new Thread(silo).start();
     }
