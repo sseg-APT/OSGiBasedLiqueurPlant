@@ -60,12 +60,14 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
         if (properties == null) {
             LOGGER.warn("No configuration found.");
         } else {
+            client.destroy(true);
             LOGGER.info("IP: " + properties.get("IP"));
             this.IP = properties.get("IP").toString();
             LOGGER.info("Port: " + properties.get("port"));
             this.port = properties.get("port").toString();
             serverURI = "coap://" + this.IP + ":" + this.port;
             LOGGER.info("Server URI: " + serverURI);
+            new Thread(this).start();
         }
     }
 
