@@ -10,6 +10,7 @@ import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +18,13 @@ import org.slf4j.LoggerFactory;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 @Component(
         name = "liqueurplant.osgi.client",
-        immediate = true
+        immediate = true,
+        configurationPid = "ConfigManagerService",
+        configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class SiloDevice extends AbstractDevice implements ManagedService {
 
@@ -42,14 +46,11 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
     }
 
     @Activate
-    public void activate(BundleContext context) {
+    public void activate(Map<String, Object> properties) {
         this.context = context;
         LOGGER.info("Silo device activated.");
-        Dictionary props = new Hashtable();
-        props.put(Constants.SERVICE_PID, "ConfigManagerService");
-        configService = context.registerService(ManagedService.class.getName(), new SiloDevice(), props);
-        //ConfigManager configManager = new ConfigManager();
-        //configManager.getFile("/objects/config.properties");
+        serverURI = "coap://" + properties.get("IP") + ":" + properties.get("port");
+        System.out.println(serverURI);
         new Thread(this).start();
         new Thread(silo).start();
     }
