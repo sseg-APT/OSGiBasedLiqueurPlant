@@ -8,9 +8,6 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by bojit on 04-Mar-17.
- */
 @Component(
         name = "liqueurplant.osgi.valve.in",
         service = liqueurplant.osgi.valve.in.api.InValveDriverIf.class
@@ -20,7 +17,6 @@ public class InValveDriver implements InValveDriverIf {
     private GpioPinDigitalOutput inValve;
     private GpioController gpioController;
     private Logger LOGGER = LoggerFactory.getLogger(InValveDriver.class);
-
 
     public InValveDriver() {
         gpioController = GpioFactory.getInstance();
@@ -43,7 +39,7 @@ public class InValveDriver implements InValveDriverIf {
         try {
             inValve.setState(PinState.LOW);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Exception in open(): " + e.toString());
         }
     }
 
@@ -52,13 +48,8 @@ public class InValveDriver implements InValveDriverIf {
         try {
             inValve.setState(PinState.HIGH);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Exception in close(): " + e.toString());
         }
-    }
-
-    @Override
-    public String test() {
-        return null;
     }
 
     private void unprovisionPins(GpioController gpioController) {

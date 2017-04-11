@@ -8,9 +8,6 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by pBochalis on 3/6/2017.
- */
 @Component(
         name = "liqueurplant.osgi.valve.out",
         service = liqueurplant.osgi.valve.out.api.OutValveDriverIf.class
@@ -42,7 +39,7 @@ public class OutValveDriver implements OutValveDriverIf {
         try {
             outValve.setState(PinState.LOW);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Exception in open(): " + e.toString());
         }
     }
 
@@ -51,7 +48,7 @@ public class OutValveDriver implements OutValveDriverIf {
         try {
             outValve.setState(PinState.HIGH);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Exception in close(): " + e.toString());
         }
     }
 

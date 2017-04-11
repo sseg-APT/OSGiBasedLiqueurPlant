@@ -23,7 +23,7 @@ import java.util.Map;
 @Component(
         name = "liqueurplant.osgi.client",
         immediate = true,
-        configurationPid = "ConfigManagerService",
+        configurationPid = "ClientIPConfiguration",
         configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class SiloDevice extends AbstractDevice implements ManagedService {
@@ -33,7 +33,6 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
     private String port = "";
     private ServiceRegistration configService;
     private Logger LOGGER = LoggerFactory.getLogger(AbstractDevice.class);
-    private BundleContext context;
 
     SiloObject silo = new SiloObject();
 
@@ -47,10 +46,8 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
 
     @Activate
     public void activate(Map<String, Object> properties) {
-        this.context = context;
         LOGGER.info("Silo device activated.");
         serverURI = "coap://" + properties.get("IP") + ":" + properties.get("port");
-        System.out.println(serverURI);
         new Thread(this).start();
         new Thread(silo).start();
     }
@@ -60,12 +57,10 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
         if (properties == null) {
             LOGGER.warn("No configuration found.");
         } else {
-            LOGGER.info("IP: " + properties.get("IP"));
             this.IP = properties.get("IP").toString();
-            LOGGER.info("Port: " + properties.get("port"));
             this.port = properties.get("port").toString();
             serverURI = "coap://" + this.IP + ":" + this.port;
-            LOGGER.info("Server URI: " + serverURI);
+            LOGGER.info("Updated Server URI: " + serverURI);
         }
     }
 

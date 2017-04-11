@@ -23,8 +23,8 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
     ArrayBlockingQueue<SiloCtrlEvent> eventQueue;
     InValveDriverIf inValve;
     OutValveDriverIf outValve;
-    SimpleSiloCtrlState state = SimpleSiloCtrlState.IDLE;
-    static Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
+    private SimpleSiloCtrlState state = SimpleSiloCtrlState.IDLE;
+    private Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
 
     public SimpleSiloCtrl() {
         eventQueue = new ArrayBlockingQueue<>(20);
@@ -39,6 +39,8 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
 
     @Deactivate
     public void deactivate() {
+        eventQueue = null;
+        notificationQueue = null;
         LOGGER.info("SILO CONTROLLER deactivated.");
     }
 
@@ -47,7 +49,7 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
         try {
             eventQueue.put(event);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error("Exception in put2EventQueue(): " + e.toString());
         }
     }
 
@@ -56,8 +58,8 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
         try {
             return notificationQueue.take();
         } catch (InterruptedException e) {
-            e.printStackTrace();
-            return  null;
+            LOGGER.error("Exception in takeNotification(): " + e.toString());
+            return null;
         }
     }
 
@@ -88,7 +90,6 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
         }
     }
@@ -102,11 +103,9 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
         try {
             event = eventQueue.take();
         } catch (InterruptedException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Exception in getNextEvent(): " + ex.toString());
         }
-
         return event;
-
     }
 
     @Reference
@@ -130,5 +129,4 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
         this.outValve = null;
         LOGGER.info("OUT-VALVE unbinded.");
     }
-
 }

@@ -12,11 +12,6 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by bocha on 1/3/2017.
- */
-
-
 @Component(
         name = "liqueurplant.osgi.silo.driver",
         service = liqueurplant.osgi.silo.driver.api.SiloDriverIf.class,
@@ -41,7 +36,7 @@ public class SimpleSiloDriver implements SiloDriverIf {
 
         highLevelSensor.setShutdownOptions(true);
         lowLevelSensor.setShutdownOptions(true);
-        // Check if it works with interrupt or polling.
+
         highLevelSensor.addListener((GpioPinListenerDigital) event -> {
             if(event.getState() == PinState.HIGH){
                 siloCtrl.put2EventQueue(Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED);

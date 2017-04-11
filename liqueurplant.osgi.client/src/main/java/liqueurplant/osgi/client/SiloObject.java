@@ -18,17 +18,14 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     public String state = "";
     public boolean fillingCompleted = false;
     public boolean emptyingCompleted = false;
-    ArrayBlockingQueue<ObservableTuple> observationQueue;
+    private ArrayBlockingQueue<ObservableTuple> observationQueue;
 
     public SiloObject() {
         observationQueue = new ArrayBlockingQueue<>(20);
-        //Test obj = new Test();
-        //obj.getFile("/objects/config.properties");
     }
 
     @Override
     public ReadResponse read(int resourceid) {
-
         switch (resourceid) {
             case 0:
                 return ReadResponse.success(resourceid, state);
@@ -39,8 +36,6 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
             default:
                 return super.read(resourceid);
         }
-        //*/
-        //return super.read(resourceid);
     }
 
     @Override
@@ -76,7 +71,6 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
         while (true) {
             if (siloCtrl != null) {
                 observation = siloCtrl.takeNotification();
-
                 if (observation.getEvent() != null) {
                     LOG.info("Ctrl2Wrapper Event arrived: " + observation.getEvent().toString());
                     if (observation.getEvent() == Ctrl2WrapperEvent.FILLING_COMPLETED) {
@@ -86,7 +80,6 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
                     }
                 }
                 setState(observation.getState().toString());
-
             }
         }
     }
@@ -153,8 +146,4 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
         this.siloCtrl = null;
         LOG.info("SILO CONTROLLER unbinded.");
     }
-
-
-
-
 }

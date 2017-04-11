@@ -3,9 +3,6 @@ package liqueurplant.osgi.silo.controller.sim;
 import liqueurplant.osgi.silo.controller.api.*;
 import liqueurplant.osgi.silo.driver.api.Driver2SiloCtrlEvent;
 
-/**
- * Created by pBochalis on 3/13/2017.
- */
 public enum SimpleSiloCtrlState implements SimpleSiloCtrlStateMachineIf, SiloCtrlState {
     EMPTY {
         @Override
