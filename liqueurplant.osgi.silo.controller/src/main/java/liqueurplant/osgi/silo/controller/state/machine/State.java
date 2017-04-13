@@ -7,16 +7,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-
 public abstract class State {
     private List<Transition> ourTrans;
     private Collection<SMReception> ourDefEvents;
 
     abstract protected void entry();
+
     abstract protected void doActivity();
+
     abstract protected void exit();
 
-    public State(){
+    public State() {
         this.ourTrans = new ArrayList<>(10);
         this.ourDefEvents = new HashSet<>();
     }
@@ -25,17 +26,17 @@ public abstract class State {
         ourTrans.add(t);
     }
 
-    protected boolean hasCompletionTrans(){
-        boolean hct=false;
+    protected boolean hasCompletionTrans() {
+        boolean hct = false;
 
         return hct;
     }
 
-    public void addDeferredEvent(SMReception event){
+    public void addDeferredEvent(SMReception event) {
         this.ourDefEvents.add(event);
     }
 
-    public Collection<SMReception> getDeferredEvents(){
+    public Collection<SMReception> getDeferredEvents() {
         return ourDefEvents;
     }
 

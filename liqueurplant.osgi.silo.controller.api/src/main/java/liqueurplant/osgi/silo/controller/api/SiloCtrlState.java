@@ -1,4 +1,8 @@
 package liqueurplant.osgi.silo.controller.api;
 
-public interface SiloCtrlState {
+public enum SiloCtrlState {
+    FULL,
+    EMPTY,
+    FILLING,
+    EMPTYING
 }

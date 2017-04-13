@@ -2,7 +2,6 @@ package liqueurplant.osgi.silo.controller;
 
 import liqueurplant.osgi.silo.controller.api.*;
 
-
 import liqueurplant.osgi.silo.controller.state.machine.State;
 import liqueurplant.osgi.silo.controller.state.machine.StateMachine;
 import liqueurplant.osgi.silo.controller.state.machine.Transition;
@@ -29,7 +28,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     private Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
 
     State empty, filling, full, emptying;
-    Transition e2ft, f2ft, f2et,e2et;
+    Transition e2ft, f2ft, f2et, e2et;
 
     public SimpleSiloCtrl() {
         super(null);
@@ -54,6 +53,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         Thread smt = new Thread(this);
         smt.setName("SILO-CTRL");
         smt.start();
+        notificationQueue.put(new ObservableTuple(null, SiloCtrlState.EMPTY));
         LOGGER.info("SILO CONTROLLER activated.");
     }
 
@@ -81,53 +81,82 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     private class Empty extends State {
         @Override
-        protected void entry() {}
+        protected void entry() {
+        }
+
         @Override
         protected void doActivity() {
             LOGGER.debug("Smart Silo state: EMPTY");
         }
+
         @Override
-        protected void exit() {	}
+        protected void exit() {
+        }
     }
 
     private class Filling extends State {
         @Override
-        protected void entry() {}
+        protected void entry() {
+
+        }
+
         @Override
         protected void doActivity() {
+            try {
+                notificationQueue.put(new ObservableTuple(null, SiloCtrlState.FILLING));
+            } catch (InterruptedException e) {
+                LOGGER.error("InterruptedException in Filling.entry(): " + e.toString());
+            }
             LOGGER.debug("Smart Silo state: FILLING");
         }
+
         @Override
-        protected void exit() {	}
+        protected void exit() {
+        }
     }
 
     private class Full extends State {
         @Override
-        protected void entry() {}
+        protected void entry() {
+        }
+
         @Override
         protected void doActivity() {
             LOGGER.debug("Smart Silo state: FULL");
         }
+
         @Override
-        protected void exit() {	}
+        protected void exit() {
+        }
     }
 
     private class Emptying extends State {
         @Override
-        protected void entry() {}
+        protected void entry() {
+
+        }
+
         @Override
         protected void doActivity() {
+            try {
+                notificationQueue.put(new ObservableTuple(null, SiloCtrlState.EMPTYING));
+            } catch (InterruptedException e) {
+                LOGGER.error("InterruptedException in Emptying.entry(): " + e.toString());
+            }
             LOGGER.debug("Smart Silo state: EMPTYING");
         }
+
         @Override
-        protected void exit() {	}
+        protected void exit() {
+        }
     }
 
     // transition definitions
     private class Empty2FillingTrans extends Transition {
         public Empty2FillingTrans(State targetState) {
-            super(targetState,false,false);
+            super(targetState, false, false);
         }
+
         @Override
         protected boolean trigger(SMReception smr) {
             return (smr == SimpleSiloSMEvent.FILL);
@@ -145,16 +174,19 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     private class Filling2FullTrans extends Transition {
         public Filling2FullTrans(State targetState) {
-            super(targetState,false,false);
+            super(targetState, false, false);
         }
+
         @Override
         protected boolean trigger(SMReception smr) {
             return ((smr == SimpleSiloSMEvent.HIGH_LEVEL_REACHED) || (smr == SimpleSiloSMEvent.STOP_FILLING));
         }
+
         @Override
         protected void effect() {
             try {
                 inValve.close();
+                notificationQueue.put(new ObservableTuple(Ctrl2WrapperEvent.FILLING_COMPLETED, SiloCtrlState.FULL));
             } catch (Exception e) {
                 LOGGER.error("Exception in close IN-VALVE: " + e.toString());
             }
@@ -163,12 +195,14 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     private class Full2EmptyingTrans extends Transition {
         public Full2EmptyingTrans(State targetState) {
-            super(targetState,false,false);
+            super(targetState, false, false);
         }
+
         @Override
         protected boolean trigger(SMReception smr) {
             return (smr == SimpleSiloSMEvent.EMPTY);
         }
+
         @Override
         protected void effect() {
             try {
@@ -181,16 +215,19 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     private class Emptying2EmptyTrans extends Transition {
         public Emptying2EmptyTrans(State targetState) {
-            super(targetState,false,false);
+            super(targetState, false, false);
         }
+
         @Override
         protected boolean trigger(SMReception smr) {
             return ((smr == SimpleSiloSMEvent.LOW_LEVEL_REACHED) || (smr == SimpleSiloSMEvent.STOP_EMPTYING));
         }
+
         @Override
         protected void effect() {
             try {
                 outValve.close();
+                notificationQueue.put(new ObservableTuple(Ctrl2WrapperEvent.EMPTYING_COMPLETED, SiloCtrlState.EMPTY));
             } catch (Exception e) {
                 LOGGER.error("Exception in close OUT-VALVE: " + e.toString());
             }
