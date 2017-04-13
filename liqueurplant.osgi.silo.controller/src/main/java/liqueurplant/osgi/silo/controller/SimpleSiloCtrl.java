@@ -1,6 +1,10 @@
 package liqueurplant.osgi.silo.controller;
 
 import liqueurplant.osgi.silo.controller.api.*;
+import liqueurplant.osgi.silo.controller.state.machine.SMReception;
+import liqueurplant.osgi.silo.controller.state.machine.State;
+import liqueurplant.osgi.silo.controller.state.machine.StateMachine;
+import liqueurplant.osgi.silo.controller.state.machine.Transition;
 import liqueurplant.osgi.valve.in.api.InValveDriverIf;
 import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
 import org.osgi.service.component.annotations.Activate;
@@ -17,7 +21,7 @@ import java.util.concurrent.ArrayBlockingQueue;
         name = "liqueurplant.osgi.silo.controller",
         service = liqueurplant.osgi.silo.controller.api.SiloCtrlIf.class
 )
-public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
+public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf, Runnable {
 
     ArrayBlockingQueue<ObservableTuple> notificationQueue;
     ArrayBlockingQueue<SiloCtrlEvent> eventQueue;
@@ -26,9 +30,26 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
     private SimpleSiloCtrlState state = SimpleSiloCtrlState.IDLE;
     private Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
 
+    State empty, filling, full, emptying;
+    Transition e2ft, f2ft, f2et,e2et;
+
     public SimpleSiloCtrl() {
-        eventQueue = new ArrayBlockingQueue<>(20);
-        notificationQueue = new ArrayBlockingQueue<>(20);
+        super(null);
+        //eventQueue = new ArrayBlockingQueue<>(20);
+        //notificationQueue = new ArrayBlockingQueue<>(20);
+        empty = new Empty();
+        filling = new Filling();
+        full = new Full();
+        emptying = new Emptying();
+        e2ft = new Empty2FillingTrans(filling);
+        f2ft = new Filling2FullTrans(full);
+        f2et = new Full2EmptyingTrans(emptying);
+        e2et = new Emptying2EmptyTrans(empty);
+        empty.addTransition(e2ft);
+        filling.addTransition(f2ft);
+        full.addTransition(f2et);
+        emptying.addTransition(e2et);
+        this.setInitState(empty);
     }
 
     @Activate
@@ -45,11 +66,11 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
     }
 
     @Override
-    public void put2EventQueue(SiloCtrlEvent event) {
+    public void put2MsgQueue(SiloCtrlEvent event) {
         try {
             eventQueue.put(event);
         } catch (InterruptedException e) {
-            LOGGER.error("Exception in put2EventQueue(): " + e.toString());
+            LOGGER.error("Exception in put2MsgQueue(): " + e.toString());
         }
     }
 
@@ -107,6 +128,109 @@ public class SimpleSiloCtrl implements SiloCtrlIf, Runnable {
         }
         return event;
     }
+
+    private class Empty extends State {
+        @Override
+        protected void entry() {}
+        @Override
+        protected void doActivity() {
+            System.out.println("Empty doActivity");
+        }
+        @Override
+        protected void exit() {	}
+    }
+
+    private class Filling extends State {
+        @Override
+        protected void entry() {}
+        @Override
+        protected void doActivity() {
+            System.out.println("Filling doActivity");
+        }
+        @Override
+        protected void exit() {	}
+    }
+
+    private class Full extends State {
+        @Override
+        protected void entry() {}
+        @Override
+        protected void doActivity() {
+            System.out.println("Full doActivity");
+        }
+        @Override
+        protected void exit() {	}
+    }
+
+    private class Emptying extends State {
+        @Override
+        protected void entry() {}
+        @Override
+        protected void doActivity() {
+            System.out.println("Emptying doActivity");
+        }
+        @Override
+        protected void exit() {	}
+    }
+
+    // transition definitions
+    private class Empty2FillingTrans extends Transition {
+        public Empty2FillingTrans(State targetState) {
+            super(targetState,false,false);
+        }
+        @Override
+        protected boolean trigger(SMReception smr) {
+            return (smr == SimpleSiloSMEvent.FILL);
+        }
+
+        @Override
+        protected void effect() {
+            System.out.println("sends open TO inValve");
+        }
+    }
+
+    private class Filling2FullTrans extends Transition {
+        public Filling2FullTrans(State targetState) {
+            super(targetState,false,false);
+        }
+        @Override
+        protected boolean trigger(SMReception smr) {
+            return ((smr == SimpleSiloSMEvent.HIGH_LEVEL_REACHED) || (smr == SimpleSiloSMEvent.STOP_FILLING));
+        }
+        @Override
+        protected void effect() {
+            System.out.println("sends close TO inValve");
+        }
+    }
+
+    private class Full2EmptyingTrans extends Transition {
+        public Full2EmptyingTrans(State targetState) {
+            super(targetState,false,false);
+        }
+        @Override
+        protected boolean trigger(SMReception smr) {
+            return (smr == SimpleSiloSMEvent.EMPTY);
+        }
+        @Override
+        protected void effect() {
+            System.out.println("sends open TO outValve");
+        }
+    }
+
+    private class Emptying2EmptyTrans extends Transition {
+        public Emptying2EmptyTrans(State targetState) {
+            super(targetState,false,false);
+        }
+        @Override
+        protected boolean trigger(SMReception smr) {
+            return ((smr == SimpleSiloSMEvent.LOW_LEVEL_REACHED) || (smr == SimpleSiloSMEvent.STOP_EMPTYING));
+        }
+        @Override
+        protected void effect() {
+            System.out.println("sends close TO outValve");
+        }
+    }
+
 
     @Reference
     protected void setInValve(InValveDriverIf inValve) {

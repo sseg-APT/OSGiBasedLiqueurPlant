@@ -2,6 +2,7 @@ package liqueurplant.osgi.silo.driver.sim;
 
 import liqueurplant.osgi.silo.controller.api.Process2SiloCtrlEvent;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
+import liqueurplant.osgi.silo.controller.api.SimpleSiloSMEvent;
 import liqueurplant.osgi.silo.driver.api.Driver2SiloCtrlEvent;
 import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
 import org.osgi.service.component.annotations.Activate;
@@ -22,7 +23,7 @@ public class SimpleSiloDriver implements SiloDriverIf, Runnable {
     private SiloCtrlIf siloCtrl;
     private Logger LOGGER = LoggerFactory.getLogger(SimpleSiloDriver.class);
     private ArrayBlockingQueue<Driver2SiloCtrlEvent> driverEq;
-    Driver2SiloCtrlEvent curEvent;
+    SimpleSiloSMEvent curEvent;
 
     public SimpleSiloDriver() {
         driverEq = new ArrayBlockingQueue<>(10);
@@ -43,7 +44,7 @@ public class SimpleSiloDriver implements SiloDriverIf, Runnable {
     public void run() {
         curEvent = getNextEvent();
         while(curEvent != null){
-            siloCtrl.put2EventQueue(curEvent);
+            siloCtrl.put2MsgQueue(curEvent);
             if(curEvent.equals(Process2SiloCtrlEvent.STOP)) break;
             curEvent = getNextEvent();
             LOGGER.info("Simple Silo Driver :Event arrived=" + curEvent);

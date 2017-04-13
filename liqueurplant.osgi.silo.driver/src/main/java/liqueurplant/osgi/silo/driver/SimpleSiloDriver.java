@@ -39,13 +39,13 @@ public class SimpleSiloDriver implements SiloDriverIf {
 
         highLevelSensor.addListener((GpioPinListenerDigital) event -> {
             if(event.getState() == PinState.HIGH){
-                siloCtrl.put2EventQueue(Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED);
+                siloCtrl.put2MsgQueue(Driver2SiloCtrlEvent.HIGH_LEVEL_REACHED);
             }
         });
 
         lowLevelSensor.addListener((GpioPinListenerDigital) event -> {
             if (event.getState() == PinState.LOW){
-                siloCtrl.put2EventQueue(Driver2SiloCtrlEvent.LOW_LEVEL_REACHED);
+                siloCtrl.put2MsgQueue(Driver2SiloCtrlEvent.LOW_LEVEL_REACHED);
             }
         });
         LOGGER.info("SILO-DRIVER activated.");

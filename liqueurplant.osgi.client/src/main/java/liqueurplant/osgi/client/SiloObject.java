@@ -88,23 +88,23 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     public void fill() {
         setEmptyingCompleted(false);
         setFillingCompleted(false);
-        siloCtrl.put2EventQueue(Process2SiloCtrlEvent.FILL);
+        siloCtrl.put2MsgQueue(SimpleSiloSMEvent.FILL);
     }
 
     public void empty() {
         setEmptyingCompleted(false);
         setFillingCompleted(false);
-        siloCtrl.put2EventQueue(Process2SiloCtrlEvent.EMPTY);
+        siloCtrl.put2MsgQueue(SimpleSiloSMEvent.EMPTY);
     }
 
     public void stop() {
-        siloCtrl.put2EventQueue(Process2SiloCtrlEvent.STOP);
+        siloCtrl.put2MsgQueue(SimpleSiloSMEvent.STOP);
     }
 
     public void initialize() {
         setEmptyingCompleted(false);
         setFillingCompleted(false);
-        siloCtrl.put2EventQueue(Process2SiloCtrlEvent.START);
+        siloCtrl.put2MsgQueue(SimpleSiloSMEvent.START);
     }
 
 
@@ -127,13 +127,13 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
 
     private void stopFilling() {
         LOG.debug("Stop emptying");
-        siloCtrl.put2EventQueue(Process2SiloCtrlEvent.STOP_FILLING);
+        siloCtrl.put2MsgQueue(SimpleSiloSMEvent.STOP_FILLING);
 
     }
 
     private void stopEmptying() {
         LOG.debug("Stop emptying");
-        siloCtrl.put2EventQueue(Process2SiloCtrlEvent.STOP_EPMTYING);
+        siloCtrl.put2MsgQueue(SimpleSiloSMEvent.STOP_EMPTYING);
 
     }
 
