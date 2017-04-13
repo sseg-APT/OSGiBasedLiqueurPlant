@@ -58,7 +58,10 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
                         <Export-Package>liqueurplant.osgi.silo.controller.api</Export-Package>
-                        <Private-Package>liqueurplant.osgi.silo.controller</Private-Package>
+                        <Private-Package>
+                            liqueurplant.osgi.silo.controller,
+                            liqueurplant.osgi.silo.controller.state.machine
+                        </Private-Package>
                         <Require-Bundle>
                             liqueurplant.osgi.silo.controller.api,
                             liqueurplant.osgi.silo.driver.api,

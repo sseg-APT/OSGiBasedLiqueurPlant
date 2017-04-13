@@ -1,7 +1,8 @@
 package liqueurplant.osgi.silo.controller;
 
 import liqueurplant.osgi.silo.controller.api.*;
-import liqueurplant.osgi.silo.controller.state.machine.SMReception;
+
+
 import liqueurplant.osgi.silo.controller.state.machine.State;
 import liqueurplant.osgi.silo.controller.state.machine.StateMachine;
 import liqueurplant.osgi.silo.controller.state.machine.Transition;
@@ -14,20 +15,17 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 
 @Component(
         name = "liqueurplant.osgi.silo.controller",
-        service = liqueurplant.osgi.silo.controller.api.SiloCtrlIf.class
+        service = SiloCtrlIf.class
 )
-public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf, Runnable {
+public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     ArrayBlockingQueue<ObservableTuple> notificationQueue;
-    ArrayBlockingQueue<SiloCtrlEvent> eventQueue;
-    InValveDriverIf inValve;
-    OutValveDriverIf outValve;
-    private SimpleSiloCtrlState state = SimpleSiloCtrlState.IDLE;
+    private InValveDriverIf inValve;
+    private OutValveDriverIf outValve;
     private Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
 
     State empty, filling, full, emptying;
@@ -35,8 +33,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf, Runnable
 
     public SimpleSiloCtrl() {
         super(null);
-        //eventQueue = new ArrayBlockingQueue<>(20);
-        //notificationQueue = new ArrayBlockingQueue<>(20);
+        notificationQueue = new ArrayBlockingQueue<>(20);
         empty = new Empty();
         filling = new Filling();
         full = new Full();
@@ -53,25 +50,23 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf, Runnable
     }
 
     @Activate
-    public void activate() {
-        new Thread(this).start();
+    public void activate() throws InterruptedException {
+        Thread smt = new Thread(this);
+        smt.setName("SILO-CTRL");
+        smt.start();
         LOGGER.info("SILO CONTROLLER activated.");
     }
 
     @Deactivate
     public void deactivate() {
-        eventQueue = null;
         notificationQueue = null;
         LOGGER.info("SILO CONTROLLER deactivated.");
     }
 
+
     @Override
-    public void put2MsgQueue(SiloCtrlEvent event) {
-        try {
-            eventQueue.put(event);
-        } catch (InterruptedException e) {
-            LOGGER.error("Exception in put2MsgQueue(): " + e.toString());
-        }
+    public void put2MsgQueue(SimpleSiloSMEvent event) {
+        this.itsMsgQ.add(event);
     }
 
     @Override
@@ -84,57 +79,12 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf, Runnable
         }
     }
 
-    @Override
-    public void run() {
-        SiloCtrlEvent scEvent;
-        SimpleSiloCtrlState newState;
-        boolean stop = false;
-
-        LOGGER.info("CONTROLLER state: " + state + "\n");
-        while (state != null) {
-            if (stop) {
-                stopProcess();
-                break;
-            }
-            scEvent = getNextEvent();
-            LOGGER.info("S1: Event arrived = " + scEvent + "\n");
-            if (scEvent.equals(Process2SiloCtrlEvent.STOP)) {
-                stop = true;
-            } else {
-                newState = this.state.processEvent(this, scEvent);
-                try {
-                    notificationQueue.put(new ObservableTuple(null, newState));
-                    if (newState != state) {
-                        state = newState;
-                        LOGGER.info("S1: Controller State= " + state + "\n");
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private void stopProcess() {
-        LOGGER.warn("S1 Ctrl: stopped");
-    }
-
-    private SiloCtrlEvent getNextEvent() {
-        SiloCtrlEvent event = null;
-        try {
-            event = eventQueue.take();
-        } catch (InterruptedException ex) {
-            LOGGER.error("Exception in getNextEvent(): " + ex.toString());
-        }
-        return event;
-    }
-
     private class Empty extends State {
         @Override
         protected void entry() {}
         @Override
         protected void doActivity() {
-            System.out.println("Empty doActivity");
+            LOGGER.debug("Smart Silo state: EMPTY");
         }
         @Override
         protected void exit() {	}
@@ -145,7 +95,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf, Runnable
         protected void entry() {}
         @Override
         protected void doActivity() {
-            System.out.println("Filling doActivity");
+            LOGGER.debug("Smart Silo state: FILLING");
         }
         @Override
         protected void exit() {	}
@@ -156,7 +106,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf, Runnable
         protected void entry() {}
         @Override
         protected void doActivity() {
-            System.out.println("Full doActivity");
+            LOGGER.debug("Smart Silo state: FULL");
         }
         @Override
         protected void exit() {	}
@@ -167,7 +117,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf, Runnable
         protected void entry() {}
         @Override
         protected void doActivity() {
-            System.out.println("Emptying doActivity");
+            LOGGER.debug("Smart Silo state: EMPTYING");
         }
         @Override
         protected void exit() {	}
@@ -185,7 +135,11 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf, Runnable
 
         @Override
         protected void effect() {
-            System.out.println("sends open TO inValve");
+            try {
+                inValve.open();
+            } catch (Exception e) {
+                LOGGER.error("Exception in open IN-VALVE: " + e.toString());
+            }
         }
     }
 
@@ -199,7 +153,11 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf, Runnable
         }
         @Override
         protected void effect() {
-            System.out.println("sends close TO inValve");
+            try {
+                inValve.close();
+            } catch (Exception e) {
+                LOGGER.error("Exception in close IN-VALVE: " + e.toString());
+            }
         }
     }
 
@@ -213,7 +171,11 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf, Runnable
         }
         @Override
         protected void effect() {
-            System.out.println("sends open TO outValve");
+            try {
+                outValve.open();
+            } catch (Exception e) {
+                LOGGER.error("Exception in open OUT-VALVE: " + e.toString());
+            }
         }
     }
 
@@ -227,7 +189,11 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf, Runnable
         }
         @Override
         protected void effect() {
-            System.out.println("sends close TO outValve");
+            try {
+                outValve.close();
+            } catch (Exception e) {
+                LOGGER.error("Exception in close OUT-VALVE: " + e.toString());
+            }
         }
     }
 

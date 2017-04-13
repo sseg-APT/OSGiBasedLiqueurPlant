@@ -1,5 +1,7 @@
 package liqueurplant.osgi.silo.controller.state.machine;
 
+import liqueurplant.osgi.silo.controller.api.SMReception;
+
 import java.util.Collection;
 import java.util.Stack;
 import java.util.concurrent.LinkedBlockingDeque;

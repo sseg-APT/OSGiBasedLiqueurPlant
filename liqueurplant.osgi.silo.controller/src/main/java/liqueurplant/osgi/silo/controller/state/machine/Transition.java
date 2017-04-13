@@ -1,6 +1,8 @@
 package liqueurplant.osgi.silo.controller.state.machine;
 
 
+import liqueurplant.osgi.silo.controller.api.SMReception;
+
 public abstract class Transition {
     protected State itsTargetState;
     private boolean fork=false;
