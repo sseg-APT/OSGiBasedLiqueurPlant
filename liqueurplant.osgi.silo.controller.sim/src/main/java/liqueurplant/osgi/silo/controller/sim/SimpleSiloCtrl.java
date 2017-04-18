@@ -51,8 +51,9 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     @Activate
     public void activate() throws InterruptedException {
         Thread smt = new Thread(this);
-        smt.setName("SILO-CTRL");
+        smt.setName("SILO-CTRL-SIM");
         smt.start();
+        notificationQueue.put(new ObservableTuple(null, SiloCtrlState.EMPTY));
         LOGGER.info("SILO CONTROLLER activated.");
     }
 
@@ -99,8 +100,9 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void doActivity() {
-            LOGGER.debug("Smart Silo state: FILLING");
             try {
+                notificationQueue.put(new ObservableTuple(null, SiloCtrlState.FILLING));
+                LOGGER.debug("Smart Silo state: FILLING");
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -134,8 +136,9 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void doActivity() {
-            LOGGER.debug("Smart Silo state: EMPTYING");
             try {
+                notificationQueue.put(new ObservableTuple(null, SiloCtrlState.EMPTYING));
+                LOGGER.debug("Smart Silo state: EMPTYING");
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -183,6 +186,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         protected void effect() {
             try {
                 inValve.close();
+                notificationQueue.put(new ObservableTuple(Ctrl2WrapperEvent.FILLING_COMPLETED, SiloCtrlState.FULL));
             } catch (Exception e) {
                 LOGGER.error("Exception in close IN-VALVE: " + e.toString());
             }
@@ -224,6 +228,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         protected void effect() {
             try {
                 outValve.close();
+                notificationQueue.put(new ObservableTuple(Ctrl2WrapperEvent.EMPTYING_COMPLETED, SiloCtrlState.EMPTY));
             } catch (Exception e) {
                 LOGGER.error("Exception in close OUT-VALVE: " + e.toString());
             }
