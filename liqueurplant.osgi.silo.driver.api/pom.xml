@@ -13,7 +13,6 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>osgi.annotation</artifactId>
@@ -23,7 +22,6 @@
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>

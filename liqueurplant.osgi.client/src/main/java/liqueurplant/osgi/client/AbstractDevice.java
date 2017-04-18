@@ -24,6 +24,7 @@ public abstract class AbstractDevice implements Runnable {
     private boolean needBootstrap;
     private byte[] pskIdentity, pskKey;
     private String endpoint, localAddress, secureLocalAddress;
+    static LeshanClient client;
 
 
     public AbstractDevice(String endpoint, String[] args) {
@@ -60,7 +61,7 @@ public abstract class AbstractDevice implements Runnable {
         builder.setLocalAddress(localAddress, localPort);
         builder.setLocalSecureAddress(secureLocalAddress, secureLocalPort);
         builder.setObjects(enablers);
-        final LeshanClient client = builder.build();
+        client = builder.build();
 
 
         // Start the client

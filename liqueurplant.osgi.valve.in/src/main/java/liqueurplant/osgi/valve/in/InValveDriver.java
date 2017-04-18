@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 )
 public class InValveDriver implements InValveDriverIf {
 
-    private GpioPinDigitalOutput inValve;
+    private GpioPinDigitalOutput inValvePin;
     private GpioController gpioController;
     private Logger LOGGER = LoggerFactory.getLogger(InValveDriver.class);
 
@@ -24,7 +24,7 @@ public class InValveDriver implements InValveDriverIf {
 
     @Activate
     public void activate() {
-        inValve = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_04, "IN-VALVE", PinState.HIGH);
+        inValvePin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_04, "IN-VALVE", PinState.HIGH);
         LOGGER.info("IN-VALVE activated.");
     }
 
@@ -37,7 +37,8 @@ public class InValveDriver implements InValveDriverIf {
     @Override
     public void open() throws Exception {
         try {
-            inValve.setState(PinState.LOW);
+            LOGGER.debug("IN-VALVE v1.2 opened.");
+            inValvePin.setState(PinState.LOW);
         } catch (Exception e) {
             LOGGER.error("Exception in open(): " + e.toString());
         }
@@ -46,7 +47,8 @@ public class InValveDriver implements InValveDriverIf {
     @Override
     public void close() throws Exception {
         try {
-            inValve.setState(PinState.HIGH);
+            LOGGER.debug("IN-VALVE v1.2 closed.");
+            inValvePin.setState(PinState.HIGH);
         } catch (Exception e) {
             LOGGER.error("Exception in close(): " + e.toString());
         }

@@ -22,30 +22,30 @@ import java.util.concurrent.ArrayBlockingQueue;
 )
 public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
-    ArrayBlockingQueue<ObservableTuple> notificationQueue;
     private InValveDriverIf inValve;
     private OutValveDriverIf outValve;
     private Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
 
+    Transition e2ft, f2ft, f2et, e2et;
     State empty, filling, full, emptying;
-    Transition e2ft, f2ft, f2et,e2et;
+    ArrayBlockingQueue<ObservableTuple> notificationQueue;
 
     public SimpleSiloCtrl() {
         super(null);
-        notificationQueue = new ArrayBlockingQueue<>(20);
+        full = new Full();
         empty = new Empty();
         filling = new Filling();
-        full = new Full();
         emptying = new Emptying();
-        e2ft = new Empty2FillingTrans(filling);
         f2ft = new Filling2FullTrans(full);
-        f2et = new Full2EmptyingTrans(emptying);
         e2et = new Emptying2EmptyTrans(empty);
+        e2ft = new Empty2FillingTrans(filling);
+        f2et = new Full2EmptyingTrans(emptying);
+        full.addTransition(f2et);
         empty.addTransition(e2ft);
         filling.addTransition(f2ft);
-        full.addTransition(f2et);
         emptying.addTransition(e2et);
         this.setInitState(empty);
+        notificationQueue = new ArrayBlockingQueue<>(20);
     }
 
     @Activate
@@ -61,7 +61,6 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         notificationQueue = null;
         LOGGER.info("SILO CONTROLLER deactivated.");
     }
-
 
     @Override
     public void put2MsgQueue(SimpleSiloSMEvent event) {
@@ -80,18 +79,24 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     private class Empty extends State {
         @Override
-        protected void entry() {}
+        protected void entry() {
+        }
+
         @Override
         protected void doActivity() {
             LOGGER.debug("Smart Silo state: EMPTY");
         }
+
         @Override
-        protected void exit() {	}
+        protected void exit() {
+        }
     }
 
     private class Filling extends State {
         @Override
-        protected void entry() {}
+        protected void entry() {
+        }
+
         @Override
         protected void doActivity() {
             LOGGER.debug("Smart Silo state: FILLING");
@@ -101,24 +106,32 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
                 e.printStackTrace();
             }
         }
+
         @Override
-        protected void exit() {	}
+        protected void exit() {
+        }
     }
 
     private class Full extends State {
         @Override
-        protected void entry() {}
+        protected void entry() {
+        }
+
         @Override
         protected void doActivity() {
             LOGGER.debug("Smart Silo state: FULL");
         }
+
         @Override
-        protected void exit() {	}
+        protected void exit() {
+        }
     }
 
     private class Emptying extends State {
         @Override
-        protected void entry() {}
+        protected void entry() {
+        }
+
         @Override
         protected void doActivity() {
             LOGGER.debug("Smart Silo state: EMPTYING");
@@ -128,15 +141,18 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
                 e.printStackTrace();
             }
         }
+
         @Override
-        protected void exit() {	}
+        protected void exit() {
+        }
     }
 
     // transition definitions
     private class Empty2FillingTrans extends Transition {
         public Empty2FillingTrans(State targetState) {
-            super(targetState,false,false);
+            super(targetState, false, false);
         }
+
         @Override
         protected boolean trigger(SMReception smr) {
             return (smr == SimpleSiloSMEvent.FILL);
@@ -155,12 +171,14 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     private class Filling2FullTrans extends Transition {
         public Filling2FullTrans(State targetState) {
-            super(targetState,false,false);
+            super(targetState, false, false);
         }
+
         @Override
         protected boolean trigger(SMReception smr) {
             return ((smr == SimpleSiloSMEvent.HIGH_LEVEL_REACHED) || (smr == SimpleSiloSMEvent.STOP_FILLING));
         }
+
         @Override
         protected void effect() {
             try {
@@ -173,12 +191,14 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     private class Full2EmptyingTrans extends Transition {
         public Full2EmptyingTrans(State targetState) {
-            super(targetState,false,false);
+            super(targetState, false, false);
         }
+
         @Override
         protected boolean trigger(SMReception smr) {
             return (smr == SimpleSiloSMEvent.EMPTY);
         }
+
         @Override
         protected void effect() {
             try {
@@ -192,12 +212,14 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     private class Emptying2EmptyTrans extends Transition {
         public Emptying2EmptyTrans(State targetState) {
-            super(targetState,false,false);
+            super(targetState, false, false);
         }
+
         @Override
         protected boolean trigger(SMReception smr) {
             return ((smr == SimpleSiloSMEvent.LOW_LEVEL_REACHED) || (smr == SimpleSiloSMEvent.STOP_EMPTYING));
         }
+
         @Override
         protected void effect() {
             try {

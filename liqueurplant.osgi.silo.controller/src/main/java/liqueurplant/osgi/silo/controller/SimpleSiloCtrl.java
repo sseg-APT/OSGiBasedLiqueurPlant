@@ -7,10 +7,7 @@ import liqueurplant.osgi.silo.controller.state.machine.StateMachine;
 import liqueurplant.osgi.silo.controller.state.machine.Transition;
 import liqueurplant.osgi.valve.in.api.InValveDriverIf;
 import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -235,7 +232,9 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     }
 
 
-    @Reference
+    @Reference(
+            policy = ReferencePolicy.DYNAMIC
+    )
     protected void setInValve(InValveDriverIf inValve) {
         this.inValve = inValve;
         LOGGER.info("IN-VALVE binded.");
@@ -246,7 +245,9 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         LOGGER.info("IN-VALVE unbinded.");
     }
 
-    @Reference
+    @Reference(
+            policy = ReferencePolicy.DYNAMIC
+    )
     protected void setOutValve(OutValveDriverIf outValve) {
         this.outValve = outValve;
         LOGGER.info("OUT-VALVE binded.");

@@ -13,12 +13,10 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>osgi.annotation</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>
