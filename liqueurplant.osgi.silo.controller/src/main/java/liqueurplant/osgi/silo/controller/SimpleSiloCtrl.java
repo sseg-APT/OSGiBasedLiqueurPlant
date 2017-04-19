@@ -233,7 +233,8 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
 
     @Reference(
-            policy = ReferencePolicy.DYNAMIC
+            policy = ReferencePolicy.DYNAMIC,
+            cardinality = ReferenceCardinality.OPTIONAL
     )
     protected void setInValve(InValveDriverIf inValve) {
         this.inValve = inValve;
@@ -246,7 +247,8 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     }
 
     @Reference(
-            policy = ReferencePolicy.DYNAMIC
+            policy = ReferencePolicy.DYNAMIC,
+            cardinality = ReferenceCardinality.OPTIONAL
     )
     protected void setOutValve(OutValveDriverIf outValve) {
         this.outValve = outValve;

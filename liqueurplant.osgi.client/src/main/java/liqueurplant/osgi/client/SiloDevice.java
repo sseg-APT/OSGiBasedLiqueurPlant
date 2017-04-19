@@ -15,7 +15,6 @@ import java.util.Map;
 
 @Component(
         name = "liqueurplant.osgi.client",
-        immediate = true,
         configurationPid = "ClientIPConfiguration",
         configurationPolicy = ConfigurationPolicy.REQUIRE
 )
@@ -50,9 +49,9 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
 
     @Deactivate
     public void deactivate() {
-        client.destroy(true);
-        siloObject = null;
-        siloDevice = null;
+        //client.destroy(true);
+        //siloObject = null;
+        //siloDevice = null;
     }
 
     @Override
@@ -86,7 +85,8 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
     }
 
     @Reference(
-            policy = ReferencePolicy.DYNAMIC
+            policy = ReferencePolicy.DYNAMIC,
+            cardinality = ReferenceCardinality.OPTIONAL
     )
     protected void setSiloController(SiloCtrlIf siloCtrl) {
         silo.setSiloController(siloCtrl);

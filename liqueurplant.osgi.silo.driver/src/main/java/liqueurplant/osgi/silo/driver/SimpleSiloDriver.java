@@ -56,7 +56,8 @@ public class SimpleSiloDriver implements SiloDriverIf {
     }
 
     @Reference(
-            policy = ReferencePolicy.DYNAMIC
+            policy = ReferencePolicy.DYNAMIC,
+            cardinality = ReferenceCardinality.OPTIONAL
     )
     protected void setSiloCtrlIf(SiloCtrlIf siloCtrl) {
         this.siloCtrl = siloCtrl;
