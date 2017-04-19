@@ -37,7 +37,7 @@ public class InValveDriver implements InValveDriverIf {
     @Override
     public void open() throws Exception {
         try {
-            LOGGER.debug("IN-VALVE v1.2 opened.");
+            LOGGER.debug("IN-VALVE v1.5 opened.");
             inValvePin.setState(PinState.LOW);
         } catch (Exception e) {
             LOGGER.error("Exception in open(): " + e.toString());
@@ -47,7 +47,7 @@ public class InValveDriver implements InValveDriverIf {
     @Override
     public void close() throws Exception {
         try {
-            LOGGER.debug("IN-VALVE v1.2 closed.");
+            LOGGER.debug("IN-VALVE v1.5 closed.");
             inValvePin.setState(PinState.HIGH);
         } catch (Exception e) {
             LOGGER.error("Exception in close(): " + e.toString());
