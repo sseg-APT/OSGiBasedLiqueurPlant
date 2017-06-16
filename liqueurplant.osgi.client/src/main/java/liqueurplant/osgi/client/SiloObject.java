@@ -88,7 +88,7 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     public void fill() {
         setEmptyingCompleted(false);
         setFillingCompleted(false);
-        siloCtrl.put2MsgQueue(SimpleSiloSMEvent.FILL);
+            siloCtrl.put2MsgQueue(SimpleSiloSMEvent.FILL);
     }
 
     public void empty() {

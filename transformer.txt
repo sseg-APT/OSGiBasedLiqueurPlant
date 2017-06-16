@@ -1,0 +1,216 @@
+<StateInstantiationTemplate parameters=[stateName]>
+
+  State {{ stateName | lowercase }} = new {{stateName}};
+
+</StateDefinitionTemplate>
+
+
+//--------------------------------------------------------------------------------------------------
+
+
+<TransitionDefinitionTemplate parameters=[transitionName, fromState, toState]>
+
+  Transition {{ transitionName | lowercase }} = new {{transitionName}}({{fromState}}, {{toState}});
+
+</TransitionDefinitionTemplate>
+
+
+//--------------------------------------------------------------------------------------------------
+
+
+<ConstructorTemplate parameters=[ctrlName, states, transitions]>
+
+ public {{ctrlName}}(){
+  super(null);
+  notificationQueue = new ArrayBlockingQueue<>(20);
+
+  {% for state in states %}
+    {% StateInstantiationTemplate stateName=state.name %}
+  {% endfor %}
+
+  {% for transition in transitions %}
+    {% TransitionDefinitionTemplate transitionName=transition.name fromState=trasition.from toState=transition.to  %}
+  {% endfor %}
+
+  setInitState({{states[0].name}});
+ }
+
+</ConstructorTemplate>
+
+
+//--------------------------------------------------------------------------------------------------
+
+
+<StateDeclarationTemplate parameters=[stateName, entryActivities, doActivities, exitActivities]>
+
+    private class {{stateName}} extends State {
+
+        @Override
+        protected void entry() {
+          {% for activity in entryActivities %}
+            try {
+                {{ activity }}
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+          {% endfor %}
+        }
+
+        @Override
+        protected void doActivity() {
+          {% for activity in doActivities %}
+            try {
+                {{ activity }}
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+          {% endfor %}
+        }
+
+        @Override
+        protected void exit() {
+          {% for activity in exitActivities %}
+            try {
+                {{ activity }}
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+          {% endfor %}
+        }
+    }
+
+
+</StateDeclarationTemplate>
+
+
+//--------------------------------------------------------------------------------------------------
+
+
+<TransitionDeclarationTemplate parameters=[transition]>
+
+
+    private class {{transition.name}} extends Transition {
+
+
+        public {{transition.name}}(State fromState, State toState) {
+            super(fromState, toState);
+            {% if transition.Completion %}
+              setCompletion();
+            {% endif %}
+            {% if transition.Fork %}
+              setFork();
+            {% endif %}
+            {% if transition.Join %}
+              setJoin();
+            {% endif %}
+
+        }
+
+        @Override
+        protected boolean trigger(SMReception smReception) {
+            return (  {% for event in trasitionEvents %}
+                        {{ event }}
+
+                        {% if !transitionEvents.isLast(event) %}
+                            ||
+                        {% endif %}
+                    {% endfor }
+        }
+
+        @Override
+        protected void effect() {
+          {% for activity in transitionEffects %}
+            try {
+                {{ activity }}
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+          {% endfor %}
+        }
+    }
+
+
+</TransitionDeclarationTemplate>
+
+
+//--------------------------------------------------------------------------------------------------
+
+
+<ControllerTemplate parameters=[name, states, transitions]>
+
+{% imports %}
+@Component(
+        name = {{ name }},
+        service = SiloCtrlIf.class
+)
+public class {{name}} extends StateMachine implements SiloCtrlIf{
+
+  ArrayBlockingQueue<ObservableTuple> notificationQueue;
+  private InValveDriverIf inValve;
+  private OutValveDriverIf outValve;
+
+  {% ConstructorTemplate name,states,transitions,observations %}
+
+  @Activate
+  public void activate() throws InterruptedException {
+    Thread smt = new Thread(this);
+    smt.setName("{{ name }}");
+    smt.start();
+    notificationQueue.put(new ObservableTuple(null, SiloCtrlState.EMPTY));
+  }
+
+  @Deactivate
+  public void deactivate() {
+    notificationQueue = null;
+  }
+
+   @Override
+   public void put2MsgQueue(SimpleSiloSMEvent event) {
+     this.itsMsgQ.add(event);
+   }
+
+   @Override
+   public ObservableTuple takeNotification() {
+     try {
+        return notificationQueue.take();
+     } catch (InterruptedException e) {
+        return null;
+     }
+   }
+
+  {% for state in states %}
+    {% StateDeclarationTemplate stateName=state.name entryActivities=state.entry doActivities=state.do exitActivities=state.exit %}
+  {% endfor %}
+
+  {% for transition in trasitions %}
+    {% TransitionDeclarationTemplate transition=transition %}
+  {% endfor %}
+
+  @Reference(
+    policy = ReferencePolicy.DYNAMIC,
+    cardinality = ReferenceCardinality.OPTIONAL
+  )
+  protected void setInValve(InValveDriverIf inValve) {
+    this.inValve = inValve;
+  }
+
+  protected void unsetInValve(InValveDriverIf inValve) {
+        this.inValve = null;
+  }
+
+  @Reference(
+    policy = ReferencePolicy.DYNAMIC,
+    cardinality = ReferenceCardinality.OPTIONAL
+  )
+  protected void setOutValve(OutValveDriverIf outValve) {
+    this.outValve = outValve;
+  }
+
+  protected void unsetOutValve(OutValveDriverIf outValve) {
+    this.outValve = null;
+  }
+
+}
+
+
+</ProcessTemplate>

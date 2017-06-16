@@ -16,7 +16,8 @@ import java.util.Map;
 @Component(
         name = "liqueurplant.osgi.client",
         configurationPid = "ClientIPConfiguration",
-        configurationPolicy = ConfigurationPolicy.REQUIRE
+        configurationPolicy = ConfigurationPolicy.REQUIRE,
+        immediate = true
 )
 public class SiloDevice extends AbstractDevice implements ManagedService {
 
