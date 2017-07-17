@@ -138,7 +138,6 @@ public class FirmwareObject extends BaseInstanceEnabler {
     private void update() {
 
         try {
-            ///*
             File temp = File.createTempFile("update", ".jar");
             LOG.debug("Downloading update to {}", temp.getAbsolutePath());
             URL website = new URL(url);
@@ -146,13 +145,6 @@ public class FirmwareObject extends BaseInstanceEnabler {
             FileOutputStream fos = new FileOutputStream(temp);
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             LOG.info("Update downloaded to {}", temp.getAbsolutePath());
-            //*/
-            //LOG.info((String) bnd.getAbsolutePath().toString().replace("\\","/"));
-            //BundleContext bundleContext = ClientActivator.getBundleContext();
-            ///Bundle newBundle = bundleContext.installBundle("file:" + bnd.getAbsolutePath().toString().replace("\\", "/"));
-            //BundleStartLevel startLevel = newBundle.adapt(BundleStartLevel.class);
-            //startLevel.setStartLevel(1);
-            //newBundle.start(1);
         } catch (Exception e) {
             LOG.debug(e.toString());
         }

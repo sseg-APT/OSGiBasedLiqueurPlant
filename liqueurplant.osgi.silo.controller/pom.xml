@@ -13,7 +13,6 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-
             <dependency>
                 <groupId>liqueurplant.osgi</groupId>
                 <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
@@ -33,21 +32,10 @@
                 <groupId>liqueurplant.osgi</groupId>
                 <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
             </dependency>
-
-            <dependency>
-                <groupId>org.ops4j.pax.logging</groupId>
-                <artifactId>pax-logging-service</artifactId>
-            </dependency>
-
-            <dependency>
-                <groupId>org.ops4j.pax.logging</groupId>
-                <artifactId>pax-logging-api</artifactId>
-            </dependency>
-
     </dependencies>
 
     <build>
-        <!-- <directory>../targets</directory> -->
+        <directory>../targets</directory>
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -58,7 +46,10 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
                         <Export-Package>liqueurplant.osgi.silo.controller.api</Export-Package>
-                        <Private-Package>liqueurplant.osgi.silo.controller</Private-Package>
+                        <Private-Package>
+                            liqueurplant.osgi.silo.controller,
+                            liqueurplant.osgi.silo.controller.state.machine
+                        </Private-Package>
                         <Require-Bundle>
                             liqueurplant.osgi.silo.controller.api,
                             liqueurplant.osgi.silo.driver.api,

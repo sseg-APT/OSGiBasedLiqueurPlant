@@ -36,6 +36,8 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
     private BundleContext context;
 
     SiloObject silo = new SiloObject();
+    Thread siloObject;
+    Thread siloDevice;
 
     public SiloDevice() {
         super("silo", null);
@@ -60,7 +62,6 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
         if (properties == null) {
             LOGGER.warn("No configuration found.");
         } else {
-            client.destroy(true);
             LOGGER.info("IP: " + properties.get("IP"));
             this.IP = properties.get("IP").toString();
             LOGGER.info("Port: " + properties.get("port"));

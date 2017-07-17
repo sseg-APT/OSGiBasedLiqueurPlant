@@ -7,17 +7,13 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by bochalito on 23/3/2017.
- */
 @Component(
         name = "liqueurplant.osgi.valve.in.sim",
         service = liqueurplant.osgi.valve.in.api.InValveDriverIf.class
 )
 public class InValveDriver implements InValveDriverIf {
 
-    public Logger LOGGER = LoggerFactory.getLogger(InValveDriver.class);
-
+    private Logger LOGGER = LoggerFactory.getLogger(InValveDriver.class);
 
     public InValveDriver() {
     }
@@ -41,11 +37,4 @@ public class InValveDriver implements InValveDriverIf {
     public void close() throws Exception {
         LOGGER.info("IN-VALVE closed.");
     }
-
-    @Override
-    public String test() {
-        return "Test ok.";
-    }
-
-
 }

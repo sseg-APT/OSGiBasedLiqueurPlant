@@ -8,9 +8,6 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by pBochalis on 3/6/2017.
- */
 @Component(
         name = "liqueurplant.osgi.valve.out",
         service = liqueurplant.osgi.valve.out.api.OutValveDriverIf.class
@@ -18,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class OutValveDriver implements OutValveDriverIf {
 
     private GpioController gpioController;
-    private GpioPinDigitalOutput outValve;
+    private GpioPinDigitalOutput outValvePin;
     private Logger LOGGER = LoggerFactory.getLogger(OutValveDriver.class);
 
     public OutValveDriver() {
@@ -27,7 +24,7 @@ public class OutValveDriver implements OutValveDriverIf {
 
     @Activate
     public void activate() {
-        outValve = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_05, "OUT-VALVE", PinState.HIGH);
+        outValvePin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_05, "OUT-VALVE", PinState.HIGH);
         LOGGER.info("OUT-VALVE activated.");
     }
 
@@ -40,18 +37,18 @@ public class OutValveDriver implements OutValveDriverIf {
     @Override
     public void open() throws Exception {
         try {
-            outValve.setState(PinState.LOW);
+            outValvePin.setState(PinState.LOW);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Exception in open(): " + e.toString());
         }
     }
 
     @Override
     public void close() throws Exception {
         try {
-            outValve.setState(PinState.HIGH);
+            outValvePin.setState(PinState.HIGH);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Exception in close(): " + e.toString());
         }
     }
 

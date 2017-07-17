@@ -24,7 +24,8 @@ public abstract class AbstractDevice implements Runnable {
     private boolean needBootstrap;
     private byte[] pskIdentity, pskKey;
     private String endpoint, localAddress, secureLocalAddress;
-    protected  LeshanClient client;
+    static LeshanClient client;
+
 
     public AbstractDevice(String endpoint, String[] args) {
 
@@ -74,7 +75,6 @@ public abstract class AbstractDevice implements Runnable {
             }
         });
     }
-
 
     protected List<LwM2mObjectEnabler> createObjects() {
 

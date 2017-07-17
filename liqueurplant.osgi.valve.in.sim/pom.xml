@@ -13,22 +13,10 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-service</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-api</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>
