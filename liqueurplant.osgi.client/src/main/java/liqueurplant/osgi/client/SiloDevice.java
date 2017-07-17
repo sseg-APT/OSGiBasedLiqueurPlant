@@ -22,15 +22,15 @@ import java.util.Map;
 
 @Component(
         name = "liqueurplant.osgi.client",
-        immediate = true,
-        configurationPid = "ConfigManagerService",
-        configurationPolicy = ConfigurationPolicy.REQUIRE
+        immediate = true
+        //configurationPid = "ConfigManagerService",
+        //configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class SiloDevice extends AbstractDevice implements ManagedService {
 
     static String serverURI = "";
-    private String IP = "";
-    private String port = "";
+    private String IP = "150.140.188.186";
+    private String port = "5563";
     private ServiceRegistration configService;
     private Logger LOGGER = LoggerFactory.getLogger(AbstractDevice.class);
     private BundleContext context;
@@ -49,7 +49,7 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
     public void activate(Map<String, Object> properties) {
         this.context = context;
         LOGGER.info("Silo device activated.");
-        serverURI = "coap://" + properties.get("IP") + ":" + properties.get("port");
+        serverURI = "coap://150.140.188.186:5683";
         System.out.println(serverURI);
         new Thread(this).start();
         new Thread(silo).start();
@@ -89,6 +89,7 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
         return initializer;
     }
 
+    ///*
     @Reference
     protected void setSiloController(SiloCtrlIf siloCtrl) {
         silo.setSiloController(siloCtrl);
@@ -97,4 +98,5 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
     protected void unsetSiloController(SiloCtrlIf siloCtrl) {
         silo.unsetSiloController();
     }
+    //*/
 }
