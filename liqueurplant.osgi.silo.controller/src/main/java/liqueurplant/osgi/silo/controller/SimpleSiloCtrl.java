@@ -34,14 +34,10 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         filling = new Filling();
         full = new Full();
         emptying = new Emptying();
-        e2ft = new Empty2FillingTrans(filling);
-        f2ft = new Filling2FullTrans(full);
-        f2et = new Full2EmptyingTrans(emptying);
-        e2et = new Emptying2EmptyTrans(empty);
-        empty.addTransition(e2ft);
-        filling.addTransition(f2ft);
-        full.addTransition(f2et);
-        emptying.addTransition(e2et);
+        e2ft = new Empty2FillingTrans(empty,filling);
+        f2ft = new Filling2FullTrans(filling,full);
+        f2et = new Full2EmptyingTrans(full,emptying);
+        e2et = new Emptying2EmptyTrans(emptying,empty);
         this.setInitState(empty);
     }
 
@@ -62,8 +58,8 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
 
     @Override
-    public void put2MsgQueue(SimpleSiloSMEvent event) {
-        this.itsMsgQ.add(event);
+    public void put2MsgQueue(BaseSignal signal) {
+        this.itsMsgQ.add(signal);
     }
 
     @Override
@@ -79,11 +75,12 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     private class Empty extends State {
         @Override
         protected void entry() {
+            LOGGER.debug("Smart Silo state: EMPTY");
+
         }
 
         @Override
         protected void doActivity() {
-            LOGGER.debug("Smart Silo state: EMPTY");
         }
 
         @Override
@@ -94,17 +91,17 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     private class Filling extends State {
         @Override
         protected void entry() {
-
-        }
-
-        @Override
-        protected void doActivity() {
             try {
                 notificationQueue.put(new ObservableTuple(null, SiloCtrlState.FILLING));
             } catch (InterruptedException e) {
                 LOGGER.error("InterruptedException in Filling.entry(): " + e.toString());
             }
             LOGGER.debug("Smart Silo state: FILLING");
+        }
+
+        @Override
+        protected void doActivity() {
+
         }
 
         @Override
@@ -130,11 +127,6 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     private class Emptying extends State {
         @Override
         protected void entry() {
-
-        }
-
-        @Override
-        protected void doActivity() {
             try {
                 notificationQueue.put(new ObservableTuple(null, SiloCtrlState.EMPTYING));
             } catch (InterruptedException e) {
@@ -144,19 +136,25 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         }
 
         @Override
+        protected void doActivity() {
+
+        }
+
+        @Override
         protected void exit() {
         }
     }
 
     // transition definitions
     private class Empty2FillingTrans extends Transition {
-        public Empty2FillingTrans(State targetState) {
-            super(targetState, false, false);
+
+        public Empty2FillingTrans(State fromState, State toState) {
+            super(fromState, toState);
         }
 
         @Override
         protected boolean trigger(SMReception smr) {
-            return (smr == SimpleSiloSMEvent.FILL);
+            return (smr instanceof FillSignal);
         }
 
         @Override
@@ -170,13 +168,14 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     }
 
     private class Filling2FullTrans extends Transition {
-        public Filling2FullTrans(State targetState) {
-            super(targetState, false, false);
+
+        public Filling2FullTrans(State fromState, State toState) {
+            super(fromState, toState);
         }
 
         @Override
         protected boolean trigger(SMReception smr) {
-            return ((smr == SimpleSiloSMEvent.HIGH_LEVEL_REACHED) || (smr == SimpleSiloSMEvent.STOP_FILLING));
+            return ((smr instanceof HighLevelReachedSignal) || (smr instanceof StopFillingSignal));
         }
 
         @Override
@@ -191,13 +190,14 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     }
 
     private class Full2EmptyingTrans extends Transition {
-        public Full2EmptyingTrans(State targetState) {
-            super(targetState, false, false);
+
+        public Full2EmptyingTrans(State fromState, State toState) {
+            super(fromState, toState);
         }
 
         @Override
         protected boolean trigger(SMReception smr) {
-            return (smr == SimpleSiloSMEvent.EMPTY);
+            return (smr instanceof EmptySignal);
         }
 
         @Override
@@ -211,13 +211,14 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     }
 
     private class Emptying2EmptyTrans extends Transition {
-        public Emptying2EmptyTrans(State targetState) {
-            super(targetState, false, false);
+
+        public Emptying2EmptyTrans(State fromState, State toState) {
+            super(fromState, toState);
         }
 
         @Override
         protected boolean trigger(SMReception smr) {
-            return ((smr == SimpleSiloSMEvent.LOW_LEVEL_REACHED) || (smr == SimpleSiloSMEvent.STOP_EMPTYING));
+            return ((smr instanceof LowLevelReachedSignal) || (smr instanceof StopEmptyingSignal));
         }
 
         @Override

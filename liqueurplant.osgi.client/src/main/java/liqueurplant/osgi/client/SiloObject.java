@@ -1,6 +1,10 @@
 package liqueurplant.osgi.client;
 
 import liqueurplant.osgi.silo.controller.api.*;
+import liqueurplant.osgi.silo.controller.api.EmptySignal;
+import liqueurplant.osgi.silo.controller.api.FillSignal;
+import liqueurplant.osgi.silo.controller.api.StopEmptyingSignal;
+import liqueurplant.osgi.silo.controller.api.StopFillingSignal;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
@@ -88,23 +92,23 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     public void fill() {
         setEmptyingCompleted(false);
         setFillingCompleted(false);
-            siloCtrl.put2MsgQueue(SimpleSiloSMEvent.FILL);
+            siloCtrl.put2MsgQueue(new FillSignal());
     }
 
     public void empty() {
         setEmptyingCompleted(false);
         setFillingCompleted(false);
-        siloCtrl.put2MsgQueue(SimpleSiloSMEvent.EMPTY);
+        siloCtrl.put2MsgQueue(new EmptySignal());
     }
 
     public void stop() {
-        siloCtrl.put2MsgQueue(SimpleSiloSMEvent.STOP);
+        //siloCtrl.put2MsgQueue();
     }
 
     public void initialize() {
         setEmptyingCompleted(false);
         setFillingCompleted(false);
-        siloCtrl.put2MsgQueue(SimpleSiloSMEvent.START);
+        //siloCtrl.put2MsgQueue(SimpleSiloSMEvent.START);
     }
 
 
@@ -127,13 +131,13 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
 
     private void stopFilling() {
         LOG.debug("Stop emptying");
-        siloCtrl.put2MsgQueue(SimpleSiloSMEvent.STOP_FILLING);
+        siloCtrl.put2MsgQueue(new StopFillingSignal());
 
     }
 
     private void stopEmptying() {
         LOG.debug("Stop emptying");
-        siloCtrl.put2MsgQueue(SimpleSiloSMEvent.STOP_EMPTYING);
+        siloCtrl.put2MsgQueue(new StopEmptyingSignal());
 
     }
 

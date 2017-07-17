@@ -2,32 +2,15 @@ package liqueurplant.osgi.silo.controller.state.machine;
 
 import liqueurplant.osgi.silo.controller.api.SMReception;
 
-public abstract class Transition {
-    protected State itsTargetState;
-    protected State branchInitState;
-    private boolean fork = false;
-    private boolean join = false;
+public abstract class Transition extends BaseTransition<SMReception>{
 
-
-    public Transition(State ts, boolean fork, boolean join) {
-        itsTargetState = ts;
-        this.fork = fork;
-        this.join = join;
+    public Transition(State fromState, State toState, boolean fork, boolean join,
+                      boolean completion) {
+        super(fromState, toState, fork, join, completion);
     }
 
-    public boolean hasFork() {
-        return fork;
+    public Transition(State fromState, State toState){
+        super(fromState, toState);
     }
 
-    public boolean hasJoin() {
-        return join;
-    }
-
-    public void setBranchInitState(State st) {
-        branchInitState = st;
-    }
-
-    abstract protected boolean trigger(SMReception smr);
-
-    abstract protected void effect();
 }

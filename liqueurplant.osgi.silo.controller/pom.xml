@@ -18,6 +18,8 @@
                 <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
             </dependency>
 
+
+
             <dependency>
                 <groupId>liqueurplant.osgi</groupId>
                 <artifactId>liqueurplant.osgi.silo.driver.api</artifactId>
@@ -35,7 +37,6 @@
     </dependencies>
 
     <build>
-        <directory>../targets</directory>
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -45,7 +46,10 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
-                        <Export-Package>liqueurplant.osgi.silo.controller.api</Export-Package>
+                        <Export-Package>
+                            liqueurplant.osgi.silo.controller.api,
+                            liqueurplant.osgi.silo.controller.api.signals
+                        </Export-Package>
                         <Private-Package>
                             liqueurplant.osgi.silo.controller,
                             liqueurplant.osgi.silo.controller.state.machine

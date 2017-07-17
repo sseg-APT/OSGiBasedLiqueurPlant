@@ -3,7 +3,8 @@ package liqueurplant.osgi.silo.driver;
 import com.pi4j.io.gpio.*;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
-import liqueurplant.osgi.silo.controller.api.SimpleSiloSMEvent;
+import liqueurplant.osgi.silo.controller.api.HighLevelReachedSignal;
+import liqueurplant.osgi.silo.controller.api.LowLevelReachedSignal;
 import liqueurplant.osgi.silo.driver.api.SiloDriverIf;
 import org.osgi.service.component.annotations.*;
 import org.slf4j.Logger;
@@ -36,13 +37,13 @@ public class SimpleSiloDriver implements SiloDriverIf {
 
         highLevelSensorPin.addListener((GpioPinListenerDigital) event -> {
             if (event.getState() == PinState.HIGH) {
-                siloCtrl.put2MsgQueue(SimpleSiloSMEvent.HIGH_LEVEL_REACHED);
+                siloCtrl.put2MsgQueue(new HighLevelReachedSignal());
             }
         });
 
         lowLevelSensorPin.addListener((GpioPinListenerDigital) event -> {
             if (event.getState() == PinState.LOW) {
-                siloCtrl.put2MsgQueue(SimpleSiloSMEvent.LOW_LEVEL_REACHED);
+                siloCtrl.put2MsgQueue(new LowLevelReachedSignal());
             }
         });
         LOGGER.info("SILO-DRIVER activated.");
