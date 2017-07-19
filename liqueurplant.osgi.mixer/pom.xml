@@ -23,6 +23,7 @@
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.mixer.api</artifactId>
         </dependency>
+
     </dependencies>
 
     <build>

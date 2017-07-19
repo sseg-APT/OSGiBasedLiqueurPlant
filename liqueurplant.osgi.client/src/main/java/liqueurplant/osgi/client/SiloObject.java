@@ -64,8 +64,8 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
                 return addSignal(params, EmptySignal.class);
             //case 4:
             //    return addSignal(params, StartHeatingSignal.class);
-            //case 5:
-            //    return addSignal(params, StartMixingSignal.class);
+            case 5:
+                return addSignal(params, MixSignal.class);
             case 6:
                 return addSignal(params, StopFillingSignal.class);
             case 7:

@@ -26,8 +26,8 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     private MixerDriverIf mixerDriver;
     private Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
 
-    State empty, filling, full, emptying;
-    Transition e2ft, f2ft, f2et, e2et;
+    State empty, filling, full, emptying, mixing, mixed;
+    Transition e2ft, f2ft, f2et, e2et, f2mt, m2mt, m2et;
 
     public SimpleSiloCtrl() {
         super(null);
@@ -36,10 +36,16 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         filling = new Filling();
         full = new Full();
         emptying = new Emptying();
-        e2ft = new Empty2FillingTrans(empty,filling);
-        f2ft = new Filling2FullTrans(filling,full);
-        f2et = new Full2EmptyingTrans(full,emptying);
-        e2et = new Emptying2EmptyTrans(emptying,empty);
+        mixing = new Mixing();
+        mixed = new Mixed();
+        e2ft = new Empty2FillingTrans(empty, filling);
+        f2ft = new Filling2FullTrans(filling, full);
+        f2et = new Full2EmptyingTrans(full, emptying);
+        e2et = new Emptying2EmptyTrans(emptying, empty);
+        f2mt = new Full2MixingTrans(full, mixing);
+        m2mt = new Mixing2MixedTrans(mixing, mixed);
+        m2et = new Mixed2EmptyTrans(mixed, emptying);
+
         this.setInitState(empty);
     }
 
@@ -77,7 +83,6 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         @Override
         protected void entry() {
             LOGGER.debug("Smart Silo state: EMPTY");
-
         }
 
         @Override
@@ -86,12 +91,18 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void exit() {
+
         }
     }
 
     private class Filling extends State {
         @Override
         protected void entry() {
+            try {
+                inValve.open();
+            } catch (Exception e) {
+                LOGGER.error("Exception in open IN-VALVE: " + e.toString());
+            }
             LOGGER.debug("Smart Silo state: FILLING");
         }
 
@@ -102,17 +113,23 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void exit() {
+            try {
+                inValve.close();
+                notificationQueue.put(new FillingCompletedSignal());
+            } catch (Exception e) {
+                LOGGER.error("Exception in close IN-VALVE: " + e.toString());
+            }
         }
     }
 
     private class Full extends State {
         @Override
         protected void entry() {
+            LOGGER.debug("Smart Silo state: FULL");
         }
 
         @Override
         protected void doActivity() {
-            LOGGER.debug("Smart Silo state: FULL");
         }
 
         @Override
@@ -123,7 +140,62 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     private class Emptying extends State {
         @Override
         protected void entry() {
+            try {
+                outValve.open();
+            } catch (Exception e) {
+                LOGGER.error("Exception in open OUT-VALVE: " + e.toString());
+            }
             LOGGER.debug("Smart Silo state: EMPTYING");
+        }
+
+        @Override
+        protected void doActivity() {
+
+        }
+
+        @Override
+        protected void exit() {
+            try {
+                outValve.close();
+                notificationQueue.put(new EmptyingCompletedSignal());
+            } catch (Exception e) {
+                LOGGER.error("Exception in close OUT-VALVE: " + e.toString());
+            }
+        }
+    }
+
+    private class Mixing extends State {
+        @Override
+        protected void entry() {
+            mixerDriver.start();
+            LOGGER.debug("Smart Silo state: MIXING");
+        }
+
+        @Override
+        protected void doActivity() {
+            try {
+                Thread.sleep(4000);
+                put2MsgQueue(new MixingCompletedSignal());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void exit() {
+            mixerDriver.stop();
+            try {
+                notificationQueue.put(new MixingCompletedSignal());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class Mixed extends State {
+        @Override
+        protected void entry() {
+            LOGGER.debug("Smart Silo state: MIXED");
         }
 
         @Override
@@ -150,11 +222,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void effect() {
-            try {
-                inValve.open();
-            } catch (Exception e) {
-                LOGGER.error("Exception in open IN-VALVE: " + e.toString());
-            }
+
         }
     }
 
@@ -171,12 +239,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void effect() {
-            try {
-                inValve.close();
-                notificationQueue.put(new FillingCompletedSignal());
-            } catch (Exception e) {
-                LOGGER.error("Exception in close IN-VALVE: " + e.toString());
-            }
+
         }
     }
 
@@ -193,11 +256,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void effect() {
-            try {
-                outValve.open();
-            } catch (Exception e) {
-                LOGGER.error("Exception in open OUT-VALVE: " + e.toString());
-            }
+
         }
     }
 
@@ -214,12 +273,58 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void effect() {
-            try {
-                outValve.close();
-                notificationQueue.put(new EmptyingCompletedSignal());
-            } catch (Exception e) {
-                LOGGER.error("Exception in close OUT-VALVE: " + e.toString());
-            }
+
+        }
+    }
+
+    private class Full2MixingTrans extends Transition {
+
+        public Full2MixingTrans(State fromState, State toState) {
+            super(fromState, toState);
+        }
+
+        @Override
+        protected boolean trigger(SMReception smr) {
+            return (smr instanceof MixSignal);
+        }
+
+        @Override
+        protected void effect() {
+
+        }
+    }
+
+    private class Mixing2MixedTrans extends Transition {
+
+        public Mixing2MixedTrans(State fromState, State toState) {
+            super(fromState, toState);
+        }
+
+        @Override
+        protected boolean trigger(SMReception smr) {
+            return (smr instanceof MixingCompletedSignal);
+        }
+
+        @Override
+        protected void effect() {
+
+        }
+    }
+
+    private class Mixed2EmptyTrans extends Transition {
+
+        public Mixed2EmptyTrans(State fromState, State toState) {
+            super(fromState, toState);
+        }
+
+        @Override
+        protected boolean trigger(SMReception smr) {
+            return (smr instanceof EmptySignal);
+        }
+
+        @Override
+        protected void effect() {
+
         }
     }
 

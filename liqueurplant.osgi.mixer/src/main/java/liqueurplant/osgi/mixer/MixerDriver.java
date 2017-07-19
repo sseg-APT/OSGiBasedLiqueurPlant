@@ -2,13 +2,10 @@ package liqueurplant.osgi.mixer;
 
 import com.pi4j.io.gpio.*;
 import liqueurplant.osgi.mixer.api.MixerDriverIf;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.sound.sampled.Mixer;
 
 @Component(
         name = "liqueurplant.osgi.mixer",
@@ -58,4 +55,6 @@ public class MixerDriver implements MixerDriverIf {
         while (!gpioController.getProvisionedPins().isEmpty())
             gpioController.unprovisionPin(gpioController.getProvisionedPins().iterator().next());
     }
+
+
 }
