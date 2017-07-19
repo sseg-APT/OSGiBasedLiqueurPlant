@@ -7,5 +7,5 @@ public interface SiloCtrlIf {
 
     void put2MsgQueue(BaseSignal signal);
 
-    ObservableTuple takeNotification();
+    BaseSignal takeNotification();
 }

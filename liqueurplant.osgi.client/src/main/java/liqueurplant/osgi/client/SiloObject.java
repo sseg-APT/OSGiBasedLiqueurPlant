@@ -1,5 +1,7 @@
 package liqueurplant.osgi.client;
 
+import java.lang.reflect.Constructor;
+import java.sql.Timestamp;
 import liqueurplant.osgi.silo.controller.api.*;
 import liqueurplant.osgi.silo.controller.api.EmptySignal;
 import liqueurplant.osgi.silo.controller.api.FillSignal;
@@ -8,6 +10,7 @@ import liqueurplant.osgi.silo.controller.api.StopFillingSignal;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,10 +26,16 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     public String state = "";
     public boolean fillingCompleted = false;
     public boolean emptyingCompleted = false;
+    private String event;
     private ArrayBlockingQueue<ObservableTuple> observationQueue;
 
     public SiloObject() {
+
         observationQueue = new ArrayBlockingQueue<>(20);
+        event = new JSONObject()
+            .put("event", "")
+            .put("timestamp", "")
+            .put("value", "").toString();
     }
 
     @Override
@@ -50,17 +59,17 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
                 initialize();
                 return ExecuteResponse.success();
             case 2:
-                fill();
-                return ExecuteResponse.success();
+                return addSignal(params, FillSignal.class);
             case 3:
-                empty();
-                return ExecuteResponse.success();
+                return addSignal(params, EmptySignal.class);
+            //case 4:
+            //    return addSignal(params, StartHeatingSignal.class);
+            //case 5:
+            //    return addSignal(params, StartMixingSignal.class);
             case 6:
-                stopFilling();
-                return ExecuteResponse.success();
+                return addSignal(params, StopFillingSignal.class);
             case 7:
-                stopEmptying();
-                return ExecuteResponse.success();
+                return addSignal(params, StopEmptyingSignal.class);
             case 8:
                 stop();
                 return ExecuteResponse.success();
@@ -71,36 +80,58 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
 
     @Override
     public void run() {
-        ObservableTuple observation;
+        BaseSignal observation;
         LOG.info("Leshan Wrapper started.");
         while (true) {
             if (siloCtrl != null) {
                 observation = siloCtrl.takeNotification();
-                if (observation.getEvent() != null) {
-                    LOG.info("Ctrl2Wrapper Event arrived: " + observation.getEvent().toString());
-                    if (observation.getEvent() == Ctrl2WrapperEvent.FILLING_COMPLETED) {
-                        setFillingCompleted(true);
-                    } else if (observation.getEvent() == Ctrl2WrapperEvent.EMPTYING_COMPLETED) {
-                        setEmptyingCompleted(true);
-                    }
-                }
-                setState(observation.getState().toString());
+                updateEvent(observation);
             }
         }
     }
 
-
-    public void fill() {
-        setEmptyingCompleted(false);
-        setFillingCompleted(false);
-            siloCtrl.put2MsgQueue(new FillSignal());
+    private <T extends BaseSignal> ExecuteResponse addSignal(String args, Class<T> clazz){
+        if (args == null){
+            return ExecuteResponse.badRequest("Arguments not correct");
+        }
+        try {
+            Constructor<T> ctor = clazz.getConstructor(String.class);
+            BaseSignal sign = ctor.newInstance(args);
+            siloCtrl.put2MsgQueue(sign);
+        } catch (Exception e){
+            return ExecuteResponse.badRequest("Arguments not correct:" + e.getMessage());
+        }
+        return ExecuteResponse.success();
     }
 
-    public void empty() {
-        setEmptyingCompleted(false);
-        setFillingCompleted(false);
-        siloCtrl.put2MsgQueue(new EmptySignal());
+    private void updateEvent(SMReception newSignal) {
+        LOG.info("New event " + newSignal);
+
+        String newEvent;
+
+        if (newSignal instanceof FillingCompletedSignal){
+            newEvent = "FILLING_COMPLETED";
+        }
+        else if (newSignal instanceof EmptyingCompletedSignal){
+            newEvent = "EMPTYING_COMPLETED";
+        }
+        else if (newSignal instanceof MixingCompletedSignal){
+            newEvent = "MIXING_COMPLETED";
+        }
+        else{
+            return;
+        }
+
+
+
+        event = new JSONObject()
+            .put("event", newEvent)
+            .put("timestamp", (new Timestamp(System.currentTimeMillis())))
+            .put("value", "").toString();
+        fireResourcesChange(15);
+
     }
+
 
     public void stop() {
         //siloCtrl.put2MsgQueue();
@@ -141,17 +172,7 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
         fireResourcesChange(11);
     }
 
-    private void stopFilling() {
-        LOG.debug("Stop emptying");
-        siloCtrl.put2MsgQueue(new StopFillingSignal());
 
-    }
-
-    private void stopEmptying() {
-        LOG.debug("Stop emptying");
-        siloCtrl.put2MsgQueue(new StopEmptyingSignal());
-
-    }
 
     protected void setSiloController(SiloCtrlIf siloCtrl) {
         this.siloCtrl = siloCtrl;
