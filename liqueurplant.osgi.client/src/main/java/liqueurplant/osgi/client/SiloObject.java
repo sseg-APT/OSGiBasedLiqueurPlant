@@ -11,6 +11,7 @@ import org.eclipse.leshan.core.response.ReadResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.ref.WeakReference;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
@@ -103,7 +104,18 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
 
     public void stop() {
         //siloCtrl.put2MsgQueue();
+        gc();
     }
+
+    public static void gc() {
+        Object obj = new Object();
+        WeakReference ref = new WeakReference<Object>(obj);
+        obj = null;
+        while(ref.get() != null) {
+            System.gc();
+        }
+    }
+
 
     public void initialize() {
         setEmptyingCompleted(false);

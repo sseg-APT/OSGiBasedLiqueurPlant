@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>liqueurplant.osgi</artifactId>
+        <groupId>liqueurplant.osgi</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>liqueurplant.osgi.mixer</artifactId>
+    <packaging>bundle</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-core</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- <directory>../</directory> -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Import-Package>*</Import-Package>
+                        <Export-Package>liqueurplant.osgi.mixer.api</Export-Package>
+                        <Private-Package>liqueurplant.osgi.mixer</Private-Package>
+                        <Require-Bundle>liqueurplant.osgi.mixer.api</Require-Bundle>
+                        <_dsannotations>*</_dsannotations>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

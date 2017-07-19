@@ -39,7 +39,7 @@ public class StateMachine implements Runnable {
         while (curState != null) {        // FINAL_STATE is the state machine's final state. null is used to indicate the FINAL_STATE
             if (!eventDiscarded) {
                 curState.doActivity();    // to be defined later. Probably a Thread will be activated having as run the do method
-                LOG.info("current state = " + curState.getClass().getName() + "\n");
+                //LOG.info("current state = " + curState.getClass().getName() + "\n");
             }
             if (!curState.hasCompletionTrans()) {        // a Completion transition is one without a trigger.
                 // deactivated waiting for deferred event implementation
@@ -47,7 +47,7 @@ public class StateMachine implements Runnable {
                 //  returns a valid for the current state deferred event for further processing
                 //} else {
                 curReception = itsMsgQ.getNext(curState.getDeferredEvents());
-                LOG.info("Reception received = " + curReception.toString());
+                //LOG.info("Reception received = " + curReception.toString());
                 //}
             } else
                 curReception = null;        // is used to activate the on completion transition
@@ -55,7 +55,7 @@ public class StateMachine implements Runnable {
             activeTransition = curState.getActiveTransition(curReception);
 
             if (activeTransition == null) {
-                LOG.error("Reception " + curReception.toString() + " is not handled at state " + curState);
+                //LOG.error("Reception " + curReception.toString() + " is not handled at state " + curState);
                 eventDiscarded = true;
             } else {    // fire transition
                 curState.exit();
