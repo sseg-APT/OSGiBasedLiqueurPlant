@@ -45,6 +45,8 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
                 return ReadResponse.success(resourceid, fillingCompleted);
             case 11:
                 return ReadResponse.success(resourceid, emptyingCompleted);
+            case 15:
+                return ReadResponse.success(resourceid, event);
             default:
                 return super.read(resourceid);
         }
