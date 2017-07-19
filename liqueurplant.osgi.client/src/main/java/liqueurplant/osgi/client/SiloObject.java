@@ -27,11 +27,9 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     public boolean fillingCompleted = false;
     public boolean emptyingCompleted = false;
     private String event;
-    private ArrayBlockingQueue<ObservableTuple> observationQueue;
 
     public SiloObject() {
 
-        observationQueue = new ArrayBlockingQueue<>(20);
         event = new JSONObject()
             .put("event", "")
             .put("timestamp", "")
