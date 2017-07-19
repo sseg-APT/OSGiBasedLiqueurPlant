@@ -1,5 +1,6 @@
 package liqueurplant.osgi.silo.controller;
 
+import liqueurplant.osgi.mixer.api.MixerDriverIf;
 import liqueurplant.osgi.silo.controller.api.*;
 
 import liqueurplant.osgi.silo.controller.state.machine.State;
@@ -22,6 +23,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     ArrayBlockingQueue<ObservableTuple> notificationQueue;
     private InValveDriverIf inValve;
     private OutValveDriverIf outValve;
+    private MixerDriverIf mixerDriver;
     private Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
 
     State empty, filling, full, emptying;
@@ -260,4 +262,19 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         this.outValve = null;
         LOGGER.info("OUT-VALVE unbinded.");
     }
+
+    @Reference(
+            policy = ReferencePolicy.DYNAMIC,
+            cardinality = ReferenceCardinality.OPTIONAL
+    )
+    protected void setMixer(MixerDriverIf mixer) {
+        this.mixerDriver = mixer;
+        LOGGER.info("MIXER binded.");
+    }
+
+    protected void unsetMixer(MixerDriverIf mixer) {
+        this.mixerDriver = null;
+        LOGGER.info("MIXER unbinded.");
+    }
+
 }

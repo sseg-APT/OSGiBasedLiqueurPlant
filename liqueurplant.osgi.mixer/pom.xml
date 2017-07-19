@@ -21,7 +21,7 @@
 
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
+            <artifactId>liqueurplant.osgi.mixer.api</artifactId>
         </dependency>
     </dependencies>
 
