@@ -3,10 +3,7 @@ package liqueurplant.osgi.client;
 import java.lang.reflect.Constructor;
 import java.sql.Timestamp;
 import liqueurplant.osgi.silo.controller.api.*;
-import liqueurplant.osgi.silo.controller.api.EmptySignal;
-import liqueurplant.osgi.silo.controller.api.FillSignal;
-import liqueurplant.osgi.silo.controller.api.StopEmptyingSignal;
-import liqueurplant.osgi.silo.controller.api.StopFillingSignal;
+import liqueurplant.osgi.silo.controller.api.signals.*;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
@@ -15,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.ref.WeakReference;
-import java.util.concurrent.ArrayBlockingQueue;
 
 
 public class SiloObject extends BaseInstanceEnabler implements Runnable {

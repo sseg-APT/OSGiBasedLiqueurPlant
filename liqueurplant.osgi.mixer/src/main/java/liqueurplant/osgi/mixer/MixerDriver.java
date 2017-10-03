@@ -24,6 +24,7 @@ public class MixerDriver implements MixerDriverIf {
     @Activate
     public void activate() {
         mixerPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_06, "MIXER", PinState.HIGH);
+        mixerPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF, PinMode.DIGITAL_INPUT);
         LOGGER.info("MIXER activated.");
     }
 

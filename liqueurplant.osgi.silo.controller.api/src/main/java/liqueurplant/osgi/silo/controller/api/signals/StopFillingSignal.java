@@ -1,6 +1,6 @@
-package liqueurplant.osgi.silo.controller.api;
+package liqueurplant.osgi.silo.controller.api.signals;
 
-import liqueurplant.osgi.silo.controller.api.BaseSignal;
+import liqueurplant.osgi.silo.controller.api.signals.BaseSignal;
 
 public class StopFillingSignal extends BaseSignal{
 

@@ -1,8 +1,9 @@
-package liqueurplant.osgi.silo.controller.api;
+package liqueurplant.osgi.silo.controller.api.signals;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
+import liqueurplant.osgi.silo.controller.api.SMReception;
 
 import java.lang.reflect.Type;
 
