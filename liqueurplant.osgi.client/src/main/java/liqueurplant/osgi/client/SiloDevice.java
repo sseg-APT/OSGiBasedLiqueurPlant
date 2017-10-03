@@ -29,7 +29,7 @@ import java.util.Map;
 public class SiloDevice extends AbstractDevice implements ManagedService {
 
     static String serverURI = "";
-    private String IP = "127.0.0.1";
+    private String IP = "150.140.188.192";
     private String port = "5683";
     private ServiceRegistration configService;
     private Logger LOGGER = LoggerFactory.getLogger(AbstractDevice.class);
@@ -51,7 +51,7 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
     public void activate(Map<String, Object> properties) {
         this.context = context;
         LOGGER.info("Silo device activated.");
-        serverURI = "coap://127.0.0.1:5683";
+        serverURI = "coap://150.140.188.192:5683";
         System.out.println(serverURI);
         new Thread(this).start();
         new Thread(silo).start();

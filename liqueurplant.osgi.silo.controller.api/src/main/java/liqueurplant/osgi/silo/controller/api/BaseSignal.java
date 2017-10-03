@@ -1,4 +1,4 @@
-package liqueurplant.osgi.silo.controller.api.signals;
+package liqueurplant.osgi.silo.controller.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

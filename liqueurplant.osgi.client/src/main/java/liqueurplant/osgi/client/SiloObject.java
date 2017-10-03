@@ -3,7 +3,6 @@ package liqueurplant.osgi.client;
 import java.lang.reflect.Constructor;
 import java.sql.Timestamp;
 import liqueurplant.osgi.silo.controller.api.*;
-import liqueurplant.osgi.silo.controller.api.signals.*;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;

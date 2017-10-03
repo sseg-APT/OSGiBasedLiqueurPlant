@@ -1,6 +1,4 @@
-package liqueurplant.osgi.silo.controller.api.signals;
-
-import liqueurplant.osgi.silo.controller.api.signals.BaseSignal;
+package liqueurplant.osgi.silo.controller.api;
 
 public class MixSignal extends BaseSignal {
     public MixSignal(){}

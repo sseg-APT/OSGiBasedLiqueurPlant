@@ -3,7 +3,6 @@ package liqueurplant.osgi.silo.controller;
 import liqueurplant.osgi.mixer.api.MixerDriverIf;
 import liqueurplant.osgi.silo.controller.api.*;
 
-import liqueurplant.osgi.silo.controller.api.signals.*;
 import liqueurplant.osgi.silo.controller.state.machine.State;
 import liqueurplant.osgi.silo.controller.state.machine.StateMachine;
 import liqueurplant.osgi.silo.controller.state.machine.Transition;

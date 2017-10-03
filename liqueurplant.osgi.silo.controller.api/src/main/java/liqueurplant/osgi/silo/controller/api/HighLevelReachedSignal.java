@@ -1,7 +1,5 @@
-package liqueurplant.osgi.silo.controller.api.signals;
+package liqueurplant.osgi.silo.controller.api;
 
-
-import liqueurplant.osgi.silo.controller.api.signals.BaseSignal;
 
 public class HighLevelReachedSignal extends BaseSignal{
 
