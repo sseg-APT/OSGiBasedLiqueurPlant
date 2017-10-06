@@ -1,5 +1,6 @@
 package liqueurplant.osgi.silo.controller;
 
+import liqueurplant.osgi.heater.api.HeaterDriverIf;
 import liqueurplant.osgi.mixer.api.MixerDriverIf;
 import liqueurplant.osgi.silo.controller.api.*;
 
@@ -24,10 +25,11 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     private InValveDriverIf inValve;
     private OutValveDriverIf outValve;
     private MixerDriverIf mixerDriver;
+    private HeaterDriverIf heaterDriver;
     private Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
 
-    State empty, filling, full, emptying, mixing, mixed;
-    Transition e2ft, f2ft, f2et, e2et, f2mt, m2mt, m2et;
+    State empty, filling, full, emptying, mixing, mixed, heating, heated;
+    Transition e2ft, f2ft, f2et, e2et, m2mt, m2et, f2ht, h2ht, h2mt;
 
     public SimpleSiloCtrl() {
         super(null);
@@ -38,13 +40,17 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         emptying = new Emptying();
         mixing = new Mixing();
         mixed = new Mixed();
+        heating = new Heating();
+        heated = new Heated();
         e2ft = new Empty2FillingTrans(empty, filling);
         f2ft = new Filling2FullTrans(filling, full);
         f2et = new Full2EmptyingTrans(full, emptying);
         e2et = new Emptying2EmptyTrans(emptying, empty);
-        f2mt = new Full2MixingTrans(full, mixing);
+        f2ht = new Full2HeatingTrans(full, heating);
+        h2ht = new Heating2HeatedTrans(heating, heated);
+        h2mt = new Heated2MixingTrans(heated, mixing);
         m2mt = new Mixing2MixedTrans(mixing, mixed);
-        m2et = new Mixed2EmptyTrans(mixed, emptying);
+        m2et = new Mixed2EmptyingTrans(mixed, emptying);
 
         this.setInitState(empty);
     }
@@ -67,6 +73,7 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     @Override
     public void put2MsgQueue(BaseSignal signal) {
         this.itsMsgQ.add(signal);
+        LOGGER.info("Signal: " + signal.toString());
     }
 
     @Override
@@ -200,6 +207,47 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void doActivity() {
+        }
+
+        @Override
+        protected void exit() {
+        }
+    }
+
+    private class Heating extends State {
+        @Override
+        protected void entry() {
+            heaterDriver.heat2temp(35.0f);
+            LOGGER.debug("Smart Silo state: HEATING");
+        }
+
+        @Override
+        protected void doActivity() {
+            while (heaterDriver.getTemperature() != 35.0f) {
+
+            }
+            put2MsgQueue(new HeatingCompletedSignal());
+        }
+
+        @Override
+        protected void exit() {
+            try {
+                notificationQueue.put(new HeatingCompletedSignal());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    private class Heated extends State {
+        @Override
+        protected void entry() {
+            LOGGER.debug("Smart Silo state: HEATED");
+        }
+
+        @Override
+        protected void doActivity() {
 
         }
 
@@ -277,14 +325,49 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         }
     }
 
-    private class Full2MixingTrans extends Transition {
+    private class Full2HeatingTrans extends Transition {
 
-        public Full2MixingTrans(State fromState, State toState) {
+        public Full2HeatingTrans(State fromState, State toState) {
             super(fromState, toState);
         }
 
         @Override
         protected boolean trigger(SMReception smr) {
+            return (smr instanceof HeatSignal);
+        }
+
+        @Override
+        protected void effect() {
+
+        }
+    }
+
+    private class Heating2HeatedTrans extends Transition {
+
+        public Heating2HeatedTrans(State fromState, State toState) {
+            super(fromState, toState);
+        }
+
+        @Override
+        protected boolean trigger(SMReception smr) {
+            return (smr instanceof HeatingCompletedSignal);
+        }
+
+        @Override
+        protected void effect() {
+
+        }
+    }
+
+    private class Heated2MixingTrans extends Transition {
+
+        public Heated2MixingTrans(State fromState, State toState) {
+            super(fromState, toState);
+        }
+
+        @Override
+        protected boolean trigger(SMReception smr) {
+            LOGGER.info("MIXSignal");
             return (smr instanceof MixSignal);
         }
 
@@ -311,9 +394,9 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
         }
     }
 
-    private class Mixed2EmptyTrans extends Transition {
+    private class Mixed2EmptyingTrans extends Transition {
 
-        public Mixed2EmptyTrans(State fromState, State toState) {
+        public Mixed2EmptyingTrans(State fromState, State toState) {
             super(fromState, toState);
         }
 
@@ -369,6 +452,20 @@ public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
     protected void unsetMixer(MixerDriverIf mixer) {
         this.mixerDriver = null;
         LOGGER.info("MIXER unbinded.");
+    }
+
+    @Reference(
+            policy = ReferencePolicy.DYNAMIC,
+            cardinality = ReferenceCardinality.OPTIONAL
+    )
+    protected void setHeater(HeaterDriverIf heater) {
+        this.heaterDriver = heater;
+        LOGGER.info("HEATER binded.");
+    }
+
+    protected void unsetHeater(HeaterDriverIf heater) {
+        this.heaterDriver = null;
+        LOGGER.info("HEATER unbinded.");
     }
 
 }

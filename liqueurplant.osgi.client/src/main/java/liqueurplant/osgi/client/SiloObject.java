@@ -57,8 +57,8 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
                 return addSignal(params, FillSignal.class);
             case 3:
                 return addSignal(params, EmptySignal.class);
-            //case 4:
-            //    return addSignal(params, StartHeatingSignal.class);
+            case 4:
+                return addSignal(params, HeatSignal.class);
             case 5:
                 return addSignal(params, MixSignal.class);
             case 6:
@@ -109,6 +109,9 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
         }
         else if (newSignal instanceof EmptyingCompletedSignal){
             newEvent = "EMPTYING_COMPLETED";
+        }
+        else if (newSignal instanceof HeatingCompletedSignal){
+            newEvent = "HEATING_COMPLETED";
         }
         else if (newSignal instanceof MixingCompletedSignal){
             newEvent = "MIXING_COMPLETED";

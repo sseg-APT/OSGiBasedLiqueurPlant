@@ -38,6 +38,11 @@
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.mixer.api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.heater.api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
