@@ -19,19 +19,19 @@ import java.util.concurrent.ArrayBlockingQueue;
         name = "liqueurplant.osgi.silo.controller",
         service = SiloCtrlIf.class
 )
-public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
+public class HeatMixSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     ArrayBlockingQueue<BaseSignal> notificationQueue;
     private InValveDriverIf inValve;
     private OutValveDriverIf outValve;
     private MixerDriverIf mixerDriver;
     private HeaterDriverIf heaterDriver;
-    private Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
+    private Logger LOGGER = LoggerFactory.getLogger(HeatMixSiloCtrl.class);
 
     State empty, filling, full, emptying, mixing, mixed, heating, heated;
     Transition e2ft, f2ft, f2et, e2et, m2mt, m2et, f2ht, h2ht, h2mt;
 
-    public SimpleSiloCtrl() {
+    public HeatMixSiloCtrl() {
         super(null);
         notificationQueue = new ArrayBlockingQueue<>(20);
         empty = new Empty();

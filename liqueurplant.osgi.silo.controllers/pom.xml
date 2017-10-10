@@ -13,6 +13,8 @@
 
     <modules>
         <module>liqueurplant.osgi.silo.controllers.heatmix</module>
+        <module>liqueurplant.osgi.silo.controllers.heat</module>
+
 
     </modules>
 

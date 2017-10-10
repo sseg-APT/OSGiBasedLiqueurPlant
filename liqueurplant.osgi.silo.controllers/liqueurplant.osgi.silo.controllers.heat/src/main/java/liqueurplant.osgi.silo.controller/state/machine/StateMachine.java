@@ -4,39 +4,42 @@ import liqueurplant.osgi.silo.controller.api.SMReception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class StateMachine implements Runnable {
+    private static final Logger LOG = LoggerFactory.getLogger(StateMachine.class);
+    public MessageQueue<SMReception> itsMsgQ;
+    BaseState initState;
+    SMReception curReception;
+    BaseState curState = null;
+    boolean eventDiscarded = false;
+    BaseTransition activeTransition;
+    // fork impl
+    public MessageQueue branchMsgQ = null;
 
-    private Logger LOGGER = LoggerFactory.getLogger(StateMachine.class);
-    private MessageQueue branchMsgQ = null;
-    private boolean eventDiscarded = false;
-    private Thread itsBranchThread = null;
-    private Transition activeTransition;
-    private boolean forkActive = false;
-    private SMReception curReception;
-    private State curState = null;
-    private State initState;
+    boolean forkActive = false;
+    Thread itsBranchThread = null;
+    StateMachine branch;
 
-    protected MessageQueue itsMsgQ;
 
     public StateMachine(MessageQueue msgQ) {
-        if (msgQ != null) itsMsgQ = msgQ;
-        else itsMsgQ = new MessageQueue();
-        LOGGER.info("State Machine " + this.getClass().getName() + " just started\n");
+        if (msgQ != null) itsMsgQ = msgQ;        //for branch SMs
+        else
+            itsMsgQ = new MessageQueue();
     }
 
 
-    public void setInitState(State s) {
+    public void setInitState(BaseState s) {
         initState = s;
     }
 
     @Override
     public void run() {
+        // TODO Auto-generated method stub
         curState = initState;
+        curState.entry();
         while (curState != null) {        // FINAL_STATE is the state machine's final state. null is used to indicate the FINAL_STATE
             if (!eventDiscarded) {
                 curState.doActivity();    // to be defined later. Probably a Thread will be activated having as run the do method
-                LOGGER.info("current state = " + curState.getClass().getName() + "\n");
+                //LOG.info("current state = " + curState.getClass().getName() + "\n");
             }
             if (!curState.hasCompletionTrans()) {        // a Completion transition is one without a trigger.
                 // deactivated waiting for deferred event implementation
@@ -44,7 +47,7 @@ public class StateMachine implements Runnable {
                 //  returns a valid for the current state deferred event for further processing
                 //} else {
                 curReception = itsMsgQ.getNext(curState.getDeferredEvents());
-                LOGGER.info("Reception received = " + curReception.toString());
+                //LOG.info("Reception received = " + curReception.toString());
                 //}
             } else
                 curReception = null;        // is used to activate the on completion transition
@@ -52,24 +55,16 @@ public class StateMachine implements Runnable {
             activeTransition = curState.getActiveTransition(curReception);
 
             if (activeTransition == null) {
-                LOGGER.info("No acive transition for reception " + curReception.toString() + " at main branch\n");
-                if (false) {    // check if reception is deferred and if yes keep it
-                /*if(curState.defEventPool.isDeffered(curEvent)){
-					defEventsQ.putEvent(curEvent);
-					}*/
-                } else if (forkActive) {        //  forward event to branch if active
-                    branchMsgQ.add(curReception);
-                    LOGGER.info("Reception " + curReception.toString() + " dispatched to branch\n");
-                } else {
-                    LOGGER.error("Reception " + curReception.toString() + " is not handled at state " + curState);
-                }
+                //LOG.error("Reception " + curReception.toString() + " is not handled at state " + curState);
                 eventDiscarded = true;
-            } else {
-                //curState.doActivity.terminate();		// to be defined later
+            } else {    // fire transition
+                curState.exit();
+                activeTransition.effect();
                 if (activeTransition.hasFork()) {
                     StateMachine bsm;
                     forkActive = true;
                     branchMsgQ = new MessageQueue();
+                    itsMsgQ.addChildQueue(branchMsgQ);
                     bsm = new StateMachine(branchMsgQ);
                     bsm.setInitState(activeTransition.branchInitState);
                     itsBranchThread = new Thread(bsm);
@@ -77,21 +72,25 @@ public class StateMachine implements Runnable {
                     itsBranchThread.start();
                 }
 
-                curState.exit();
-                activeTransition.effect();
                 if (activeTransition.hasJoin()) {
                     try {
+                        LOG.info("Main thread is waiting branch to finish");
                         (itsBranchThread).join();
+                        itsMsgQ.removeChildQueue(branchMsgQ);
                     } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                     forkActive = false;
                 }
                 curState = activeTransition.itsTargetState;
                 eventDiscarded = false;
+                if (curState != null) {
+                    curState.entry();
+                }
             }
         }
-        LOGGER.info("State Machine " + Thread.currentThread().getName() + " terminated");
+        LOG.info("State Machine " + Thread.currentThread().getName() + " terminated");
 
     }
 
