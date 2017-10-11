@@ -46,7 +46,6 @@ public abstract class AbstractDevice implements Runnable {
         this.secureLocalAddress = secureLocalAddress;
         this.secureLocalPort = secureLocalPort;
         this.needBootstrap = false;
-        //this.serverURI = serverURI;
         this.pskIdentity = pskIdentity;
         this.pskKey = pskKey;
 
