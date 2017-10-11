@@ -3,29 +3,33 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>liqueurplant.osgi</artifactId>
+        <artifactId>liqueurplant.osgi.silo.controllers</artifactId>
         <groupId>liqueurplant.osgi</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>liqueurplant.osgi.silo.driver.api</artifactId>
+    <artifactId>liqueurplant.osgi.silo.controllers.simple</artifactId>
     <packaging>bundle</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>osgi.annotation</artifactId>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
+            <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>liqueurplant.osgi</groupId>
+            <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
         </dependency>
     </dependencies>
 
     <build>
-        <!-- <directory>../</directory> -->
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -33,9 +37,20 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>liqueurplant.osgi.silo.driver.api</Export-Package>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
+                        <Export-Package>
+                            liqueurplant.osgi.silo.controller.api,
+                        </Export-Package>
+                        <Private-Package>
+                            liqueurplant.osgi.silo.controller,
+                            liqueurplant.osgi.silo.controller.state.machine
+                        </Private-Package>
+                        <Require-Bundle>
+                            liqueurplant.osgi.silo.controller.api,
+                            liqueurplant.osgi.valve.in.api,
+                            liqueurplant.osgi.valve.out.api
+                        </Require-Bundle>
                         <_dsannotations>*</_dsannotations>
                     </instructions>
                 </configuration>
