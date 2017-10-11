@@ -9,6 +9,7 @@
 # IntelliJ
 /out/
 /generated
+/deploy
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
