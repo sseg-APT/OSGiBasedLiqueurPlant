@@ -15,6 +15,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 @Component(
         name = "liqueurplant.osgi.silo.controller",
+        immediate = true,
         service = SiloCtrlIf.class
 )
 public class HeatSiloCtrl extends StateMachine implements SiloCtrlIf {

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>liqueurplant.osgi.silo.controllers.heat</artifactId>
+    <artifactId>liqueurplant.osgi.silo.controllers.simple</artifactId>
     <packaging>bundle</packaging>
 
     <dependencies>
@@ -26,11 +26,6 @@
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.heater.api</artifactId>
         </dependency>
     </dependencies>
 
@@ -54,8 +49,7 @@
                         <Require-Bundle>
                             liqueurplant.osgi.silo.controller.api,
                             liqueurplant.osgi.valve.in.api,
-                            liqueurplant.osgi.valve.out.api,
-                            liqueurplant.osgi.heater.api
+                            liqueurplant.osgi.valve.out.api
                         </Require-Bundle>
                         <_dsannotations>*</_dsannotations>
                     </instructions>

@@ -31,8 +31,8 @@ public class SimpleSiloDriver {
         highLevelSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02, "HIGH-LEVEL-SENSOR", PinPullResistance.PULL_DOWN);
         lowLevelSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_03, "LOW-LEVEL-SENSOR", PinPullResistance.PULL_DOWN);
 
-        highLevelSensorPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF, PinMode.DIGITAL_INPUT);
-        lowLevelSensorPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF, PinMode.DIGITAL_INPUT);
+        highLevelSensorPin.setShutdownOptions(true);
+        lowLevelSensorPin.setShutdownOptions(true);
 
 
         highLevelSensorPin.addListener((GpioPinListenerDigital) event -> {

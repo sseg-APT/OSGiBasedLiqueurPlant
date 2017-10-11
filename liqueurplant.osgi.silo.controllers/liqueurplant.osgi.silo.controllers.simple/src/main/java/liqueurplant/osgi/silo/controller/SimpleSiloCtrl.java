@@ -1,6 +1,5 @@
 package liqueurplant.osgi.silo.controller;
 
-import liqueurplant.osgi.mixer.api.MixerDriverIf;
 import liqueurplant.osgi.silo.controller.api.*;
 import liqueurplant.osgi.silo.controller.state.machine.State;
 import liqueurplant.osgi.silo.controller.state.machine.StateMachine;
@@ -10,41 +9,33 @@ import liqueurplant.osgi.valve.out.api.OutValveDriverIf;
 import org.osgi.service.component.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.concurrent.ArrayBlockingQueue;
 
 @Component(
         name = "liqueurplant.osgi.silo.controller",
-        immediate = true,
         service = SiloCtrlIf.class
 )
-public class MixSiloCtrl extends StateMachine implements SiloCtrlIf {
+public class SimpleSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     ArrayBlockingQueue<BaseSignal> notificationQueue;
     private InValveDriverIf inValve;
     private OutValveDriverIf outValve;
-    private MixerDriverIf mixerDriver;
-    private Logger LOGGER = LoggerFactory.getLogger(MixSiloCtrl.class);
+    private Logger LOGGER = LoggerFactory.getLogger(SimpleSiloCtrl.class);
 
-    State empty, filling, full, emptying, mixing, mixed;
-    Transition e2ft, f2ft, f2et, e2et, m2mt, m2et, f2mt;
+    State empty, filling, full, emptying;
+    Transition e2ft, f2ft, f2et, e2et;
 
-    public MixSiloCtrl() {
+    public SimpleSiloCtrl() {
         super(null);
         notificationQueue = new ArrayBlockingQueue<>(20);
         empty = new Empty();
         filling = new Filling();
         full = new Full();
         emptying = new Emptying();
-        mixing = new Mixing();
-        mixed = new Mixed();
         e2ft = new Empty2FillingTrans(empty, filling);
         f2ft = new Filling2FullTrans(filling, full);
         f2et = new Full2EmptyingTrans(full, emptying);
         e2et = new Emptying2EmptyTrans(emptying, empty);
-        f2mt = new Full2MixingTrans(full, mixing);
-        m2mt = new Mixing2MixedTrans(mixing, mixed);
-        m2et = new Mixed2EmptyingTrans(mixed, emptying);
 
         this.setInitState(empty);
     }
@@ -165,49 +156,6 @@ public class MixSiloCtrl extends StateMachine implements SiloCtrlIf {
         }
     }
 
-    private class Mixing extends State {
-        @Override
-        protected void entry() {
-            mixerDriver.start();
-            LOGGER.debug("Smart Silo state: MIXING");
-        }
-
-        @Override
-        protected void doActivity() {
-            try {
-                Thread.sleep(4000);
-                put2MsgQueue(new MixingCompletedSignal());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        protected void exit() {
-            mixerDriver.stop();
-            try {
-                notificationQueue.put(new MixingCompletedSignal());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private class Mixed extends State {
-        @Override
-        protected void entry() {
-            LOGGER.debug("Smart Silo state: MIXED");
-        }
-
-        @Override
-        protected void doActivity() {
-        }
-
-        @Override
-        protected void exit() {
-        }
-    }
-
     // transition definitions
     private class Empty2FillingTrans extends Transition {
 
@@ -277,57 +225,6 @@ public class MixSiloCtrl extends StateMachine implements SiloCtrlIf {
         }
     }
 
-    private class Full2MixingTrans extends Transition {
-
-        public Full2MixingTrans(State fromState, State toState) {
-            super(fromState, toState);
-        }
-
-        @Override
-        protected boolean trigger(SMReception smr) {
-            return (smr instanceof MixSignal);
-        }
-
-        @Override
-        protected void effect() {
-
-        }
-    }
-
-    private class Mixing2MixedTrans extends Transition {
-
-        public Mixing2MixedTrans(State fromState, State toState) {
-            super(fromState, toState);
-        }
-
-        @Override
-        protected boolean trigger(SMReception smr) {
-            return (smr instanceof MixingCompletedSignal);
-        }
-
-        @Override
-        protected void effect() {
-
-        }
-    }
-
-    private class Mixed2EmptyingTrans extends Transition {
-
-        public Mixed2EmptyingTrans(State fromState, State toState) {
-            super(fromState, toState);
-        }
-
-        @Override
-        protected boolean trigger(SMReception smr) {
-            return (smr instanceof EmptySignal);
-        }
-
-        @Override
-        protected void effect() {
-
-        }
-    }
-
     @Reference(
             policy = ReferencePolicy.DYNAMIC,
             cardinality = ReferenceCardinality.OPTIONAL
@@ -355,19 +252,4 @@ public class MixSiloCtrl extends StateMachine implements SiloCtrlIf {
         this.outValve = null;
         LOGGER.info("OUT-VALVE unbinded.");
     }
-
-    @Reference(
-            policy = ReferencePolicy.DYNAMIC,
-            cardinality = ReferenceCardinality.OPTIONAL
-    )
-    protected void setMixer(MixerDriverIf mixer) {
-        this.mixerDriver = mixer;
-        LOGGER.info("MIXER binded.");
-    }
-
-    protected void unsetMixer(MixerDriverIf mixer) {
-        this.mixerDriver = null;
-        LOGGER.info("MIXER unbinded.");
-    }
-
 }

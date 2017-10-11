@@ -15,6 +15,10 @@
         <module>liqueurplant.osgi.silo.controllers.heatmix</module>
         <module>liqueurplant.osgi.silo.controllers.heat</module>
         <module>liqueurplant.osgi.silo.controllers.mix</module>
-    </modules>
+        <module>liqueurplant.osgi.silo.controllers.simple</module>
 
+    </modules>
+    <build>
+        <directory>../../deploy</directory>
+    </build>
 </project>

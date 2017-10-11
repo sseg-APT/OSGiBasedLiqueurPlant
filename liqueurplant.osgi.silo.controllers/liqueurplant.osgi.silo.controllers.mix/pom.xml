@@ -18,12 +18,6 @@
             <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
         </dependency>
 
-
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.silo.driver.api</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
             <artifactId>liqueurplant.osgi.valve.in.api</artifactId>
@@ -60,7 +54,6 @@
                         </Private-Package>
                         <Require-Bundle>
                             liqueurplant.osgi.silo.controller.api,
-                            liqueurplant.osgi.silo.driver.api,
                             liqueurplant.osgi.valve.in.api,
                             liqueurplant.osgi.valve.out.api,
                             liqueurplant.osgi.mixer.api

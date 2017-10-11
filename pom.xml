@@ -285,7 +285,7 @@
     </dependencyManagement>
 
     <build>
-        <!--<directory>../deploy</directory>-->
+        <directory>../deploy</directory>
         <pluginManagement>
             <plugins>
                 <plugin>

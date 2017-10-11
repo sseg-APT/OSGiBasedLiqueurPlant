@@ -34,7 +34,7 @@ public class HeaterDriver implements HeaterDriverIf,SerialDataEventListener {
     @Activate
     public void activate(){
         heaterPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_10, "HEATER", PinState.HIGH);
-        heaterPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF, PinMode.DIGITAL_INPUT);
+        heaterPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF, PinMode.DIGITAL_OUTPUT);
         LOGGER.info("HEATER activated.");
 
         serial.addListener(this);
@@ -109,8 +109,6 @@ public class HeaterDriver implements HeaterDriverIf,SerialDataEventListener {
             receivedString = serialDataEvent.getAsciiString();
             if(receivedString.startsWith("T=") && receivedString.endsWith("\n")){
                 float temperature=Float.parseFloat(receivedString.substring(2,receivedString.length()-1));
-                LOGGER.info("new string="+receivedString+"END");
-                LOGGER.info(Float.toString(temperature));
                 currentTemperature = temperature;
 
                 if((currentTemperature == targetTemperature) && isHeating){
