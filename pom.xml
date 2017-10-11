@@ -15,7 +15,7 @@
         <module>liqueurplant.osgi.valve.in</module>
         <module>liqueurplant.osgi.valve.out.api</module>
         <module>liqueurplant.osgi.valve.out</module>
-        <module>liqueurplant.osgi.silo.driver.api</module>
+        <!--<module>liqueurplant.osgi.silo.driver.api</module>-->
         <!--<module>sample.test</module>-->
         <module>liqueurplant.osgi.silo.controllers</module>
         <module>liqueurplant.osgi.mixer.api</module>
@@ -151,12 +151,6 @@
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.silo.controller</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
                 <artifactId>liqueurplant.osgi.silo.controller.api</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -168,7 +162,7 @@
             </dependency>
 
             <dependency>
-                <groupId>liqueurplant.osgi</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>liqueurplant.osgi.silo.driver.api</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -194,30 +188,6 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>liqueurplant.osgi.valve.out.api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.silo.driver.sim</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.valve.in.sim</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.valve.out.sim</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.silo.controller.sim</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -315,6 +285,7 @@
     </dependencyManagement>
 
     <build>
+        <!--<directory>../deploy</directory>-->
         <pluginManagement>
             <plugins>
                 <plugin>

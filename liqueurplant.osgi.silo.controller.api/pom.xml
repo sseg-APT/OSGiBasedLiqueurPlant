@@ -35,8 +35,7 @@
                 <configuration>
                     <instructions>
                         <Export-Package>
-                            liqueurplant.osgi.silo.controller.api,
-                            liqueurplant.osgi.silo.controller.api.signals
+                            liqueurplant.osgi.silo.controller.api
                         </Export-Package>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>

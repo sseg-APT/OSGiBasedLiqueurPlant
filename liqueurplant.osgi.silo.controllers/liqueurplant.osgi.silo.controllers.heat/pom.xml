@@ -62,7 +62,7 @@
                             liqueurplant.osgi.silo.driver.api,
                             liqueurplant.osgi.valve.in.api,
                             liqueurplant.osgi.valve.out.api,
-                            liqueurplant.osgi.mixer.api
+                            liqueurplant.osgi.heater.api
                         </Require-Bundle>
                         <_dsannotations>*</_dsannotations>
                     </instructions>

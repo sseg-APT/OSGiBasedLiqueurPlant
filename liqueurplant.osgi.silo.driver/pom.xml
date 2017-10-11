@@ -13,10 +13,6 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.silo.driver.api</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>liqueurplant.osgi</groupId>
@@ -41,11 +37,9 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
-                        <Export-Package>liqueurplant.osgi.silo.driver.api</Export-Package>
                         <Private-Package>liqueurplant.osgi.silo.driver</Private-Package>
                         <Export-Package/>
                         <Require-Bundle>
-                            liqueurplant.osgi.silo.driver.api,
                             liqueurplant.osgi.silo.controller.api
                         </Require-Bundle>
                         <_dsannotations>*</_dsannotations>

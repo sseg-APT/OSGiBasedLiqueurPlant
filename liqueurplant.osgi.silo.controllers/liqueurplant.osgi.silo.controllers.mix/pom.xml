@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>liqueurplant.osgi.silo.controller</artifactId>
+    <artifactId>liqueurplant.osgi.silo.controllers.mix</artifactId>
     <packaging>bundle</packaging>
 
     <dependencies>
@@ -39,10 +39,6 @@
             <artifactId>liqueurplant.osgi.mixer.api</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>liqueurplant.osgi</groupId>
-            <artifactId>liqueurplant.osgi.heater.api</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
@@ -64,10 +60,10 @@
                         </Private-Package>
                         <Require-Bundle>
                             liqueurplant.osgi.silo.controller.api,
+                            liqueurplant.osgi.silo.driver.api,
                             liqueurplant.osgi.valve.in.api,
                             liqueurplant.osgi.valve.out.api,
-                            liqueurplant.osgi.mixer.api,
-                            liqueurplant.osgi.heater.api
+                            liqueurplant.osgi.mixer.api
                         </Require-Bundle>
                         <_dsannotations>*</_dsannotations>
                     </instructions>
