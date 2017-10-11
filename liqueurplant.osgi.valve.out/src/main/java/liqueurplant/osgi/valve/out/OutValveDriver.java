@@ -25,7 +25,7 @@ public class OutValveDriver implements OutValveDriverIf {
     @Activate
     public void activate() {
         outValvePin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_05, "OUT-VALVE", PinState.HIGH);
-        outValvePin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF, PinMode.DIGITAL_INPUT);
+        outValvePin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF, PinMode.DIGITAL_OUTPUT);
         LOGGER.info("OUT-VALVE activated.");
     }
 

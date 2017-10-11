@@ -10,22 +10,18 @@
     <modules>
         <module>liqueurplant.osgi.client</module>
         <module>liqueurplant.osgi.silo.controller</module>
-        <module>liqueurplant.osgi.silo.controller.api</module>
         <module>liqueurplant.osgi.silo.driver</module>
-        <module>liqueurplant.osgi.valve.in.api</module>
-        <module>liqueurplant.osgi.valve.in</module>
-        <module>liqueurplant.osgi.valve.out.api</module>
-        <module>liqueurplant.osgi.valve.out</module>
-        <module>liqueurplant.osgi.silo.driver.api</module>
-        <!--<module>liqueurplant.osgi.silo.driver.sim</module>-->
-        <!--<module>liqueurplant.osgi.valve.in.sim</module>-->
-        <!--<module>liqueurplant.osgi.valve.out.sim</module>-->
-        <!--<module>liqueurplant.osgi.silo.controller.sim</module>-->
-        <!--<module>sample.test</module>-->
-        <module>liqueurplant.osgi.mixer.api</module>
         <module>liqueurplant.osgi.mixer</module>
-        <module>liqueurplant.osgi.heater.api</module>
         <module>liqueurplant.osgi.heater</module>
+        <module>liqueurplant.osgi.valve.in</module>
+        <module>liqueurplant.osgi.valve.out</module>
+        <module>liqueurplant.osgi.silo.controller.api</module>
+        <module>liqueurplant.osgi.silo.driver.api</module>
+        <module>liqueurplant.osgi.mixer.api</module>
+        <module>liqueurplant.osgi.heater.api</module>
+        <module>liqueurplant.osgi.valve.in.api</module>
+        <module>liqueurplant.osgi.valve.out.api</module>
+        <!--<module>sample.test</module>-->
     </modules>
     <packaging>pom</packaging>
 
@@ -203,30 +199,6 @@
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.silo.driver.sim</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.valve.in.sim</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.valve.out.sim</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.silo.controller.sim</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
                 <artifactId>liqueurplant.osgi.mixer</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -239,13 +211,13 @@
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.heater.api</artifactId>
+                <artifactId>liqueurplant.osgi.heater</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>liqueurplant.osgi.heater</artifactId>
+                <artifactId>liqueurplant.osgi.heater.api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -319,6 +291,7 @@
     </dependencyManagement>
 
     <build>
+
         <pluginManagement>
             <plugins>
                 <plugin>
