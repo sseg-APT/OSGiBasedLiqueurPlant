@@ -168,7 +168,7 @@
             </dependency>
 
             <dependency>
-                <groupId>liqueurplant.osgi</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>liqueurplant.osgi.silo.driver.api</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -291,7 +291,7 @@
     </dependencyManagement>
 
     <build>
-
+        <directory>../deploy</directory>
         <pluginManagement>
             <plugins>
                 <plugin>

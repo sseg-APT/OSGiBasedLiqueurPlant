@@ -54,16 +54,22 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
                 initialize();
                 return ExecuteResponse.success();
             case 2:
+                LOG.debug("Signal received: " + resourceid);
                 return addSignal(params, FillSignal.class);
             case 3:
+                LOG.debug("Signal received: " + resourceid);
                 return addSignal(params, EmptySignal.class);
             case 4:
+                LOG.debug("Signal received: " + resourceid);
                 return addSignal(params, HeatSignal.class);
             case 5:
+                LOG.debug("Signal received: " + resourceid);
                 return addSignal(params, MixSignal.class);
             case 6:
+                LOG.debug("Signal received: " + resourceid);
                 return addSignal(params, StopFillingSignal.class);
             case 7:
+                LOG.debug("Signal received: " + resourceid);
                 return addSignal(params, StopEmptyingSignal.class);
             case 8:
                 stop();
@@ -86,12 +92,14 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     }
 
     private <T extends BaseSignal> ExecuteResponse addSignal(String args, Class<T> clazz){
+
         if (args == null){
             return ExecuteResponse.badRequest("Arguments not correct");
         }
         try {
             Constructor<T> ctor = clazz.getConstructor(String.class);
             BaseSignal sign = ctor.newInstance(args);
+            LOG.debug("Signal received: " + sign.toString());
             siloCtrl.put2MsgQueue(sign);
         } catch (Exception e){
             return ExecuteResponse.badRequest("Arguments not correct:" + e.getMessage());
@@ -100,7 +108,7 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     }
 
     private void updateEvent(SMReception newSignal) {
-        LOG.info("New event " + newSignal);
+        LOG.info("New event " + newSignal.toString());
 
         String newEvent;
 
@@ -132,7 +140,6 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
 
 
     public void stop() {
-        //siloCtrl.put2MsgQueue();
         gc();
     }
 
@@ -149,7 +156,6 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     public void initialize() {
         setEmptyingCompleted(false);
         setFillingCompleted(false);
-        //siloCtrl.put2MsgQueue(SimpleSiloSMEvent.START);
     }
 
 
