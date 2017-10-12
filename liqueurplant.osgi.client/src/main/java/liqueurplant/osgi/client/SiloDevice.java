@@ -28,7 +28,7 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
     SiloObject silo = new SiloObject();
 
     public SiloDevice() {
-        super("Silo4", null);
+        super("Silo3", null);
     }
 
     public SiloDevice(String endpoint, String[] args) {
