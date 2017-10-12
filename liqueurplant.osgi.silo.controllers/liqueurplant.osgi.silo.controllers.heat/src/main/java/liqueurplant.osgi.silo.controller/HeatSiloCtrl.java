@@ -1,6 +1,7 @@
 package liqueurplant.osgi.silo.controller;
 
 import liqueurplant.osgi.heater.api.HeaterDriverIf;
+import liqueurplant.osgi.heater.api.HeatingCompletedListenerIf;
 import liqueurplant.osgi.silo.controller.api.*;
 import liqueurplant.osgi.silo.controller.state.machine.State;
 import liqueurplant.osgi.silo.controller.state.machine.StateMachine;
@@ -18,7 +19,7 @@ import java.util.concurrent.ArrayBlockingQueue;
         immediate = true,
         service = SiloCtrlIf.class
 )
-public class HeatSiloCtrl extends StateMachine implements SiloCtrlIf {
+public class HeatSiloCtrl extends StateMachine implements SiloCtrlIf, HeatingCompletedListenerIf {
 
     ArrayBlockingQueue<BaseSignal> notificationQueue;
     private InValveDriverIf inValve;
@@ -78,6 +79,11 @@ public class HeatSiloCtrl extends StateMachine implements SiloCtrlIf {
             LOGGER.error("Exception in takeNotification(): " + e.toString());
             return null;
         }
+    }
+
+    @Override
+    public void heatingCompleted() {
+        put2MsgQueue(new HeatingCompletedSignal());
     }
 
     private class Empty extends State {
@@ -166,21 +172,6 @@ public class HeatSiloCtrl extends StateMachine implements SiloCtrlIf {
     }
 
 
-    private class Mixed extends State {
-        @Override
-        protected void entry() {
-            LOGGER.debug("Smart Silo state: MIXED");
-        }
-
-        @Override
-        protected void doActivity() {
-        }
-
-        @Override
-        protected void exit() {
-        }
-    }
-
     private class Heating extends State {
         @Override
         protected void entry() {
@@ -190,10 +181,8 @@ public class HeatSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void doActivity() {
-            while (heaterDriver.getTemperature() != 35.0f) {
 
-            }
-            put2MsgQueue(new HeatingCompletedSignal());
+
         }
 
         @Override
@@ -377,11 +366,14 @@ public class HeatSiloCtrl extends StateMachine implements SiloCtrlIf {
     )
     protected void setHeater(HeaterDriverIf heater) {
         this.heaterDriver = heater;
+        this.heaterDriver.addHeatingCompletedListener(this);
+        LOGGER.debug("Listener added");
         LOGGER.info("HEATER binded.");
     }
 
     protected void unsetHeater(HeaterDriverIf heater) {
         this.heaterDriver = null;
+
         LOGGER.info("HEATER unbinded.");
     }
 

@@ -1,6 +1,7 @@
 package liqueurplant.osgi.silo.controller;
 
 import liqueurplant.osgi.heater.api.HeaterDriverIf;
+import liqueurplant.osgi.heater.api.HeatingCompletedListenerIf;
 import liqueurplant.osgi.mixer.api.MixerDriverIf;
 import liqueurplant.osgi.silo.controller.api.*;
 import liqueurplant.osgi.silo.controller.state.machine.State;
@@ -19,7 +20,7 @@ import java.util.concurrent.ArrayBlockingQueue;
         immediate = true,
         service = SiloCtrlIf.class
 )
-public class HeatMixSiloCtrl extends StateMachine implements SiloCtrlIf {
+public class HeatMixSiloCtrl extends StateMachine implements SiloCtrlIf, HeatingCompletedListenerIf {
 
     ArrayBlockingQueue<BaseSignal> notificationQueue;
     private InValveDriverIf inValve;
@@ -84,6 +85,11 @@ public class HeatMixSiloCtrl extends StateMachine implements SiloCtrlIf {
             LOGGER.error("Exception in takeNotification(): " + e.toString());
             return null;
         }
+    }
+
+    @Override
+    public void heatingCompleted() {
+        put2MsgQueue(new HeatingCompletedSignal());
     }
 
     private class Empty extends State {
@@ -223,10 +229,7 @@ public class HeatMixSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void doActivity() {
-            while (heaterDriver.getTemperature() != 35.0f) {
 
-            }
-            put2MsgQueue(new HeatingCompletedSignal());
         }
 
         @Override
@@ -460,6 +463,8 @@ public class HeatMixSiloCtrl extends StateMachine implements SiloCtrlIf {
     )
     protected void setHeater(HeaterDriverIf heater) {
         this.heaterDriver = heater;
+        this.heaterDriver.addHeatingCompletedListener(this);
+        LOGGER.debug("Listener added");
         LOGGER.info("HEATER binded.");
     }
 

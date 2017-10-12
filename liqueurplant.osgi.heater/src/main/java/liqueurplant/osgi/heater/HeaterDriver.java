@@ -4,6 +4,7 @@ package liqueurplant.osgi.heater;
 import com.pi4j.io.gpio.*;
 import com.pi4j.io.serial.*;
 import liqueurplant.osgi.heater.api.HeaterDriverIf;
+import liqueurplant.osgi.heater.api.HeatingCompletedListenerIf;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -23,6 +24,7 @@ public class HeaterDriver implements HeaterDriverIf,SerialDataEventListener {
     private GpioController gpioController;
     private GpioPinDigitalOutput heaterPin;
     private Logger LOGGER = LoggerFactory.getLogger(HeaterDriver.class);
+    HeatingCompletedListenerIf listener = null;
 
     private float currentTemperature = 25.0f;
     private float targetTemperature;
@@ -79,6 +81,9 @@ public class HeaterDriver implements HeaterDriverIf,SerialDataEventListener {
         try {
             heaterPin.setState(PinState.HIGH);
             isHeating = false;
+            if(listener!= null){
+                listener.heatingCompleted();
+            }
         } catch (Exception e) {
             LOGGER.error("Exception in stop(): " + e.toString());
         }
@@ -94,6 +99,11 @@ public class HeaterDriver implements HeaterDriverIf,SerialDataEventListener {
     @Override
     public float getTemperature() {
         return currentTemperature;
+    }
+
+    @Override
+    public void addHeatingCompletedListener(HeatingCompletedListenerIf listener) {
+        this.listener = listener;
     }
 
 
@@ -112,6 +122,7 @@ public class HeaterDriver implements HeaterDriverIf,SerialDataEventListener {
                 currentTemperature = temperature;
 
                 if((currentTemperature == targetTemperature) && isHeating){
+                    LOGGER.debug("LIQUEUR HEATED");
                     stop();
                 }
             }

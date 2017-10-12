@@ -10,4 +10,6 @@ public interface HeaterDriverIf {
 
     float getTemperature();
 
+    void addHeatingCompletedListener(HeatingCompletedListenerIf listener);
+
 }
