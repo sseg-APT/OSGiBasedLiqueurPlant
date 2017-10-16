@@ -174,9 +174,8 @@ public class MixSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void doActivity() {
-
             try {
-                Thread.sleep(2000);
+                Thread.sleep(4000);
                 put2MsgQueue(new MixingCompletedSignal());
 
             } catch (InterruptedException e) {

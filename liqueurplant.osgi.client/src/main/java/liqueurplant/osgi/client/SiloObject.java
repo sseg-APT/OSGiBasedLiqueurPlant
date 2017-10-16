@@ -128,8 +128,6 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
             return;
         }
 
-
-
         event = new JSONObject()
             .put("event", newEvent)
             .put("timestamp", (new Timestamp(System.currentTimeMillis())))
