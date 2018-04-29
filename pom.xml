@@ -273,12 +273,11 @@
                 <artifactId>pax-logging-api</artifactId>
                 <version>${pax.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
     <build>
-        <directory>../deploy</directory>
+        <!--<directory>../deploy</directory>-->
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -297,6 +296,7 @@
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
                     <extensions>true</extensions>
+                    <version>3.5.0</version>
                     <configuration>
                         <obrRepository>repository.xml</obrRepository>
                         <instructions>

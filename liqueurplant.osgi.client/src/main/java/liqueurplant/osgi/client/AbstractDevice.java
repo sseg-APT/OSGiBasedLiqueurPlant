@@ -48,10 +48,8 @@ public abstract class AbstractDevice implements Runnable {
         this.needBootstrap = false;
         this.pskIdentity = pskIdentity;
         this.pskKey = pskKey;
-
-
-
     }
+
     @Override
     public void run() {
         List<LwM2mObjectEnabler> enablers = this.createObjects();
@@ -62,17 +60,13 @@ public abstract class AbstractDevice implements Runnable {
         builder.setObjects(enablers);
         client = builder.build();
 
-
         // Start the client
         client.start();
 
         // De-register on shutdown and stop client.
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                client.destroy(true); // send de-registration request before destroy
-            }
-        });
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            client.destroy(true); // send de-registration request before destroy
+        }));
     }
 
     protected List<LwM2mObjectEnabler> createObjects() {
@@ -121,5 +115,4 @@ public abstract class AbstractDevice implements Runnable {
         models.addAll(ObjectLoader.loadJsonStream(liqueurSpec));
         return new LwM2mModel(models);
     }
-
 }
