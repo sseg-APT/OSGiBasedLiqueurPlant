@@ -1,8 +1,0 @@
-/home/bochalito/git/liqueur-plant/OSGiBasedLiqueurPlant/liqueurplant.osgi.silo.controllers/liqueurplant.osgi.silo.controllers.simple/src/main/java/liqueurplant/osgi/silo/controller/state/machine/BaseTransition.java
-/home/bochalito/git/liqueur-plant/OSGiBasedLiqueurPlant/liqueurplant.osgi.silo.controllers/liqueurplant.osgi.silo.controllers.simple/src/main/java/liqueurplant/osgi/silo/controller/state/machine/State.java
-/home/bochalito/git/liqueur-plant/OSGiBasedLiqueurPlant/liqueurplant.osgi.silo.controllers/liqueurplant.osgi.silo.controllers.simple/src/main/java/liqueurplant/osgi/silo/controller/state/machine/Transition.java
-/home/bochalito/git/liqueur-plant/OSGiBasedLiqueurPlant/liqueurplant.osgi.silo.controllers/liqueurplant.osgi.silo.controllers.simple/src/main/java/liqueurplant/osgi/silo/controller/SimpleSiloCtrl.java
-/home/bochalito/git/liqueur-plant/OSGiBasedLiqueurPlant/liqueurplant.osgi.silo.controllers/liqueurplant.osgi.silo.controllers.simple/src/main/java/liqueurplant/osgi/silo/controller/state/machine/Message.java
-/home/bochalito/git/liqueur-plant/OSGiBasedLiqueurPlant/liqueurplant.osgi.silo.controllers/liqueurplant.osgi.silo.controllers.simple/src/main/java/liqueurplant/osgi/silo/controller/state/machine/StateMachine.java
-/home/bochalito/git/liqueur-plant/OSGiBasedLiqueurPlant/liqueurplant.osgi.silo.controllers/liqueurplant.osgi.silo.controllers.simple/src/main/java/liqueurplant/osgi/silo/controller/state/machine/MessageQueue.java
-/home/bochalito/git/liqueur-plant/OSGiBasedLiqueurPlant/liqueurplant.osgi.silo.controllers/liqueurplant.osgi.silo.controllers.simple/src/main/java/liqueurplant/osgi/silo/controller/state/machine/BaseState.java
