@@ -3,11 +3,14 @@ package liqueurplant.osgi.client;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
 import org.eclipse.leshan.client.resource.ObjectsInitializer;
-import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
-import org.osgi.service.component.annotations.*;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
+import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.Dictionary;
 import java.util.List;
 import java.util.Map;
@@ -20,11 +23,11 @@ import java.util.Map;
 )
 public class SiloDevice extends AbstractDevice implements ManagedService {
 
-    static String serverURI = "";
-    private Logger LOG = LoggerFactory.getLogger(AbstractDevice.class);
+    private static Logger LOG = LoggerFactory.getLogger(SiloObject.class);
+    private SiloObject silo = new SiloObject();
     private Thread client;
 
-    SiloObject silo = new SiloObject();
+    static String serverURI = "";
 
     public SiloDevice() {
         super("Silo4", null);
@@ -36,7 +39,6 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
 
     @Activate
     public void activate(Map<String, Object> properties) {
-        LOG.info("SILO DEVICE activated.");
         serverURI = "coap://" + properties.get("IP") + ":" + properties.get("port");
         LOG.info("Server URI: " + serverURI);
         client = new Thread(this);
@@ -44,7 +46,7 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
     }
 
     @Override
-    public void updated(Dictionary<String, ?> properties) throws ConfigurationException {
+    public void updated(Dictionary<String, ?> properties) {
         if (properties == null) {
             LOG.info("No configuration found.");
         } else {

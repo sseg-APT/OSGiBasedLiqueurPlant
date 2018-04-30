@@ -1,7 +1,5 @@
 package liqueurplant.osgi.client;
 
-import java.lang.reflect.Constructor;
-import java.sql.Timestamp;
 import liqueurplant.osgi.silo.controller.api.*;
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.core.response.ExecuteResponse;
@@ -10,7 +8,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
+import java.sql.Timestamp;
 
 
 public class SiloObject extends BaseInstanceEnabler implements Runnable {
@@ -72,7 +71,6 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
                 LOG.debug("Signal received: " + resourceid);
                 return addSignal(params, StopEmptyingSignal.class);
             case 8:
-                stop();
                 return ExecuteResponse.success();
             default:
                 return super.execute(resourceid, params);
@@ -81,7 +79,6 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
 
     @Override
     public void run() {
-        LOG.info("LESHAN WRAPPER started.");
         while (true) {
             if (siloCtrl != null) {
                 updateEvent(siloCtrl.takeNotification());
@@ -136,24 +133,32 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     }
 
 
-    private void stop() {
-        gc();
-    }
-
-    private static void gc() {
-        Object obj = new Object();
-        WeakReference ref = new WeakReference<Object>(obj);
-        obj = null;
-        while(ref.get() != null) {
-            System.gc();
-        }
-    }
+//    public void stop() {
+//        gc();
+//    }
+//
+//    public static void gc() {
+//        Object obj = new Object();
+//        WeakReference ref = new WeakReference<Object>(obj);
+//        obj = null;
+//        while(ref.get() != null) {
+//            System.gc();
+//        }
+//    }
 
 
     private void initialize() {
         setEmptyingCompleted(false);
         setFillingCompleted(false);
     }
+//
+//
+//    private void setState(String newState) {
+//        if (!newState.equals(state)) {
+//            state = newState;
+//            fireResourcesChange(0);
+//        }
+//    }
 
     private void setFillingCompleted(Boolean newValue) {
         fillingCompleted = newValue;

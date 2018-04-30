@@ -5,9 +5,6 @@ import org.eclipse.leshan.core.node.LwM2mResource;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.startlevel.BundleStartLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,9 +21,9 @@ import java.util.concurrent.Executors;
 
 public class FirmwareObject extends BaseInstanceEnabler {
 
-    public static Logger LOG = LoggerFactory.getLogger(FirmwareObject.class);
+    private static Logger LOG = LoggerFactory.getLogger(FirmwareObject.class);
 
-    public static int modelId = 5;
+    static int modelId = 5;
 
     private ExecutorService pool = Executors.newFixedThreadPool(1);
     private String url;

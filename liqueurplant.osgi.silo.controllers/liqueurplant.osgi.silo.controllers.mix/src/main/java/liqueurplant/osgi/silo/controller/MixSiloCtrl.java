@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
 
 @Component(
         name = "liqueurplant.osgi.silo.controller",
@@ -20,7 +22,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 )
 public class MixSiloCtrl extends StateMachine implements SiloCtrlIf {
 
-    ArrayBlockingQueue<BaseSignal> notificationQueue;
+    BlockingQueue<BaseSignal> notificationQueue;
     private InValveDriverIf inValve;
     private OutValveDriverIf outValve;
     private MixerDriverIf mixerDriver;
@@ -31,7 +33,7 @@ public class MixSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     public MixSiloCtrl() {
         super(null);
-        notificationQueue = new ArrayBlockingQueue<>(20);
+        notificationQueue = new ArrayBlockingQueue<>(10);
         empty = new Empty();
         filling = new Filling();
         full = new Full();
@@ -59,7 +61,6 @@ public class MixSiloCtrl extends StateMachine implements SiloCtrlIf {
 
     @Deactivate
     public void deactivate() {
-        notificationQueue = null;
         LOGGER.info("SILO CONTROLLER deactivated.");
     }
 
@@ -67,11 +68,11 @@ public class MixSiloCtrl extends StateMachine implements SiloCtrlIf {
     @Override
     public void put2MsgQueue(BaseSignal signal) {
         this.itsMsgQ.add(signal);
-        LOGGER.info("Signal: " + signal.toString());
+        LOGGER.info("Signal in MessageQueue: " + signal.toString());
     }
 
     @Override
-    public BaseSignal takeNotification() {
+    public synchronized BaseSignal takeNotification() {
         try {
             return notificationQueue.take();
         } catch (InterruptedException e) {
@@ -177,7 +178,6 @@ public class MixSiloCtrl extends StateMachine implements SiloCtrlIf {
             try {
                 Thread.sleep(4000);
                 put2MsgQueue(new MixingCompletedSignal());
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -186,8 +186,8 @@ public class MixSiloCtrl extends StateMachine implements SiloCtrlIf {
 
         @Override
         protected void exit() {
-            mixerDriver.stop();
             try {
+                mixerDriver.stop();
                 notificationQueue.put(new MixingCompletedSignal());
             } catch (InterruptedException e) {
                 e.printStackTrace();
