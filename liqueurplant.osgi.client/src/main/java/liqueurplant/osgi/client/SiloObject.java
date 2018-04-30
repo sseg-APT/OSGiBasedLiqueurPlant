@@ -15,15 +15,15 @@ import java.lang.ref.WeakReference;
 
 public class SiloObject extends BaseInstanceEnabler implements Runnable {
 
-    public static Logger LOG = LoggerFactory.getLogger(SiloObject.class);
-    public static int modelId = 20000;
+    private static Logger LOG = LoggerFactory.getLogger(SiloObject.class);
+    static int modelId = 20000;
     static SiloCtrlIf siloCtrl;
-    public String state = "";
-    public boolean fillingCompleted = false;
-    public boolean emptyingCompleted = false;
+    private String state = "";
+    private boolean fillingCompleted = false;
+    private boolean emptyingCompleted = false;
     private String event;
 
-    public SiloObject() {
+    SiloObject() {
 
         event = new JSONObject()
             .put("event", "")
@@ -81,12 +81,10 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
 
     @Override
     public void run() {
-        BaseSignal observation;
-        LOG.info("Leshan Wrapper started.");
+        LOG.info("LESHAN WRAPPER started.");
         while (true) {
             if (siloCtrl != null) {
-                observation = siloCtrl.takeNotification();
-                updateEvent(observation);
+                updateEvent(siloCtrl.takeNotification());
             }
         }
     }
@@ -99,7 +97,6 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
         try {
             Constructor<T> ctor = clazz.getConstructor(String.class);
             BaseSignal sign = ctor.newInstance(args);
-            LOG.debug("Signal received: " + sign.toString());
             siloCtrl.put2MsgQueue(sign);
         } catch (Exception e){
             return ExecuteResponse.badRequest("Arguments not correct:" + e.getMessage());
@@ -108,21 +105,23 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     }
 
     private void updateEvent(SMReception newSignal) {
-        LOG.info("New event " + newSignal.toString());
-
         String newEvent;
 
         if (newSignal instanceof FillingCompletedSignal){
             newEvent = "FILLING_COMPLETED";
+            LOG.info("New event " + newEvent);
         }
         else if (newSignal instanceof EmptyingCompletedSignal){
             newEvent = "EMPTYING_COMPLETED";
+            LOG.info("New event " + newEvent);
         }
         else if (newSignal instanceof HeatingCompletedSignal){
             newEvent = "HEATING_COMPLETED";
+            LOG.info("New event " + newEvent);
         }
         else if (newSignal instanceof MixingCompletedSignal){
             newEvent = "MIXING_COMPLETED";
+            LOG.info("New event " + newEvent);
         }
         else{
             return;
@@ -137,11 +136,11 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     }
 
 
-    public void stop() {
+    private void stop() {
         gc();
     }
 
-    public static void gc() {
+    private static void gc() {
         Object obj = new Object();
         WeakReference ref = new WeakReference<Object>(obj);
         obj = null;
@@ -151,17 +150,9 @@ public class SiloObject extends BaseInstanceEnabler implements Runnable {
     }
 
 
-    public void initialize() {
+    private void initialize() {
         setEmptyingCompleted(false);
         setFillingCompleted(false);
-    }
-
-
-    private void setState(String newState) {
-        if (!newState.equals(state)) {
-            state = newState;
-            fireResourcesChange(0);
-        }
     }
 
     private void setFillingCompleted(Boolean newValue) {

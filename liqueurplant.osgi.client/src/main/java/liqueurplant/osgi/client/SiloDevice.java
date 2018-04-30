@@ -3,7 +3,6 @@ package liqueurplant.osgi.client;
 import liqueurplant.osgi.silo.controller.api.SiloCtrlIf;
 import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
 import org.eclipse.leshan.client.resource.ObjectsInitializer;
-import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 import org.osgi.service.component.annotations.*;
@@ -22,13 +21,13 @@ import java.util.Map;
 public class SiloDevice extends AbstractDevice implements ManagedService {
 
     static String serverURI = "";
-    private Logger LOGGER = LoggerFactory.getLogger(AbstractDevice.class);
-    private BundleContext context;
+    private Logger LOG = LoggerFactory.getLogger(AbstractDevice.class);
+    private Thread client;
 
     SiloObject silo = new SiloObject();
 
     public SiloDevice() {
-        super("Silo3", null);
+        super("Silo4", null);
     }
 
     public SiloDevice(String endpoint, String[] args) {
@@ -37,22 +36,21 @@ public class SiloDevice extends AbstractDevice implements ManagedService {
 
     @Activate
     public void activate(Map<String, Object> properties) {
-        this.context = context;
-        LOGGER.info("Silo device activated.");
+        LOG.info("SILO DEVICE activated.");
         serverURI = "coap://" + properties.get("IP") + ":" + properties.get("port");
-        LOGGER.info("Server URI: " + serverURI);
-        new Thread(this).start();
+        LOG.info("Server URI: " + serverURI);
+        client = new Thread(this);
         new Thread(silo).start();
     }
 
     @Override
     public void updated(Dictionary<String, ?> properties) throws ConfigurationException {
         if (properties == null) {
-            LOGGER.warn("No configuration found.");
+            LOG.info("No configuration found.");
         } else {
             serverURI = "coap://" + properties.get("IP") + ":" + properties.get("port");
-            LOGGER.info("Server URI updated to: " + serverURI);
-            new Thread(this).start();
+            LOG.info("SERVER_URI updated to: " + serverURI);
+            client.start();
         }
     }
 

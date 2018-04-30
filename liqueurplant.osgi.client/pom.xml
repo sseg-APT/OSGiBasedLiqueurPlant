@@ -51,7 +51,7 @@
     </dependencies>
 
     <build>
-        <!-- <directory>../</directory> -->
+        <!--<directory>target/</directory>-->
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
