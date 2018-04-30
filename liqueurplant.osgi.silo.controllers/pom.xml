@@ -19,6 +19,6 @@
 
     </modules>
     <build>
-        <!--<directory>../../deploy</directory>-->
+        <directory>../../deploy</directory>
     </build>
 </project>
